@@ -9,13 +9,13 @@ class TaskAction {
     public const REJECT = 3;
 
     protected static $actions = [
-        self::ACCEPT => 'Принять';
-        self::CANCEL => 'Отменить';
-        self::COMPLETE => 'Завершить';
-        self::REJECT => 'Отказаться';
+        self::ACCEPT => 'Принять',
+        self::CANCEL => 'Отменить',
+        self::COMPLETE => 'Завершить',
+        self::REJECT => 'Отказаться'
     ];
 
-    public static getAll() {
+    public static function getAll() {
         return self::$actions;
     }
 
