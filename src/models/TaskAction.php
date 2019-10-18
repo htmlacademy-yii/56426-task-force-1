@@ -1,5 +1,5 @@
 <?php
-namespace models;
+namespace HtmlAcademy\models\TaskAction;
 
 class TaskAction {
 
