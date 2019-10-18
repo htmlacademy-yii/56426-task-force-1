@@ -1,5 +1,5 @@
 <?php
-namespace HtmlAcademy\models\TaskStatus;
+namespace HtmlAcademy\models;
 
 class TaskStatus {
 
