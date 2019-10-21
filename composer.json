@@ -1,0 +1,17 @@
+{
+    "name": "htmlacademy/taskforce",
+    "description": "Учебный проект TaskForce",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alexey Fetisov",
+            "email": "alfet123@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "HtmlAcademy\\": "src/"
+        }
+    }
+}
