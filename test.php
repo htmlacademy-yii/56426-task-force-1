@@ -8,19 +8,19 @@ use HtmlAcademy\models\AvailableActions;
 $myTask = new Task(1);
 
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(AvailableActions::ACCEPT);
+$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::getName());
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
-$myTask->currentStatus = $myTask->getStatusNext(AvailableActions::COMPLETE);
+$myTask->currentStatus = $myTask->getStatusNext(ActionComplete::getName());
 assert($myTask->currentStatus === TaskStatus::COMPLETED);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(AvailableActions::ACCEPT);
+$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::getName());
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
-$myTask->currentStatus = $myTask->getStatusNext(AvailableActions::REJECT);
+$myTask->currentStatus = $myTask->getStatusNext(ActionReject::getName());
 assert($myTask->currentStatus === TaskStatus::FAILED);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(AvailableActions::CANCEL);
+$myTask->currentStatus = $myTask->getStatusNext(ActionCancel::getName());
 assert($myTask->currentStatus === TaskStatus::CANCELED);
