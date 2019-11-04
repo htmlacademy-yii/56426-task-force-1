@@ -1,12 +1,12 @@
 <?php
 namespace HtmlAcademy\models;
 
-class TaskAction {
+class AvailableActions {
 
-    public const ACCEPT = 0;
-    public const CANCEL = 1;
-    public const COMPLETE = 2;
-    public const REJECT = 3;
+    public const ACCEPT = ActionAccept::getName();
+    public const CANCEL = ActionCancel::getName();
+    public const COMPLETE = ActionComplete::getName();
+    public const REJECT = ActionReject::getName();
 
     protected static $actions = [
         self::ACCEPT => 'Принять',

@@ -11,12 +11,12 @@ class Task {
 
     public $lifecycleMap = [
         TaskStatus::NEW_TASK =>[
-            TaskAction::ACCEPT => TaskStatus::IN_PROGRESS,
-            TaskAction::CANCEL => TaskStatus::CANCELED
+            AvailableActions::ACCEPT => TaskStatus::IN_PROGRESS,
+            AvailableActions::CANCEL => TaskStatus::CANCELED
         ],
         TaskStatus::IN_PROGRESS =>[
-            TaskAction::COMPLETE => TaskStatus::COMPLETED,
-            TaskAction::REJECT => TaskStatus::FAILED
+            AvailableActions::COMPLETE => TaskStatus::COMPLETED,
+            AvailableActions::REJECT => TaskStatus::FAILED
         ]
     ];
 
