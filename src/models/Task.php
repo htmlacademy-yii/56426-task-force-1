@@ -8,7 +8,17 @@ class Task {
     public $createdAt;
     public $deadlineAt;
     public $currentStatus;
-    public $lifecycleMap;
+
+    public $lifecycleMap = [
+        TaskStatus::NEW_TASK => [
+            ActionAccept::class => TaskStatus::IN_PROGRESS,
+            ActionCancel::class => TaskStatus::CANCELED
+        ],
+        TaskStatus::IN_PROGRESS => [
+            ActionComplete::class => TaskStatus::COMPLETED,
+            ActionReject::class => TaskStatus::FAILED
+        ]
+    ];
 
     public function __construct(int $customerId, int $deadlineAt = NULL) {
         $this->customerId = $customerId;
@@ -16,16 +26,6 @@ class Task {
         $this->createdAt = time();
         $this->deadlineAt = ($deadlineAt !== NULL) ? $deadlineAt : $this->createdAt + 864000;
         $this->currentStatus = TaskStatus::NEW_TASK;
-        $this->lifecycleMap = [
-            TaskStatus::NEW_TASK => [
-                ActionAccept::getName() => TaskStatus::IN_PROGRESS,
-                ActionCancel::getName() => TaskStatus::CANCELED
-            ],
-            TaskStatus::IN_PROGRESS => [
-                ActionComplete::getName() => TaskStatus::COMPLETED,
-                ActionReject::getName() => TaskStatus::FAILED
-            ]
-        ];
     }
 
     public function getStatusNext($action) {

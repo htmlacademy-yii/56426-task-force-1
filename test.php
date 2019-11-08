@@ -11,19 +11,19 @@ use HtmlAcademy\models\ActionReject;
 $myTask = new Task(1);
 
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::getName());
+$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::class);
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
-$myTask->currentStatus = $myTask->getStatusNext(ActionComplete::getName());
+$myTask->currentStatus = $myTask->getStatusNext(ActionComplete::class);
 assert($myTask->currentStatus === TaskStatus::COMPLETED);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::getName());
+$myTask->currentStatus = $myTask->getStatusNext(ActionAccept::class);
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
-$myTask->currentStatus = $myTask->getStatusNext(ActionReject::getName());
+$myTask->currentStatus = $myTask->getStatusNext(ActionReject::class);
 assert($myTask->currentStatus === TaskStatus::FAILED);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
-$myTask->currentStatus = $myTask->getStatusNext(ActionCancel::getName());
+$myTask->currentStatus = $myTask->getStatusNext(ActionCancel::class);
 assert($myTask->currentStatus === TaskStatus::CANCELED);
