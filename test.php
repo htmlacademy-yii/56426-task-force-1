@@ -3,7 +3,10 @@ require_once('vendor/autoload.php');
 
 use HtmlAcademy\models\Task;
 use HtmlAcademy\models\TaskStatus;
-use HtmlAcademy\models\AvailableActions;
+use HtmlAcademy\models\ActionAccept;
+use HtmlAcademy\models\ActionCancel;
+use HtmlAcademy\models\ActionComplete;
+use HtmlAcademy\models\ActionReject;
 
 $myTask = new Task(1);
 

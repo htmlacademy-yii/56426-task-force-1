@@ -7,4 +7,12 @@ class ActionAccept extends Actions {
         return self::class;
     }
 
+    public static function getInnerName() {
+
+    }
+
+    public static function checkAccess() {
+
+    }
+
 }
