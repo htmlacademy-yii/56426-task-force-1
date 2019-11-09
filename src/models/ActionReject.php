@@ -11,8 +11,8 @@ class ActionReject extends Actions {
         return 'ActionReject';
     }
 
-    public static function checkAccess() {
-        
+    public static function isAvailable(Task $task, int $userRole, int $userId) {
+        return ($task->currentStatus === TaskStatus::IN_PROGRESS && $userRole === UserRole::CONTRACTOR && $task->contractorId === $userId) ? true : false;
     }
 
 }

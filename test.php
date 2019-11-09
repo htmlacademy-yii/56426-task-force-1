@@ -7,23 +7,49 @@ use HtmlAcademy\models\ActionAccept;
 use HtmlAcademy\models\ActionCancel;
 use HtmlAcademy\models\ActionComplete;
 use HtmlAcademy\models\ActionReject;
+use HtmlAcademy\models\AvailableActions;
+use HtmlAcademy\models\UserRole;
+
+// Проверка методов получения следующего статуса и списка доступных действий
 
 $myTask = new Task(1);
-
+$myTask->contractorId = 2;
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
+
+$actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
+print_r($actionsList); // 0 => Отменить
+$actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 1);
+print_r($actionsList); // Пустой массив
+$actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 2);
+print_r($actionsList); // 0 => Принять
+
 $myTask->currentStatus = $myTask->getStatusNext(ActionAccept::class);
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
+
+$actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
+print_r($actionsList); // 0 => Завершить
+$actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 1);
+print_r($actionsList); // Пустой массив
+$actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 2);
+print_r($actionsList); // 0 => Отказаться
+
 $myTask->currentStatus = $myTask->getStatusNext(ActionComplete::class);
 assert($myTask->currentStatus === TaskStatus::COMPLETED);
 
+$actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
+print_r($actionsList); // Пустой массив
+
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
+
 $myTask->currentStatus = $myTask->getStatusNext(ActionAccept::class);
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
+
 $myTask->currentStatus = $myTask->getStatusNext(ActionReject::class);
 assert($myTask->currentStatus === TaskStatus::FAILED);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
+
 $myTask->currentStatus = $myTask->getStatusNext(ActionCancel::class);
 assert($myTask->currentStatus === TaskStatus::CANCELED);

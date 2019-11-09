@@ -11,8 +11,8 @@ class ActionCancel extends Actions {
         return 'ActionCancel';
     }
 
-    public static function checkAccess() {
-        
+    public static function isAvailable(Task $task, int $userRole, int $userId) {
+        return ($task->currentStatus === TaskStatus::NEW_TASK && $userRole === UserRole::CUSTOMER && $task->customerId === $userId) ? true : false;
     }
 
 }
