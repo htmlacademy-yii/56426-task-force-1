@@ -17,27 +17,27 @@ $myTask->contractorId = 2;
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);
 
 $actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
-print_r($actionsList); // 0 => Отменить
+assert($actionsList === [0 => 'Отменить']);
 $actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 1);
-print_r($actionsList); // Пустой массив
+assert($actionsList === []);
 $actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 2);
-print_r($actionsList); // 0 => Принять
+assert($actionsList === [0 => 'Принять']);
 
 $myTask->currentStatus = $myTask->getStatusNext(ActionAccept::class);
 assert($myTask->currentStatus === TaskStatus::IN_PROGRESS);
 
 $actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
-print_r($actionsList); // 0 => Завершить
+assert($actionsList === [0 => 'Завершить']);
 $actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 1);
-print_r($actionsList); // Пустой массив
+assert($actionsList === []);
 $actionsList = AvailableActions::getActions($myTask, UserRole::CONTRACTOR, 2);
-print_r($actionsList); // 0 => Отказаться
+assert($actionsList === [0 => 'Отказаться']);
 
 $myTask->currentStatus = $myTask->getStatusNext(ActionComplete::class);
 assert($myTask->currentStatus === TaskStatus::COMPLETED);
 
 $actionsList = AvailableActions::getActions($myTask, UserRole::CUSTOMER, 1);
-print_r($actionsList); // Пустой массив
+assert($actionsList === []);
 
 $myTask = new Task(1);
 assert($myTask->currentStatus === TaskStatus::NEW_TASK);

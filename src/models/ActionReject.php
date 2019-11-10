@@ -12,7 +12,9 @@ class ActionReject extends Actions {
     }
 
     public static function isAvailable(Task $task, int $userRole, int $userId) {
-        return ($task->currentStatus === TaskStatus::IN_PROGRESS && $userRole === UserRole::CONTRACTOR && $task->contractorId === $userId) ? true : false;
+        return $task->currentStatus === TaskStatus::IN_PROGRESS &&
+               $userRole === UserRole::CONTRACTOR &&
+               $task->contractorId === $userId;
     }
 
 }

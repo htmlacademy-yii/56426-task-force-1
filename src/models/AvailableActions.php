@@ -4,22 +4,22 @@ namespace HtmlAcademy\models;
 class AvailableActions {
 
     private static $actions = [
-        ActionAccept::class => 'Принять',
-        ActionCancel::class => 'Отменить',
-        ActionComplete::class => 'Завершить',
-        ActionReject::class => 'Отказаться'
+        ActionAccept::class,
+        ActionCancel::class,
+        ActionComplete::class,
+        ActionReject::class
     ];
 
     public static function getAll() {
-        return $this->$actions;
+        return self::$actions;
     }
 
     public static function getActions(Task $task, int $userRole, int $userId) {
         $actionsList = [];
 
-        foreach (self::$actions as $action => $actionName) {
+        foreach (self::$actions as $action) {
             if ($action::isAvailable($task, $userRole, $userId)) {
-                $actionsList[] = $actionName;
+                $actionsList[] = $action::getName();
             }
         }
 

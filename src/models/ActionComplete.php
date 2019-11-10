@@ -12,7 +12,9 @@ class ActionComplete extends Actions {
     }
 
     public static function isAvailable(Task $task, int $userRole, int $userId) {
-        return ($task->currentStatus === TaskStatus::IN_PROGRESS && $userRole === UserRole::CUSTOMER && $task->customerId === $userId) ? true : false;
+        return $task->currentStatus === TaskStatus::IN_PROGRESS &&
+               $userRole === UserRole::CUSTOMER &&
+               $task->customerId === $userId;
     }
 
 }

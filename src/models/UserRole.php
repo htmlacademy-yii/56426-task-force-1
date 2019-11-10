@@ -7,8 +7,8 @@ class UserRole {
     public const CONTRACTOR = 1;
 
     protected static $roles = [
-        self::CUSTOMER => "Заказчик",
-        self::CONTRACTOR => "Исполнитель"
+        self::CUSTOMER,
+        self::CONTRACTOR
     ];
 
     public static function getAll() {
