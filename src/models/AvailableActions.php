@@ -3,20 +3,26 @@ namespace HtmlAcademy\models;
 
 class AvailableActions {
 
-    public const ACCEPT = ActionAccept::getName();
-    public const CANCEL = ActionCancel::getName();
-    public const COMPLETE = ActionComplete::getName();
-    public const REJECT = ActionReject::getName();
-
-    protected static $actions = [
-        self::ACCEPT => 'Принять',
-        self::CANCEL => 'Отменить',
-        self::COMPLETE => 'Завершить',
-        self::REJECT => 'Отказаться'
+    private static $actions = [
+        ActionAccept::class,
+        ActionCancel::class,
+        ActionComplete::class,
+        ActionReject::class
     ];
 
     public static function getAll() {
         return self::$actions;
     }
 
+    public static function getActions(Task $task, int $userRole, int $userId) {
+        $actionsList = [];
+
+        foreach (self::$actions as $action) {
+            if ($action::isAvailable($task, $userRole, $userId)) {
+                $actionsList[] = $action::getName();
+            }
+        }
+
+        return $actionsList;
+    }
 }
