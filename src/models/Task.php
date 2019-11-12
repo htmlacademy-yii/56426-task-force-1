@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace HtmlAcademy\models;
 
 class Task {
@@ -20,7 +22,7 @@ class Task {
         ]
     ];
 
-    public function __construct(int $customerId, int $deadlineAt = NULL) {
+    public function __construct(int $customerId, ?int $deadlineAt = NULL) {
         $this->customerId = $customerId;
         $this->contractorId = NULL;
         $this->createdAt = time();
@@ -28,7 +30,7 @@ class Task {
         $this->currentStatus = TaskStatus::NEW_TASK;
     }
 
-    public function getStatusNext($action) {
+    public function getStatusNext(string $action): ?int {
         return $this->lifecycleMap[$this->currentStatus][$action] ?? NULL;
     }
 
