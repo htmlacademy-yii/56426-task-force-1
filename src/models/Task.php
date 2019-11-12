@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace HtmlAcademy\models;
 
+use HtmlAcademy\ex\DataTypeException;
+
 class Task {
 
     public $customerId;
@@ -31,6 +33,9 @@ class Task {
     }
 
     public function getStatusNext(string $action): ?int {
+        if (!in_array($action, AvailableActions::getAll())) {
+            throw new DataTypeException("Действие '".$action."' не существует.");
+        }
         return $this->lifecycleMap[$this->currentStatus][$action] ?? NULL;
     }
 
