@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace HtmlAcademy\models;
+namespace HtmlAcademy\Models;
 
-use HtmlAcademy\ex\DataTypeException;
+use HtmlAcademy\Exceptions\DataTypeException;
 
 class Task {
 
@@ -24,7 +24,7 @@ class Task {
         ]
     ];
 
-    public function __construct(int $customerId, ?int $deadlineAt = NULL) {
+    public function __construct(int $customerId, int $deadlineAt = NULL) {
         $this->customerId = $customerId;
         $this->contractorId = NULL;
         $this->createdAt = time();

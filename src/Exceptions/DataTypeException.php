@@ -1,5 +1,5 @@
 <?php
-namespace HtmlAcademy\ex;
+namespace HtmlAcademy\Exceptions;
 
 class DataTypeException extends \Exception
 {

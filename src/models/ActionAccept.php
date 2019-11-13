@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace HtmlAcademy\models;
+namespace HtmlAcademy\Models;
 
 class ActionAccept extends Actions {
 

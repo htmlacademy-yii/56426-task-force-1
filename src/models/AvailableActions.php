@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace HtmlAcademy\models;
+namespace HtmlAcademy\Models;
 
-use HtmlAcademy\ex\DataTypeException;
+use HtmlAcademy\Exceptions\DataTypeException;
 
 class AvailableActions {
 
