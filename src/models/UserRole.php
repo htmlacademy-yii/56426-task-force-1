@@ -1,5 +1,7 @@
 <?php
-namespace HtmlAcademy\models;
+declare(strict_types=1);
+
+namespace HtmlAcademy\Models;
 
 class UserRole {
 
@@ -11,7 +13,7 @@ class UserRole {
         self::CONTRACTOR
     ];
 
-    public static function getAll() {
+    public static function getAll(): array {
         return self::$roles;
     }
 

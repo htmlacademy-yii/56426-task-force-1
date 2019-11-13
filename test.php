@@ -1,14 +1,20 @@
 <?php
+declare(strict_types=1);
+
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+
 require_once('vendor/autoload.php');
 
-use HtmlAcademy\models\Task;
-use HtmlAcademy\models\TaskStatus;
-use HtmlAcademy\models\ActionAccept;
-use HtmlAcademy\models\ActionCancel;
-use HtmlAcademy\models\ActionComplete;
-use HtmlAcademy\models\ActionReject;
-use HtmlAcademy\models\AvailableActions;
-use HtmlAcademy\models\UserRole;
+use HtmlAcademy\Models\Task;
+use HtmlAcademy\Models\TaskStatus;
+use HtmlAcademy\Models\ActionAccept;
+use HtmlAcademy\Models\ActionCancel;
+use HtmlAcademy\Models\ActionComplete;
+use HtmlAcademy\Models\ActionReject;
+use HtmlAcademy\Models\AvailableActions;
+use HtmlAcademy\Models\UserRole;
+use HtmlAcademy\Exceptions\DataTypeException;
 
 // Проверка методов получения следующего статуса и списка доступных действий
 
@@ -53,3 +59,19 @@ assert($myTask->currentStatus === TaskStatus::NEW_TASK);
 
 $myTask->currentStatus = $myTask->getStatusNext(ActionCancel::class);
 assert($myTask->currentStatus === TaskStatus::CANCELED);
+
+// Проверка обработки исключений
+
+try {
+    $exceptionClass = null;
+    $exceptionMessage = null;
+
+    $myTask = new Task(1);
+    $myTask->currentStatus = $myTask->getStatusNext('some action');
+} catch (Exception $exception) {
+    $exceptionClass = get_class($exception);
+    $exceptionMessage = $exception->getMessage();
+} finally {
+    assert($exceptionClass === DataTypeException::class);
+    assert($exceptionMessage === "Действие 'some action' не существует.");
+}

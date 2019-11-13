@@ -1,5 +1,9 @@
 <?php
-namespace HtmlAcademy\models;
+declare(strict_types=1);
+
+namespace HtmlAcademy\Models;
+
+use HtmlAcademy\Exceptions\DataTypeException;
 
 class Task {
 
@@ -28,7 +32,10 @@ class Task {
         $this->currentStatus = TaskStatus::NEW_TASK;
     }
 
-    public function getStatusNext($action) {
+    public function getStatusNext(string $action): ?int {
+        if (!in_array($action, AvailableActions::getAll())) {
+            throw new DataTypeException("Действие '".$action."' не существует.");
+        }
         return $this->lifecycleMap[$this->currentStatus][$action] ?? NULL;
     }
 

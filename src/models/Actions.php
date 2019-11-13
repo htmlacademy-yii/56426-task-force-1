@@ -1,5 +1,7 @@
 <?php
-namespace HtmlAcademy\models;
+declare(strict_types=1);
+
+namespace HtmlAcademy\Models;
 
 abstract class Actions {
 

@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Алексей Фетисов](https://up.htmlacademy.ru/yii/1/user/56426).
-* Наставник: [Михаил Куприянов](https://up.htmlacademy.ru/yii/1/user/541075).
+* Наставник: [Антон Дорожкин](https://up.htmlacademy.ru/yii/1/user/21260).
 
 ---
 
