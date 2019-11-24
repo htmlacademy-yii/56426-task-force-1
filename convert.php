@@ -8,44 +8,47 @@ require_once('vendor/autoload.php');
 
 use HtmlAcademy\Tools\Converter;
 
+$sourcePath = 'data/';
+$targetPath = 'src/sql/';
+
 // city
 
-$city = new Converter('data/cities.csv', 'src/sql/city.sql', 'city');
+$city = new Converter($sourcePath.'cities.csv', $targetPath.'city.sql', 'city');
 $cityCount = $city->convert();
 printf("city: %d\n", $cityCount);
 
 // user
 
-$user = new Converter('data/users.csv', 'src/sql/user.sql', 'user');
+$user = new Converter($sourcePath.'users.csv', $targetPath.'user.sql', 'user');
 $userCount = $user->convert();
 printf("user: %d\n", $userCount);
 
 // profile
 
-$profile = new Converter('data/profiles.csv', 'src/sql/profile.sql', 'profile');
+$profile = new Converter($sourcePath.'profiles.csv', $targetPath.'profile.sql', 'profile');
 $profileCount = $profile->convert(['user_id' => 0, 'city_id' => $cityCount]);
 printf("profile: %d\n", $profileCount);
 
 // skill
 
-$skill = new Converter('data/skills.csv', 'src/sql/skill.sql', 'skill');
+$skill = new Converter($sourcePath.'skills.csv', $targetPath.'skill.sql', 'skill');
 $skillCount = $skill->convert();
 printf("skill: %d\n", $skillCount);
 
 // category
 
-$category = new Converter('data/categories.csv', 'src/sql/category.sql', 'category');
+$category = new Converter($sourcePath.'categories.csv', $targetPath.'category.sql', 'category');
 $categoryCount = $category->convert();
 printf("category: %d\n", $categoryCount);
 
 // task
 
-$task = new Converter('data/tasks.csv', 'src/sql/task.sql', 'task');
+$task = new Converter($sourcePath.'tasks.csv', $targetPath.'task.sql', 'task');
 $taskCount = $task->convert(['customer_id' => $userCount]);
 printf("task: %d\n", $taskCount);
 
 // reply
 
-$reply = new Converter('data/replies.csv', 'src/sql/reply.sql', 'reply');
+$reply = new Converter($sourcePath.'replies.csv', $targetPath.'reply.sql', 'reply');
 $replyCount = $reply->convert(['task_id' => $taskCount, 'contractor_id' => $userCount]);
 printf("reply: %d\n", $replyCount);

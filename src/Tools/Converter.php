@@ -18,29 +18,19 @@ class Converter {
         $this->data = [];
     }
 
-    // Работает как implode(), но дополнительно заключает значения в кавычки
-    private static function stringOfValues(array $items, string $quoteSymbol = "'"): string {
-        $result = "";
-        $itemNumber = 1;
-        foreach ($items as $item) {
-            $result .= $quoteSymbol . $item . $quoteSymbol;
-            if ($itemNumber < count($items)) {
-                $result .= ",";
-            }
-            $itemNumber++;
-        }
-        return $result;
+    public function convert(array $extraFields = []): int {
+        $this->import($extraFields);
+        $this->export();
+        return count($this->data);
     }
 
     private function import(array $extraFields = []): void {
         $file = new \SplFileObject($this->source);
         $file->setFlags(\SplFileObject::SKIP_EMPTY);
         $file->rewind();
-        $header = $file->fgetcsv();
-        foreach ($extraFields as $fieldName => $maxValue) {
-            $header[] = $fieldName;
-        }
-        $this->fields = self::stringOfValues($header, "`");
+        $header = $file->fgetcsv() or exit("Ошибка чтения CSV-заголовка в файле " . $this->source);
+        $header = array_merge($header, array_keys($extraFields));
+        $this->fields = "`" . implode("`,`", $header) . "`";
         while (!$file->eof()) {
             if ($line = $file->fgetcsv()) {
                 foreach ($extraFields as $fieldName => $maxValue) {
@@ -57,15 +47,16 @@ class Converter {
 
     private function export(): void {
         $file = new \SplFileObject($this->target, "w");
+        $insertCommand = "insert into `" . $this->table . "` (" . $this->fields . ") values ";
+        $lineNumber = 1;
         foreach ($this->data as $line) {
-            $file->fwrite("insert into `" . $this->table . "` (" . $this->fields . ") values (" . self::stringOfValues($line) . ");\n");
+            $insertCommand .= "('" . implode("','", $line) . "')";
+            if ($lineNumber < count($this->data)) {
+                $insertCommand .= ", ";
+            }
+            $lineNumber++;
         }
+        $insertCommand .= ";\n";
+        $file->fwrite($insertCommand);
     }
-
-    public function convert(array $extraFields = []): int {
-        $this->import($extraFields);
-        $this->export();
-        return count($this->data);
-    }
-    
 }
