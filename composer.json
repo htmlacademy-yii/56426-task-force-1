@@ -48,7 +48,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "HtmlAcademy\\": "src/"
+            "HtmlAcademy\\": "src/",
+            "frontend\\": "frontend/"
         }
     }
 }
