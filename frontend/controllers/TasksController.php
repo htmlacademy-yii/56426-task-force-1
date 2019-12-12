@@ -9,7 +9,7 @@ class TasksController extends Controller
 {
     public function actionIndex()
     {
-        $tasks = Task::find()->joinWith('category')->where(['status' => TaskStatus::NEW_TASK])->all();
+        $tasks = Task::find()->joinWith('category')->where(['status' => TaskStatus::NEW_TASK])->orderBy(['dt_add' => SORT_DESC])->all();
         return $this->render('index', ['tasks' => $tasks]);
     }
 }
