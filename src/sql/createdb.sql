@@ -67,6 +67,7 @@ create table `task` (
 	`lat` decimal(10, 7) default null comment 'Широта',
 	`long` decimal(10, 7) default null comment 'Долгота',
 	`budget` int default null comment 'Бюджет',
+	`status` int not null comment 'Статус задания',
 	`expire` datetime default null comment 'Срок завершения работы',
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`customer_id`) references `user`(`id`),
