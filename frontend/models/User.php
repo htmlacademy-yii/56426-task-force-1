@@ -91,8 +91,8 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserSkills()
+    public function getSkills()
     {
-        return $this->hasMany(UserSkill::className(), ['user_id' => 'id']);
+        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
     }
 }

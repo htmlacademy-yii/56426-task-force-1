@@ -63,7 +63,7 @@ AppAsset::register($this);
                         <a href="/index.php?r=tasks">Задания</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="#">Исполнители</a>
+                        <a href="/index.php?r=users">Исполнители</a>
                     </li>
                     <li class="site-list__item">
                         <a href="#">Создать задание</a>
