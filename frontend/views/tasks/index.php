@@ -37,9 +37,10 @@ $this->title = 'Список заданий - TaskForce';
         </ul>
     </div>
 </section>
+
 <section  class="search-task">
     <div class="search-task__wrapper">
-        <!--<form class="search-task__form" name="test" method="post" action="#">-->
+
         <?php $form = ActiveForm::begin([
             'id' => 'search-task-form',
             'options' => [
@@ -131,5 +132,6 @@ $this->title = 'Список заданий - TaskForce';
             <button class="button" type="submit">Искать</button>
 
         <?php ActiveForm::end(); ?>
+
     </div>
 </section>

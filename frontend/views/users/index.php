@@ -2,6 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use yii\widgets\ActiveForm;
+use yii\widgets\ActiveField;
+
 $this->title = 'Список исполнителей - TaskForce';
 
 ?>
@@ -47,36 +50,113 @@ $this->title = 'Список исполнителей - TaskForce';
         <?php endif; ?>
     <?php endforeach; ?>
 </section>
+
 <section  class="search-task">
     <div class="search-task__wrapper">
-        <form class="search-task__form" name="users" method="post" action="#">
+
+        <?php $form = ActiveForm::begin([
+            'id' => 'search-task-form',
+            'options' => [
+                'class' => 'search-task__form'
+            ]
+        ]); ?>
+
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <input class="visually-hidden checkbox__input" id="101" type="checkbox" name="" value="" checked disabled>
-                <label for="101">Курьерские услуги </label>
-                <input class="visually-hidden checkbox__input" id="102" type="checkbox" name="" value="" checked>
-                <label  for="102">Грузоперевозки </label>
-                <input class="visually-hidden checkbox__input" id="103" type="checkbox" name="" value="">
-                <label  for="103">Переводы </label>
-                <input class="visually-hidden checkbox__input" id="104" type="checkbox" name="" value="">
-                <label  for="104">Строительство и ремонт </label>
-                <input class="visually-hidden checkbox__input" id="105" type="checkbox" name="" value="">
-                <label  for="105">Выгул животных </label>
+                <?php foreach ($model->skill as $id => $name): ?>
+                    <?php $field = new ActiveField([
+                        'model' => $model,
+                        'template' => "{input}\n{error}",
+                        'attribute' => 'skill['.$id.']',
+                        'form' => $form
+                    ]);
+                    $field->checkbox([
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => $id
+                    ], false); ?>
+                    <?=$field->render(); ?>
+                    <label for="<?=$id;?>"><?=$name;?></label>
+                <?php endforeach; ?>
             </fieldset>
+
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <input class="visually-hidden checkbox__input" id="106" type="checkbox" name="" value="" disabled>
-                <label for="106">Сейчас свободен</label>
-                <input class="visually-hidden checkbox__input" id="107" type="checkbox" name="" value="" checked>
-                <label for="107">Сейчас онлайн</label>
-                <input class="visually-hidden checkbox__input" id="108" type="checkbox" name="" value="" checked>
-                <label for="108">Есть отзывы</label>
-                <input class="visually-hidden checkbox__input" id="109" type="checkbox" name="" value="" checked>
-                <label for="109">В избранном</label>
+
+                <?php $field = new ActiveField([
+                    'model' => $model,
+                    'template' => "{input}\n{error}",
+                    'attribute' => 'free',
+                    'form' => $form
+                ]);
+                $field->checkbox([
+                    'class' => 'visually-hidden checkbox__input',
+                    'id' => 'free',
+                    'name' => 'free'
+                ], false); ?>
+                <?=$field->render(); ?>
+                <label for="free">Сейчас свободен</label>
+
+                <?php $field = new ActiveField([
+                    'model' => $model,
+                    'template' => "{input}\n{error}",
+                    'attribute' => 'online',
+                    'form' => $form
+                ]);
+                $field->checkbox([
+                    'class' => 'visually-hidden checkbox__input',
+                    'id' => 'online',
+                    'name' => 'online'
+                ], false); ?>
+                <?=$field->render(); ?>
+                <label for="online">Сейчас онлайн</label>
+
+                <?php $field = new ActiveField([
+                    'model' => $model,
+                    'template' => "{input}\n{error}",
+                    'attribute' => 'feedback',
+                    'form' => $form
+                ]);
+                $field->checkbox([
+                    'class' => 'visually-hidden checkbox__input',
+                    'id' => 'feedback',
+                    'name' => 'feedback'
+                ], false); ?>
+                <?=$field->render(); ?>
+                <label for="feedback">Есть отзывы</label>
+
+                <?php $field = new ActiveField([
+                    'model' => $model,
+                    'template' => "{input}\n{error}",
+                    'attribute' => 'favorite',
+                    'form' => $form
+                ]);
+                $field->checkbox([
+                    'class' => 'visually-hidden checkbox__input',
+                    'id' => 'favorite',
+                    'name' => 'favorite'
+                ], false); ?>
+                <?=$field->render(); ?>
+                <label for="favorite">В избранном</label>
+
             </fieldset>
-            <label class="search-task__name" for="110">Поиск по имени</label>
-            <input class="input-middle input" id="110" type="search" name="q" placeholder="">
+
+            <label class="search-task__name" for="search">Поиск по имени</label>
+            <?php $field = new ActiveField([
+                'model' => $model,
+                'template' => "{input}\n{error}",
+                'attribute' => 'search',
+                'form' => $form
+            ]);
+            $field->textInput([
+                'class' => 'input-middle input',
+                'id' => 'search',
+                'name' => 'search'
+            ]); ?>
+            <?=$field->render(); ?>
+
             <button class="button" type="submit">Искать</button>
-        </form>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
 </section>
