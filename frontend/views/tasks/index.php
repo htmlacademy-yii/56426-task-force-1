@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 
@@ -45,76 +46,62 @@ $this->title = 'Список заданий - TaskForce';
             'id' => 'search-task-form',
             'options' => [
                 'class' => 'search-task__form'
-            ]
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false,
+                ],
+            ],
         ]); ?>
 
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?php foreach ($model->category as $id => $name): ?>
-                    <?php $field = new ActiveField([
-                        'model' => $model,
-                        'template' => "{input}\n{error}",
-                        'attribute' => 'category['.$id.']',
-                        'form' => $form
-                    ]);
-                    $field->checkbox([
-                        'class' => 'visually-hidden checkbox__input',
-                        'id' => $id
-                    ], false); ?>
-                    <?=$field->render(); ?>
-                    <label for="<?=$id;?>"><?=$name;?></label>
-                <?php endforeach; ?>
+                    <?= $form->field($model,  'category[]')->checkboxList($model->category, [//->template
+                        'tag' => false,
+                        'itemOptions' => [
+
+                        ],
+                        'item'=>function ($index, $label, $name, $checked, $value){
+                            return Html::checkbox($name, $checked, [
+                                'value' => $value,
+                                'label' => '<label for="' . $value . '">' . $label . '</label>',
+                                'class' => 'visually-hidden checkbox__input',
+                                'id' => $value
+                            ]);
+                        },
+                    ])->label(false);
+                    ?>
             </fieldset>
 
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'city',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model,  'city', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'city',
-                    'name' => 'city'
-                ], false); ?>
-                <?=$field->render(); ?>
-                <label for="city">Мой город</label>
+                    'name' => 'city',
+                    'tag' => false,
+                ], false)->label(false); ?>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'location',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <label for="city">Мой город</label>
+                <?= $form->field($model,  'location', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'location',
                     'name' => 'location'
-                ], false); ?>
-                <?=$field->render(); ?>
+                ], false)->label(false); ?>
                 <label for="location">Удаленная работа</label>
-
             </fieldset>
 
             <label class="search-task__name" for="period">Период</label>
-            <?php $field = new ActiveField([
-                'model' => $model,
-                'template' => "{input}\n{error}",
-                'attribute' => 'period',
-                'form' => $form,
-                'options' => [
-                    'class' => 'multiple-select input',
-                    'id' => 'period',
-                    'size' => '1',
-                    'name' => 'time[]'
-                ]
-            ]);
-            $field->dropDownList(['day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц']); ?>
-            <?=$field->render(); ?>
-
+            <?=$form->field($model,  'period', ['template' => "{label}\n{input}"])
+                ->dropDownList(
+                    ['day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц'],
+                    [
+                        'class' => 'multiple-select input',
+                        'id' => 'period',
+                        'size' => '1',
+                        'name' => 'time[]'
+                    ]
+                )->label(false); ?>
             <label class="search-task__name" for="search">Поиск по названию</label>
             <?php $field = new ActiveField([
                 'model' => $model,
