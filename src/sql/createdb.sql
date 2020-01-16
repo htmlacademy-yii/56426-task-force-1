@@ -1,6 +1,5 @@
-create database `56426_task_force_1` character set `utf8` collate `utf8_general_ci`;
 
-use `56426_task_force_1`;
+use `yii2advanced`;
 
 create table `city` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
