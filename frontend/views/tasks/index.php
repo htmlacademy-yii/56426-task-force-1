@@ -29,8 +29,7 @@ $this->title = 'Список заданий - TaskForce';
     <div class="new-task__pagination">
         <ul class="new-task__pagination-list">
             <li class="pagination__item"><a href="#"></a></li>
-            <li class="pagination__item pagination__item--current">
-                <a>1</a></li>
+            <li class="pagination__item pagination__item--current"><a>1</a></li>
             <li class="pagination__item"><a href="#">2</a></li>
             <li class="pagination__item"><a href="#">3</a></li>
             <li class="pagination__item"><a href="#"></a></li>
@@ -45,23 +44,23 @@ $this->title = 'Список заданий - TaskForce';
             'id' => 'search-task-form',
             'options' => [
                 'class' => 'search-task__form'
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
             ]
         ]); ?>
 
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
                 <?php foreach ($model->category as $id => $name): ?>
-                    <?php $field = new ActiveField([
-                        'model' => $model,
-                        'template' => "{input}\n{error}",
-                        'attribute' => 'category['.$id.']',
-                        'form' => $form
-                    ]);
-                    $field->checkbox([
+                    <?=$form->field($model, 'category[]', ['template' => "{label}\n{input}"])->checkbox([
                         'class' => 'visually-hidden checkbox__input',
-                        'id' => $id
-                    ], false); ?>
-                    <?=$field->render(); ?>
+                        'id' => $id,
+                        'name' => 'category[]',
+                        'tag' => false,
+                    ], false)->label(false); ?>
                     <label for="<?=$id;?>"><?=$name;?></label>
                 <?php endforeach; ?>
             </fieldset>
@@ -69,51 +68,34 @@ $this->title = 'Список заданий - TaskForce';
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'city',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'city',
-                    'name' => 'city'
-                ], false); ?>
-                <?=$field->render(); ?>
+                    'name' => 'city',
+                    'tag' => false,
+                ], false)->label(false); ?>
                 <label for="city">Мой город</label>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'location',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'location', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'location',
                     'name' => 'location'
-                ], false); ?>
-                <?=$field->render(); ?>
+                ], false)->label(false); ?>
                 <label for="location">Удаленная работа</label>
 
             </fieldset>
 
             <label class="search-task__name" for="period">Период</label>
-            <?php $field = new ActiveField([
-                'model' => $model,
-                'template' => "{input}\n{error}",
-                'attribute' => 'period',
-                'form' => $form,
-                'options' => [
-                    'class' => 'multiple-select input',
-                    'id' => 'period',
-                    'size' => '1',
-                    'name' => 'time[]'
-                ]
-            ]);
-            $field->dropDownList(['day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц']); ?>
-            <?=$field->render(); ?>
+            <?=$form->field($model,  'period', ['template' => "{label}\n{input}"])
+                ->dropDownList(
+                    ['day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц'],
+                    [
+                        'class' => 'multiple-select input',
+                        'id' => 'period',
+                        'size' => '1',
+                        'name' => 'time[]'
+                    ]
+                )->label(false); ?>
 
             <label class="search-task__name" for="search">Поиск по названию</label>
             <?php $field = new ActiveField([

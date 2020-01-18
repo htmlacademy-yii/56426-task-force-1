@@ -58,23 +58,23 @@ $this->title = 'Список исполнителей - TaskForce';
             'id' => 'search-task-form',
             'options' => [
                 'class' => 'search-task__form'
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
             ]
         ]); ?>
 
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
                 <?php foreach ($model->skill as $id => $name): ?>
-                    <?php $field = new ActiveField([
-                        'model' => $model,
-                        'template' => "{input}\n{error}",
-                        'attribute' => 'skill['.$id.']',
-                        'form' => $form
-                    ]);
-                    $field->checkbox([
+                    <?=$form->field($model, 'skill[]', ['template' => "{label}\n{input}"])->checkbox([
                         'class' => 'visually-hidden checkbox__input',
-                        'id' => $id
-                    ], false); ?>
-                    <?=$field->render(); ?>
+                        'id' => $id,
+                        'name' => 'skill[]',
+                        'tag' => false,
+                    ], false)->label(false); ?>
                     <label for="<?=$id;?>"><?=$name;?></label>
                 <?php endforeach; ?>
             </fieldset>
@@ -82,60 +82,36 @@ $this->title = 'Список исполнителей - TaskForce';
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'free',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'free', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'free',
-                    'name' => 'free'
-                ], false); ?>
-                <?=$field->render(); ?>
+                    'name' => 'free',
+                    'tag' => false,
+                ], false)->label(false); ?>
                 <label for="free">Сейчас свободен</label>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'online',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'online', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'online',
-                    'name' => 'online'
-                ], false); ?>
-                <?=$field->render(); ?>
+                    'name' => 'online',
+                    'tag' => false,
+                ], false)->label(false); ?>
                 <label for="online">Сейчас онлайн</label>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'feedback',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'feedback', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'feedback',
-                    'name' => 'feedback'
-                ], false); ?>
-                <?=$field->render(); ?>
+                    'name' => 'feedback',
+                    'tag' => false,
+                ], false)->label(false); ?>
                 <label for="feedback">Есть отзывы</label>
 
-                <?php $field = new ActiveField([
-                    'model' => $model,
-                    'template' => "{input}\n{error}",
-                    'attribute' => 'favorite',
-                    'form' => $form
-                ]);
-                $field->checkbox([
+                <?=$form->field($model, 'favorite', ['template' => "{label}\n{input}"])->checkbox([
                     'class' => 'visually-hidden checkbox__input',
                     'id' => 'favorite',
-                    'name' => 'favorite'
-                ], false); ?>
-                <?=$field->render(); ?>
+                    'name' => 'favorite',
+                    'tag' => false,
+                ], false)->label(false); ?>
                 <label for="favorite">В избранном</label>
 
             </fieldset>
