@@ -4,7 +4,7 @@ namespace frontend\controllers;
 use yii\web\Controller;
 use frontend\models\Task;
 use frontend\models\TaskFilterForm;
-use HtmlAcademy\models\TaskStatus;
+use HtmlAcademy\Models\TaskStatus;
 
 class TasksController extends Controller
 {
