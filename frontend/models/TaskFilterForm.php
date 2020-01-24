@@ -11,20 +11,36 @@ class TaskFilterForm extends Model
     public $period;
     public $search;
 
-    public function __construct() {
+    private $categoryLabels;
+
+    public function __construct()
+    {
         $category = Category::find()->orderBy(['id' => SORT_ASC])->all();
         foreach ($category as $item) {
-            $this->category[$item->id] = $item->name;
+            $this->category[$item->id] = 0;
+            $this->categoryLabels[$item->id] = $item->name;
         }
+        $this->city = 0;
+        $this->location = 0;
+        $this->period = "all";
+        $this->search = "";
     }
 
     public function attributeLabels()
     {
         return [
+            'category' => $this->categoryLabels,
             'city' => 'Мой город',
             'location' => 'Удалённая работа',
             'period' => 'Период',
             'search' => 'Поиск по названию'
+        ];
+    }
+
+    public function rules()
+    {
+        return [
+            [['category', 'city', 'location', 'period', 'search'], 'safe']
         ];
     }
 }

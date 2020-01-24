@@ -57,7 +57,8 @@ $this->title = 'Список исполнителей - TaskForce';
         <?php $form = ActiveForm::begin([
             'id' => 'search-task-form',
             'options' => [
-                'class' => 'search-task__form'
+                'class' => 'search-task__form',
+                'name' => $model->formName()
             ],
             'fieldConfig' => [
                 'options' => [
@@ -68,67 +69,44 @@ $this->title = 'Список исполнителей - TaskForce';
 
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?php foreach ($model->skill as $id => $name): ?>
-                    <?=$form->field($model, 'skill[]', ['template' => "{label}\n{input}"])->checkbox([
+                <?php foreach ($model->attributeLabels()['skill'] as $id => $name): ?>
+                    <?php $options = [
                         'class' => 'visually-hidden checkbox__input',
                         'id' => $id,
-                        'name' => 'skill[]',
-                        'tag' => false,
-                    ], false)->label(false); ?>
+                        'name' => 'skill['.$id.']',
+                        'tag' => false
+                    ];
+                    if ($model->skill[$id]) {
+                        $options['checked'] = "";
+                    } ?>
+                    <?=$form->field($model, 'skill[]', ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
                     <label for="<?=$id;?>"><?=$name;?></label>
                 <?php endforeach; ?>
             </fieldset>
 
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-
-                <?=$form->field($model, 'free', ['template' => "{label}\n{input}"])->checkbox([
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => 'free',
-                    'name' => 'free',
-                    'tag' => false,
-                ], false)->label(false); ?>
-                <label for="free">Сейчас свободен</label>
-
-                <?=$form->field($model, 'online', ['template' => "{label}\n{input}"])->checkbox([
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => 'online',
-                    'name' => 'online',
-                    'tag' => false,
-                ], false)->label(false); ?>
-                <label for="online">Сейчас онлайн</label>
-
-                <?=$form->field($model, 'feedback', ['template' => "{label}\n{input}"])->checkbox([
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => 'feedback',
-                    'name' => 'feedback',
-                    'tag' => false,
-                ], false)->label(false); ?>
-                <label for="feedback">Есть отзывы</label>
-
-                <?=$form->field($model, 'favorite', ['template' => "{label}\n{input}"])->checkbox([
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => 'favorite',
-                    'name' => 'favorite',
-                    'tag' => false,
-                ], false)->label(false); ?>
-                <label for="favorite">В избранном</label>
-
+                <?php $attributes = ['free', 'online', 'feedback', 'favorite']; ?>
+                <?php foreach ($attributes as $attribute): ?>
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => $attribute,
+                        'name' => $attribute,
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, $attribute, ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
+                    <label for="<?=$attribute;?>"><?=$model->attributeLabels()[$attribute];?></label>
+                <?php endforeach; ?>
             </fieldset>
 
-            <label class="search-task__name" for="search">Поиск по имени</label>
-            <?php $field = new ActiveField([
-                'model' => $model,
-                'template' => "{input}\n{error}",
-                'attribute' => 'search',
-                'form' => $form
-            ]);
-            $field->textInput([
+            <label class="search-task__name" for="search"><?=$model->attributeLabels()['search'];?></label>
+            <?php $options = [
                 'class' => 'input-middle input',
                 'id' => 'search',
-                'name' => 'search'
-            ]); ?>
-            <?=$field->render(); ?>
+                'name' => 'search',
+                'tag' => false
+            ]; ?>
+            <?=$form->field($model, 'search', ['template' => "{label}\n{input}"])->input('text', $options)->label(false); ?>
 
             <button class="button" type="submit">Искать</button>
 
