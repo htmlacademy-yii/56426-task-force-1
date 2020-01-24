@@ -6,7 +6,7 @@ use yii\base\Model;
 class TaskFilterForm extends Model
 {
     public $category;
-    public $city;
+    public $replies;
     public $location;
     public $period;
     public $search;
@@ -20,7 +20,7 @@ class TaskFilterForm extends Model
             $this->category[$item->id] = 0;
             $this->categoryLabels[$item->id] = $item->name;
         }
-        $this->city = 0;
+        $this->replies = 0;
         $this->location = 0;
         $this->period = "all";
         $this->search = "";
@@ -30,7 +30,7 @@ class TaskFilterForm extends Model
     {
         return [
             'category' => $this->categoryLabels,
-            'city' => 'Мой город',
+            'replies' => 'Без откликов',
             'location' => 'Удалённая работа',
             'period' => 'Период',
             'search' => 'Поиск по названию'
@@ -40,7 +40,7 @@ class TaskFilterForm extends Model
     public function rules()
     {
         return [
-            [['category', 'city', 'location', 'period', 'search'], 'safe']
+            [['category', 'replies', 'location', 'period', 'search'], 'safe']
         ];
     }
 }

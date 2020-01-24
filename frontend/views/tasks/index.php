@@ -21,7 +21,7 @@ $this->title = 'Список заданий - TaskForce';
                 <div class="new-task__icon new-task__icon--<?=$task->category->icon; ?>"></div>
                 <p class="new-task_description"><?=$task->description; ?></p>
                 <b class="new-task__price new-task__price--<?=$task->category->icon; ?>"><?=$task->budget; ?><b> ₽</b></b>
-                <p class="new-task__place"><?=$task->address; ?></p>
+                <p class="new-task__place"><?= ($task->address) ? $task->address : "Удаленная работа"; ?></p>
                 <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?></span>
             </div>
         <?php endforeach; ?>
@@ -72,7 +72,7 @@ $this->title = 'Список заданий - TaskForce';
 
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <?php $attributes = ['city', 'location']; ?>
+                <?php $attributes = ['replies', 'location']; ?>
                 <?php foreach ($attributes as $attribute): ?>
                     <?php $options = [
                         'class' => 'visually-hidden checkbox__input',
@@ -96,7 +96,7 @@ $this->title = 'Список заданий - TaskForce';
                 'class' => 'multiple-select input',
                 'id' => 'period',
                 'size' => '1',
-                'name' => 'time'
+                'name' => 'period'
             ]; ?>
             <?=$form->field($model,  'period', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(false); ?>
 
