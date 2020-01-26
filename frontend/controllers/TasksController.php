@@ -44,6 +44,13 @@ class TasksController extends Controller
                 }
 
                 // Условие выборки по периоду времени
+                if ($model->period === 'day') {
+                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
+                } elseif ($model->period === 'week') {
+                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
+                } elseif ($model->period === 'month') {
+                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
+                }
 
                 // Условие выборки по совпадению в названии
                 if (!empty($model->search)) {
