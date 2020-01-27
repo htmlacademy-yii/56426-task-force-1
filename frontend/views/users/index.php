@@ -25,29 +25,44 @@ $this->title = 'Список исполнителей - TaskForce';
         </ul>
     </div>
     <?php foreach($users as $user): ?>
-        <?php if(count($user->skills) > 0): ?>
+        <?php
+            $feedbacks = count($user->feedback);
+            $rating = 0;
+            if($feedbacks > 0) {
+                $rating = array_sum(array_column($user->feedback, 'rating')) / $feedbacks;
+            }
+        ?>
         <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
                 <div class="user__search-icon">
                     <a href="#"><img src="./img/user-man.jpg" width="65" height="65"></a>
                     <span>6 заданий</span>
-                    <span>3 отзывов</span>
+                    <span><?=$feedbacks;?> отзывов</span>
                 </div>
                 <div class="feedback-card__top--name user__search-card">
-                    <p class="link-name"><a href="#" class="link-regular"><?=$user->name; ?></a></p>
-                    <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                    <b>4.25</b>
-                    <p class="user__search-content"><?=$user->profile->about; ?></p>
+                    <p class="link-name"><a href="#" class="link-regular"><?=$user->name;?></a></p>
+                    <?php
+                        $stars = '';
+                        for($star = 1; $star <= 5; $star++) {
+                            if($rating >= $star) {
+                                $stars .= '<span></span>';
+                            } else {
+                                $stars .= '<span class="star-disabled"></span>';
+                            }
+                        }
+                    ?>
+                    <?=$stars;?>
+                    <b><?=sprintf("%0.2f", $rating);?></b>
+                    <p class="user__search-content"><?=$user->profile->about;?></p>
                 </div>
                 <span class="new-task__time">Был на сайте час назад</span>
             </div>
             <div class="link-specialization user__search-link--bottom">
             <?php foreach($user->skills as $skill): ?>
-                <a href="#" class="link-regular"><?=$skill->name; ?></a>
+                <a href="#" class="link-regular"><?=$skill->name;?></a>
             <?php endforeach; ?>
             </div>
         </div>
-        <?php endif; ?>
     <?php endforeach; ?>
 </section>
 

@@ -97,6 +97,15 @@ create table `chat` (
 	foreign key (`contractor_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
+create table `feedback` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`contractor_id` int not null comment 'Исполнитель',
+	`rating` enum('1', '2', '3', '4', '5') not null comment 'Оценка',
+	`description` text not null comment 'Текст отзыва',
+	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	foreign key (`contractor_id`) references `user`(`id`)
+) engine `innodb` character set `utf8`;
+
 create table `file` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`path` varchar(255) not null unique comment 'Путь к файлу',

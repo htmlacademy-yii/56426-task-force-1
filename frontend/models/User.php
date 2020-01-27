@@ -14,6 +14,7 @@ use Yii;
  * @property string $dt_add Время создания записи
  *
  * @property Chat[] $chats
+ * @property Feedback[] $feedback
  * @property Profile $profile
  * @property Reply[] $replies
  * @property Task[] $tasks
@@ -62,6 +63,14 @@ class User extends \yii\db\ActiveRecord
     public function getChats()
     {
         return $this->hasMany(Chat::className(), ['contractor_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFeedback()
+    {
+        return $this->hasMany(Feedback::className(), ['contractor_id' => 'id']);
     }
 
     /**

@@ -52,3 +52,9 @@ printf("task: %d\n", $taskCount);
 $reply = new Converter($sourcePath.'replies.csv', $targetPath.'reply.sql', 'reply');
 $replyCount = $reply->convert(['task_id' => $taskCount, 'contractor_id' => $userCount]);
 printf("reply: %d\n", $replyCount);
+
+// feedback
+
+$feedback = new Converter($sourcePath.'opinions.csv', $targetPath.'feedback.sql', 'feedback');
+$feedbackCount = $feedback->convert(['contractor_id' => $userCount]);
+printf("feedback: %d\n", $feedbackCount);

@@ -17,13 +17,9 @@ class UserFilterForm extends Model
     public function __construct() {
         $skill = Skill::find()->orderBy(['id' => SORT_ASC])->all();
         foreach ($skill as $item) {
-            $this->skill[$item->id] = 0;
             $this->skillLabels[$item->id] = $item->name;
         }
-        $this->free = 0;
-        $this->online = 0;
-        $this->feedback = 0;
-        $this->favorite = 0;
+        $this->reset();
         $this->search = "";
     }
 
@@ -44,5 +40,15 @@ class UserFilterForm extends Model
         return [
             [['skill', 'free', 'online', 'feedback', 'favorite', 'search'], 'safe']
         ];
+    }
+
+    public function reset() {
+        foreach ($this->skillLabels as $id => $name) {
+            $this->skill[$id] = 0;
+        }
+        $this->free = 0;
+        $this->online = 0;
+        $this->feedback = 0;
+        $this->favorite = 0;
     }
 }
