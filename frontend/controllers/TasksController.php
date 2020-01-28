@@ -32,9 +32,9 @@ class TasksController extends Controller
                 }
 
                 // Условие выборки по отсутствию откликов
-                $rows = (new Query())->select(['task_id', 'count(*)'])->from('reply')->groupBy('task_id')->orderBy('task_id')->all();
-                $unrepliedTasks = array_column($rows, 'task_id');
                 if ($model->replies) {
+                    $rows = (new Query())->select(['task_id', 'count(*)'])->from('reply')->groupBy('task_id')->orderBy('task_id')->all();
+                    $unrepliedTasks = array_column($rows, 'task_id');
                     $query->andWhere(['not in', 'task.id', $unrepliedTasks]);
                 }
 

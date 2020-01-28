@@ -68,10 +68,12 @@ create table `task` (
 	`long` decimal(10, 7) default null comment 'Долгота',
 	`budget` int default null comment 'Бюджет',
 	`status` int not null comment 'Статус задания',
+	`contractor_id` int default null comment 'Исполнитель',
 	`expire` datetime default null comment 'Срок завершения работы',
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`customer_id`) references `user`(`id`),
-	foreign key (`category_id`) references `category`(`id`)
+	foreign key (`category_id`) references `category`(`id`),
+	foreign key (`contractor_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
 create table `reply` (

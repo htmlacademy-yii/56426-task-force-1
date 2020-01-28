@@ -14,11 +14,14 @@ use Yii;
  * @property string $dt_add Время создания записи
  *
  * @property Chat[] $chats
- * @property Feedback[] $feedback
+ * @property Feedback[] $feedbacks
+ * @property Job[] $jobs
  * @property Profile $profile
  * @property Reply[] $replies
- * @property Task[] $tasks
- * @property UserSkill[] $userSkills
+ * @property Settings $settings
+ * @property Task[] $customerTasks
+ * @property Task[] $contractorTasks
+ * @property Skill[] $skills
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -58,6 +61,8 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Chats]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getChats()
@@ -66,14 +71,28 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Feedbacks]].
+     *
      * @return \yii\db\ActiveQuery
      */
-    public function getFeedback()
+    public function getFeedbacks()
     {
         return $this->hasMany(Feedback::className(), ['contractor_id' => 'id']);
     }
 
     /**
+     * Gets query for [[Jobs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJobs()
+    {
+        return $this->hasMany(Job::className(), ['contractor_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profile]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getProfile()
@@ -82,6 +101,8 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Replies]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getReplies()
@@ -90,14 +111,38 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Settings]].
+     *
      * @return \yii\db\ActiveQuery
      */
-    public function getTasks()
+    public function getSettings()
+    {
+        return $this->hasOne(Settings::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[CustomerTasks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCustomerTasks()
     {
         return $this->hasMany(Task::className(), ['customer_id' => 'id']);
     }
 
     /**
+     * Gets query for [[ContractorTasks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContractorTasks()
+    {
+        return $this->hasMany(Task::className(), ['contractor_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Skills]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getSkills()

@@ -11,7 +11,7 @@ use Yii;
  * @property string $name Название специализации
  * @property string $dt_add Время создания записи
  *
- * @property UserSkill[] $userSkills
+ * @property User[] $user
  */
 class Skill extends \yii\db\ActiveRecord
 {

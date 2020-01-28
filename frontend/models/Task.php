@@ -16,14 +16,18 @@ use Yii;
  * @property float|null $lat Широта
  * @property float|null $long Долгота
  * @property int|null $budget Бюджет
+ * @property int $status Статус задания
+ * @property int|null $contractor_id Исполнитель
  * @property string|null $expire Срок завершения работы
  * @property string $dt_add Время создания записи
  *
  * @property Attachment[] $attachments
  * @property Chat[] $chats
+ * @property Job[] $jobs
  * @property Reply[] $replies
  * @property User $customer
  * @property Category $category
+ * @property User $contractor
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -41,8 +45,8 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'name', 'description', 'category_id'], 'required'],
-            [['customer_id', 'category_id', 'budget'], 'integer'],
+            [['customer_id', 'name', 'description', 'category_id', 'status'], 'required'],
+            [['customer_id', 'category_id', 'budget', 'status', 'contractor_id'], 'integer'],
             [['description'], 'string'],
             [['lat', 'long'], 'number'],
             [['expire', 'dt_add'], 'safe'],
@@ -50,6 +54,7 @@ class Task extends \yii\db\ActiveRecord
             [['address'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
         ];
     }
 
@@ -68,12 +73,16 @@ class Task extends \yii\db\ActiveRecord
             'lat' => 'Lat',
             'long' => 'Long',
             'budget' => 'Budget',
+            'status' => 'Status',
+            'contractor_id' => 'Contractor ID',
             'expire' => 'Expire',
             'dt_add' => 'Dt Add',
         ];
     }
 
     /**
+     * Gets query for [[Attachments]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getAttachments()
@@ -82,6 +91,8 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Chats]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getChats()
@@ -90,6 +101,18 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Jobs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJobs()
+    {
+        return $this->hasMany(Job::className(), ['task_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Replies]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getReplies()
@@ -98,6 +121,8 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Customer]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getCustomer()
@@ -106,10 +131,22 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Category]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * Gets query for [[Contractor]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContractor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'contractor_id']);
     }
 }

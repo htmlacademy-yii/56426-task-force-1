@@ -26,17 +26,18 @@ $this->title = 'Список исполнителей - TaskForce';
     </div>
     <?php foreach($users as $user): ?>
         <?php
-            $feedbacks = count($user->feedback);
+            $tasks = count($user->contractorTasks);
+            $feedbacks = count($user->feedbacks);
             $rating = 0;
             if($feedbacks > 0) {
-                $rating = array_sum(array_column($user->feedback, 'rating')) / $feedbacks;
+                $rating = array_sum(array_column($user->feedbacks, 'rating')) / $feedbacks;
             }
         ?>
         <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
                 <div class="user__search-icon">
                     <a href="#"><img src="./img/user-man.jpg" width="65" height="65"></a>
-                    <span>6 заданий</span>
+                    <span><?=$tasks;?> заданий</span>
                     <span><?=$feedbacks;?> отзывов</span>
                 </div>
                 <div class="feedback-card__top--name user__search-card">

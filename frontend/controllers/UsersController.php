@@ -14,7 +14,7 @@ class UsersController extends Controller
         $rows = (new Query())->select(['user_id', 'count(*)'])->from('user_skill')->groupBy('user_id')->orderBy('user_id')->all();
         $contractors = array_column($rows, 'user_id');
 
-        $query = User::find()->joinWith('profile')->joinWith('skills')->joinWith('feedback')->where(['user.id' => $contractors]);
+        $query = User::find()->joinWith('profile')->joinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks')->where(['user.id' => $contractors]);
 
         $model = new UserFilterForm();
 
@@ -40,17 +40,28 @@ class UsersController extends Controller
                     }
 
                     // Условие выборки по отсутствию назначенных заданий
+                    if ($model->free) {
+                        $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('task')->where(['task.status' => '1'])->groupBy('contractor_id')->orderBy('contractor_id')->all();
+                        $inProgress = array_column($rows, 'contractor_id');
+                        $query->andWhere(['not in', 'user.id', $inProgress]);
+                    }
 
                     // Условие выборки по признаку активности
+                    if ($model->online) {
+
+                    }
 
                     // Условие выборки по наличию отзывов
-                    $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('feedback')->groupBy('contractor_id')->orderBy('contractor_id')->all();
-                    $feedbacks = array_column($rows, 'contractor_id');
                     if ($model->feedback) {
+                        $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('feedback')->groupBy('contractor_id')->orderBy('contractor_id')->all();
+                        $feedbacks = array_column($rows, 'contractor_id');
                         $query->andWhere(['user.id' => $feedbacks]);
                     }
     
                     // Условие выборки по присутствию в избранном
+                    if ($model->favorite) {
+                        
+                    }
 
                 }
             }
