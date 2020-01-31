@@ -28,12 +28,24 @@ create table `profile` (
 	`phone` varchar(64) default null comment 'Номер телефона',
 	`skype` varchar(64) default null comment 'Скайп',
 	`messenger` varchar(64) comment 'Другой мессенджер',
-	`new_message` bool not null default true comment 'Новое сообщение',
-	`task_action` bool not null default true comment 'Действие по заданию',
-	`new_job` bool not null default true comment 'Новый отклик',
-	`show_contacts` bool not null default true comment 'Показывать мои контакты только заказчику',
+	`last_activity` timestamp not null default now() comment 'Время последней активности',
 	foreign key (`user_id`) references `user`(`id`),
 	foreign key (`city_id`) references `city`(`id`)
+) engine `innodb` character set `utf8`;
+
+create table `settings` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null unique comment 'Пользователь',
+	`new_message` boolean not null default true comment 'Новое сообщение',
+	`task_action` boolean not null default true comment 'Действие по заданию',
+	`new_job` boolean not null default true comment 'Новый отзыв',
+	`show_contacts` boolean not null default true comment 'Показывать мои контакты только заказчику',
+	foreign key (`user_id`) references `user`(`id`)
+) engine `innodb` character set `utf8`;
+
+create table `favorite` (
+	`user_id` int not null unique comment 'Пользователь',
+	foreign key (`user_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
 create table `skill` (

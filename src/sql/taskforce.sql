@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Янв 28 2020 г., 23:20
+-- Время создания: Янв 31 2020 г., 17:44
 -- Версия сервера: 5.7.29-0ubuntu0.18.04.1
 -- Версия PHP: 7.2.24-0ubuntu0.18.04.2
 
@@ -1205,6 +1205,25 @@ INSERT INTO `city` (`id`, `name`, `lat`, `long`, `dt_add`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `favorite`
+--
+
+CREATE TABLE `favorite` (
+  `user_id` int(11) NOT NULL COMMENT 'Пользователь'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `favorite`
+--
+
+INSERT INTO `favorite` (`user_id`) VALUES
+(2),
+(3),
+(4);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `feedback`
 --
 
@@ -1280,37 +1299,34 @@ CREATE TABLE `profile` (
   `phone` varchar(64) DEFAULT NULL COMMENT 'Номер телефона',
   `skype` varchar(64) DEFAULT NULL COMMENT 'Скайп',
   `messenger` varchar(64) DEFAULT NULL COMMENT 'Другой мессенджер',
-  `new_message` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Новое сообщение',
-  `task_action` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Действие по заданию',
-  `new_job` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Новый отклик',
-  `show_contacts` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Показывать мои контакты только заказчику'
+  `last_activity` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время последней активности'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `profile`
 --
 
-INSERT INTO `profile` (`id`, `user_id`, `city_id`, `address`, `birthday`, `about`, `phone`, `skype`, `messenger`, `new_message`, `task_action`, `new_job`, `show_contacts`) VALUES
-(1, 1, 741, '38737 Moose Avenue', '1989-11-11', 'In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '64574473047', 'high-level', NULL, 1, 1, 1, 1),
-(2, 2, 326, '738 Hagan Lane', '1989-03-05', 'Pellentesque ultrices mattis odio.', '75531015353', 'mobile', NULL, 1, 1, 1, 1),
-(3, 3, 794, '758 Old Shore Parkway', '1989-12-30', 'Morbi a ipsum. Integer a nibh. In quis justo.', '16371407508', 'Re-engineered', NULL, 1, 1, 1, 1),
-(4, 4, 822, '11 Dovetail Junction', '0629-03-03', 'Suspendisse potenti.', '21468788926', 'Grass-roots', NULL, 1, 1, 1, 1),
-(5, 5, 98, '050 Bowman Alley', '1989-04-08', 'Morbi quis tortor id nulla ultrices aliquet. Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.', '62931646367', 'fault-tolerant', NULL, 1, 1, 1, 1),
-(6, 6, 195, '5 Iowa Avenue', '1989-04-18', 'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.', '63271348718', 'Team-oriented', NULL, 1, 1, 1, 1),
-(7, 7, 718, '87119 Northland Hill', '1989-03-20', 'Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', '41056175169', 'portal', NULL, 1, 1, 1, 1),
-(8, 8, 103, '6823 Lillian Point', '1989-12-13', 'Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui. Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc.', '72882384431', 'intermediate', NULL, 1, 1, 1, 1),
-(9, 9, 413, '43 Marquette Plaza', '1989-01-14', 'Morbi ut odio.', '69043821394', 'local area network', NULL, 1, 1, 1, 1),
-(10, 10, 231, '5303 Village Green Hill', '1989-02-03', 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '28396220507', 'upward-trending', NULL, 1, 1, 1, 1),
-(11, 11, 136, '67399 Reindahl Place', '1989-05-23', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', '83344513307', 'grid-enabled', NULL, 1, 1, 1, 1),
-(12, 12, 1009, '45 Twin Pines Hill', '1989-07-06', 'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.', '64890419671', 'background', NULL, 1, 1, 1, 1),
-(13, 13, 51, '46 Sheridan Place', '1903-04-16', 'Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst.', '23005580487', 'challenge', NULL, 1, 1, 1, 1),
-(14, 14, 935, '73 Kedzie Terrace', '1989-11-07', 'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.', '27052074771', 'coherent', NULL, 1, 1, 1, 1),
-(15, 15, 600, '85509 Ludington Drive', '1989-02-13', 'Cras pellentesque volutpat dui.', '14800371520', 'neutral', NULL, 1, 1, 1, 1),
-(16, 16, 62, '67 Northwestern Center', '1989-07-07', 'Aliquam erat volutpat. In congue.', '75569924500', 'Programmable', NULL, 1, 1, 1, 1),
-(17, 17, 674, '725 Eagle Crest Hill', '1989-09-29', 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc.', '37349256497', 'encompassing', NULL, 1, 1, 1, 1),
-(18, 18, 329, '507 Graceland Junction', '1989-03-19', 'Suspendisse potenti.', '12403580562', 'knowledge base', NULL, 1, 1, 1, 1),
-(19, 19, 592, '92 Gina Park', '1989-09-29', 'Phasellus sit amet erat.', '40139478003', 'dynamic', NULL, 1, 1, 1, 1),
-(20, 20, 1083, '8 Ridgeview Trail', '1989-12-21', 'Cras pellentesque volutpat dui.', '76657531985', 'solution', NULL, 1, 1, 1, 1);
+INSERT INTO `profile` (`id`, `user_id`, `city_id`, `address`, `birthday`, `about`, `phone`, `skype`, `messenger`, `last_activity`) VALUES
+(1, 1, 741, '38737 Moose Avenue', '1989-11-11', 'In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '64574473047', 'high-level', NULL, '2020-01-31 12:30:00'),
+(2, 2, 326, '738 Hagan Lane', '1989-03-05', 'Pellentesque ultrices mattis odio.', '75531015353', 'mobile', NULL, '2020-01-31 12:00:00'),
+(3, 3, 794, '758 Old Shore Parkway', '1989-12-30', 'Morbi a ipsum. Integer a nibh. In quis justo.', '16371407508', 'Re-engineered', NULL, '2020-01-31 12:00:00'),
+(4, 4, 822, '11 Dovetail Junction', '0629-03-03', 'Suspendisse potenti.', '21468788926', 'Grass-roots', NULL, '2020-01-31 12:00:00'),
+(5, 5, 98, '050 Bowman Alley', '1989-04-08', 'Morbi quis tortor id nulla ultrices aliquet. Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.', '62931646367', 'fault-tolerant', NULL, '2020-01-31 12:00:00'),
+(6, 6, 195, '5 Iowa Avenue', '1989-04-18', 'Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.', '63271348718', 'Team-oriented', NULL, '2020-01-31 12:00:00'),
+(7, 7, 718, '87119 Northland Hill', '1989-03-20', 'Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', '41056175169', 'portal', NULL, '2020-01-31 12:00:00'),
+(8, 8, 103, '6823 Lillian Point', '1989-12-13', 'Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui. Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc.', '72882384431', 'intermediate', NULL, '2020-01-31 12:00:00'),
+(9, 9, 413, '43 Marquette Plaza', '1989-01-14', 'Morbi ut odio.', '69043821394', 'local area network', NULL, '2020-01-31 12:00:00'),
+(10, 10, 231, '5303 Village Green Hill', '1989-02-03', 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.', '28396220507', 'upward-trending', NULL, '2020-01-31 12:00:00'),
+(11, 11, 136, '67399 Reindahl Place', '1989-05-23', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', '83344513307', 'grid-enabled', NULL, '2020-01-31 12:00:00'),
+(12, 12, 1009, '45 Twin Pines Hill', '1989-07-06', 'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.', '64890419671', 'background', NULL, '2020-01-31 12:00:00'),
+(13, 13, 51, '46 Sheridan Place', '1903-04-16', 'Quisque ut erat. Curabitur gravida nisi at nibh. In hac habitasse platea dictumst.', '23005580487', 'challenge', NULL, '2020-01-31 12:00:00'),
+(14, 14, 935, '73 Kedzie Terrace', '1989-11-07', 'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.', '27052074771', 'coherent', NULL, '2020-01-31 12:00:00'),
+(15, 15, 600, '85509 Ludington Drive', '1989-02-13', 'Cras pellentesque volutpat dui.', '14800371520', 'neutral', NULL, '2020-01-31 12:00:00'),
+(16, 16, 62, '67 Northwestern Center', '1989-07-07', 'Aliquam erat volutpat. In congue.', '75569924500', 'Programmable', NULL, '2020-01-31 12:00:00'),
+(17, 17, 674, '725 Eagle Crest Hill', '1989-09-29', 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc.', '37349256497', 'encompassing', NULL, '2020-01-31 12:00:00'),
+(18, 18, 329, '507 Graceland Junction', '1989-03-19', 'Suspendisse potenti.', '12403580562', 'knowledge base', NULL, '2020-01-31 12:00:00'),
+(19, 19, 592, '92 Gina Park', '1989-09-29', 'Phasellus sit amet erat.', '40139478003', 'dynamic', NULL, '2020-01-31 12:00:00'),
+(20, 20, 1083, '8 Ridgeview Trail', '1989-12-21', 'Cras pellentesque volutpat dui.', '76657531985', 'solution', NULL, '2020-01-31 12:00:00');
 
 -- --------------------------------------------------------
 
@@ -1369,6 +1385,32 @@ CREATE TABLE `settings` (
   `new_job` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Новый отзыв',
   `show_contacts` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Показывать мои контакты только заказчику'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `settings`
+--
+
+INSERT INTO `settings` (`id`, `user_id`, `new_message`, `task_action`, `new_job`, `show_contacts`) VALUES
+(1, 1, 1, 1, 1, 1),
+(2, 2, 1, 1, 1, 1),
+(3, 3, 1, 1, 1, 1),
+(4, 4, 1, 1, 1, 1),
+(5, 5, 1, 1, 1, 1),
+(6, 6, 1, 1, 1, 1),
+(7, 7, 1, 1, 1, 1),
+(8, 8, 1, 1, 1, 1),
+(9, 9, 1, 1, 1, 1),
+(10, 10, 1, 1, 1, 1),
+(11, 11, 1, 1, 1, 1),
+(12, 12, 1, 1, 1, 1),
+(13, 13, 1, 1, 1, 1),
+(14, 14, 1, 1, 1, 1),
+(15, 15, 1, 1, 1, 1),
+(16, 16, 1, 1, 1, 1),
+(17, 17, 1, 1, 1, 1),
+(18, 18, 1, 1, 1, 1),
+(19, 19, 1, 1, 1, 1),
+(20, 20, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1538,6 +1580,12 @@ ALTER TABLE `city`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `favorite`
+--
+ALTER TABLE `favorite`
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
 -- Индексы таблицы `feedback`
 --
 ALTER TABLE `feedback`
@@ -1667,7 +1715,7 @@ ALTER TABLE `reply`
 -- AUTO_INCREMENT для таблицы `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор';
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT для таблицы `skill`
 --
@@ -1705,6 +1753,12 @@ ALTER TABLE `attachment`
 ALTER TABLE `chat`
   ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
   ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`contractor_id`) REFERENCES `user` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `favorite`
+--
+ALTER TABLE `favorite`
+  ADD CONSTRAINT `favorite_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `feedback`

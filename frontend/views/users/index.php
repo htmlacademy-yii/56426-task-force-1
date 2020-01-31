@@ -56,7 +56,7 @@ $this->title = 'Список исполнителей - TaskForce';
                     <b><?=sprintf("%0.2f", $rating);?></b>
                     <p class="user__search-content"><?=$user->profile->about;?></p>
                 </div>
-                <span class="new-task__time">Был на сайте час назад</span>
+                <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
             </div>
             <div class="link-specialization user__search-link--bottom">
             <?php foreach($user->skills as $skill): ?>

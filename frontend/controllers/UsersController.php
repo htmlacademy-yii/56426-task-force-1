@@ -48,7 +48,7 @@ class UsersController extends Controller
 
                     // Условие выборки по признаку активности
                     if ($model->online) {
-
+                        $query->andWhere(['>', 'last_activity', date("Y-m-d H:i:s", strtotime("- 30 minutes"))]);
                     }
 
                     // Условие выборки по наличию отзывов
@@ -60,7 +60,9 @@ class UsersController extends Controller
     
                     // Условие выборки по присутствию в избранном
                     if ($model->favorite) {
-                        
+                        $rows = (new Query())->select(['user_id'])->from('favorite')->orderBy('user_id')->all();
+                        $favorites = array_column($rows, 'user_id');
+                        $query->andWhere(['user.id' => $favorites]);
                     }
 
                 }
