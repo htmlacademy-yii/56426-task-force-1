@@ -9,14 +9,9 @@ class TaskFilterForm extends Model
     public $location;
     public $period;
     public $search;
-
     public $categories;
 
-    public function __construct()
-    {
-        $this->period = "all";
-        $this->search = "";
-    }
+    //нет нужды устанавливать значения, без них мы просто не будем включать это условие в запрос
 
     public function attributeLabels()
     {

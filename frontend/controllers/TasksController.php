@@ -39,12 +39,10 @@ class TasksController extends Controller
                     }
                     $query->andWhere($categories);
                 }
-
                 // Условие выборки по отсутствию локации
                 if ($model->location) {
                     $query->andWhere(['task.address' => null]);
                 }
-
                 // Условие выборки по периоду времени
                 if ($model->period === 'day') {
                     $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
@@ -53,12 +51,10 @@ class TasksController extends Controller
                 } elseif ($model->period === 'month') {
                     $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
                 }
-
                 // Условие выборки по совпадению в названии
                 if (!empty($model->search)) {
                     $query->andWhere(['like', 'task.name', $model->search]);
                 }
-
             }
         }
 

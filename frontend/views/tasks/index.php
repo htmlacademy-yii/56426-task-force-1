@@ -4,6 +4,7 @@
 
 use frontend\models\Category;
 use yii\helpers\Html;
+use yii\widgets\ActiveField;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Список заданий - TaskForce';
@@ -97,29 +98,29 @@ $this->title = 'Список заданий - TaskForce';
             <label for="location">Удаленная работа</label>
         </fieldset>
 
-        <label class="search-task__name" for="period"><?= $model->attributeLabels()['period']; ?></label>
-        <?php $items = [
-            'all' => 'За все время',
-            'day' => 'За день',
-            'week' => 'За неделю',
-            'month' => 'За месяц'
-        ];
-        $options = [
-            'class' => 'multiple-select input',
-            'id' => 'period',
-            'size' => '1',
-            'name' => 'period'
-        ]; ?>
-        <?= $form->field($model, 'period', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(false); ?>
+        <label class="search-task__name" for="period">Период</label>
+        <?=$form->field($model,  'period', ['template' => "{label}\n{input}"])
+            ->dropDownList(
+                ['all' => 'За все время', 'day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц'],
+                [
+                    'class' => 'multiple-select input',
+                    'id' => 'period',
+                    'size' => '1',
+                ]
+            )->label(false); ?>
 
-        <label class="search-task__name" for="search"><?= $model->attributeLabels()['search']; ?></label>
-        <?php $options = [
+        <label class="search-task__name" for="search">Поиск по названию</label>
+        <?php $field = new ActiveField([
+            'model' => $model,
+            'template' => "{input}\n{error}",
+            'attribute' => 'search',
+            'form' => $form
+        ]);
+        $field->textInput([
             'class' => 'input-middle input',
             'id' => 'search',
-            'name' => 'search',
-            'tag' => false
-        ]; ?>
-        <?= $form->field($model, 'search', ['template' => "{label}\n{input}"])->input('text', $options)->label(false); ?>
+        ]); ?>
+        <?=$field->render(); ?>
 
         <button class="button" type="submit">Искать</button>
 
