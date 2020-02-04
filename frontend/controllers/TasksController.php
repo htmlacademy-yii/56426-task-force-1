@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -18,24 +19,25 @@ class TasksController extends Controller
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
-            if ($model->load($formData, '') && $model->validate()) {
-
-                // Условие выборки по списку категорий
-                $checkedCategories = [];
-                foreach ($model->category as $id => $isChecked) {
-                    if ($isChecked) {
-                        $checkedCategories[] = $id;
-                    }
-                }
-                if (count($checkedCategories)) {
-                    $query->andWhere(['task.category_id' => $checkedCategories]);
-                }
-
+            if ($model->load($formData) && $model->validate()) {
                 // Условие выборки по отсутствию откликов
                 if ($model->replies) {
-                    $rows = (new Query())->select(['task_id', 'count(*)'])->from('reply')->groupBy('task_id')->orderBy('task_id')->all();
-                    $unrepliedTasks = array_column($rows, 'task_id');
-                    $query->andWhere(['not in', 'task.id', $unrepliedTasks]);
+                    //LEFT OUTER JOIN
+                    $query->leftJoin('reply', 'reply.task_id = task.id');
+                    $query->andWhere(['or',
+                        ['reply.task_id' => null],
+                        ['task.id' => null]
+                    ]);
+                }
+                // Условие выборки по списку категорий
+                if ($model->categories) {
+                    $categories = ['or'];
+                    foreach ($model->categories as $category) {
+                        $categories[] = [
+                            'task.category_id' => $category + 1
+                        ];
+                    }
+                    $query->andWhere($categories);
                 }
 
                 // Условие выборки по отсутствию локации

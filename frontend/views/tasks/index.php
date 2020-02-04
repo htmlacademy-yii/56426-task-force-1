@@ -56,14 +56,15 @@ $this->title = 'Список заданий - TaskForce';
 
         <fieldset class="search-task__categories">
             <legend>Категории</legend>
-            <?= $form->field($model, 'category[]')->checkboxList(
+            <?php
+            echo $form->field($model, 'categories')->checkboxList(
                 Category::find()->asArray()->all(),
                 [
                     'tag' => false,
                     'itemOptions' => [
 
                     ],
-                    'item' => function ($index, $label, $name, $checked, $value) {
+                    'item' => function ($index, $label, $name, $checked, $value){
                         return Html::checkbox($name, $checked, [
                             'value' => $value,
                             'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
@@ -80,17 +81,20 @@ $this->title = 'Список заданий - TaskForce';
 
         <fieldset class="search-task__categories">
             <legend>Дополнительно</legend>
-            <?php $attributes = ['replies', 'location']; ?>
-            <?php foreach ($attributes as $attribute): ?>
-                <?php $options = [
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => $attribute,
-                    'name' => $attribute,
-                    'tag' => false
-                ]; ?>
-                <?= $form->field($model, $attribute, ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
-                <label for="<?= $attribute; ?>"><?= $model->attributeLabels()[$attribute]; ?></label>
-            <?php endforeach; ?>
+            <?=$form->field($model, 'replies', ['template' => "{label}\n{input}"])->checkbox([
+                'class' => 'visually-hidden checkbox__input',
+                'id' => 'replies',
+                'tag' => false,
+                'value' => 1
+            ], false)->label(false); ?>
+            <label for="replies">Без откликов</label>
+
+            <?= $form->field($model,  'location', ['template' => "{label}\n{input}"])->checkbox([
+                'class' => 'visually-hidden checkbox__input',
+                'id' => 'location',
+                'value' => 1
+            ], false)->label(false); ?>
+            <label for="location">Удаленная работа</label>
         </fieldset>
 
         <label class="search-task__name" for="period"><?= $model->attributeLabels()['period']; ?></label>
