@@ -2,9 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use frontend\models\Category;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\ActiveField;
 
 $this->title = 'Список заданий - TaskForce';
 
@@ -56,19 +56,26 @@ $this->title = 'Список заданий - TaskForce';
 
         <fieldset class="search-task__categories">
             <legend>Категории</legend>
-            <?php foreach ($model->attributeLabels()['category'] as $id => $name): ?>
-                <?php $options = [
-                    'class' => 'visually-hidden checkbox__input',
-                    'id' => $id,
-                    'name' => 'category[' . $id . ']',
-                    'tag' => false
-                ];
-                if ($model->category[$id]) {
-                    $options['checked'] = "";
-                } ?>
-                <?= $form->field($model, 'category[]', ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
-                <label for="<?= $id; ?>"><?= $name; ?></label>
-            <?php endforeach; ?>
+            <?= $form->field($model, 'category[]')->checkboxList(
+                Category::find()->asArray()->all(),
+                [
+                    'tag' => false,
+                    'itemOptions' => [
+
+                    ],
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        return Html::checkbox($name, $checked, [
+                            'value' => $value,
+                            'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
+                            'labelOptions' => [
+                                'class' => 'control-label'
+                            ],
+                            'class' => 'visually-hidden checkbox__input',
+                            'id' => $label['id']
+                        ]);
+                    },
+                ])->label(false);
+            ?>
         </fieldset>
 
         <fieldset class="search-task__categories">
