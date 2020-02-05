@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 
+use frontend\models\Skill;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 
@@ -85,19 +87,27 @@ $this->title = 'Список исполнителей - TaskForce';
 
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?php foreach ($model->attributeLabels()['skill'] as $id => $name): ?>
-                    <?php $options = [
-                        'class' => 'visually-hidden checkbox__input',
-                        'id' => $id,
-                        'name' => 'skill['.$id.']',
-                        'tag' => false
-                    ];
-                    if ($model->skill[$id]) {
-                        $options['checked'] = "";
-                    } ?>
-                    <?=$form->field($model, 'skill[]', ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
-                    <label for="<?=$id;?>"><?=$name;?></label>
-                <?php endforeach; ?>
+                <?php
+                echo $form->field($model, 'skills')->checkboxList(
+                    Skill::find()->asArray()->all(),
+                    [
+                        'tag' => false,
+                        'itemOptions' => [
+
+                        ],
+                        'item' => function ($index, $label, $name, $checked, $value){
+                            return Html::checkbox($name, $checked, [
+                                'value' => $value,
+                                'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
+                                'labelOptions' => [
+                                    'class' => 'control-label'
+                                ],
+                                'class' => 'visually-hidden checkbox__input',
+                                'id' => $label['id']
+                            ]);
+                        },
+                    ])->label(false);
+                ?>
             </fieldset>
 
             <fieldset class="search-task__categories">
@@ -108,7 +118,8 @@ $this->title = 'Список исполнителей - TaskForce';
                         'class' => 'visually-hidden checkbox__input',
                         'id' => $attribute,
                         'name' => $attribute,
-                        'tag' => false
+                        'tag' => false,
+                        'value' => 1
                     ]; ?>
                     <?=$form->field($model, $attribute, ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
                     <label for="<?=$attribute;?>"><?=$model->attributeLabels()[$attribute];?></label>

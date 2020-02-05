@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -27,44 +28,38 @@ class UsersController extends Controller
                     $model->reset();
                     $query->andWhere(['like', 'user.name', $model->search]);
                 } else {
-
                     // Условие выборки по списку навыков
-                    $checkedSkills = [];
-                    foreach ($model->skill as $id => $isChecked) {
-                        if ($isChecked) {
-                            $checkedSkills[] = $id;
+                    if ($model->skills) {
+                        $skills = ['or'];
+                        foreach ($model->skills as $skill) {
+                            $skills[] = [
+                                'skills.id' => $skill + 1
+                            ];
                         }
+                        $query->andWhere($skills);
                     }
-                    if (count($checkedSkills)) {
-                        $query->andWhere(['skill_id' => $checkedSkills]);
-                    }
-
                     // Условие выборки по отсутствию назначенных заданий
                     if ($model->free) {
                         $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('task')->where(['task.status' => '1'])->groupBy('contractor_id')->orderBy('contractor_id')->all();
                         $inProgress = array_column($rows, 'contractor_id');
                         $query->andWhere(['not in', 'user.id', $inProgress]);
                     }
-
                     // Условие выборки по признаку активности
                     if ($model->online) {
                         $query->andWhere(['>', 'last_activity', date("Y-m-d H:i:s", strtotime("- 30 minutes"))]);
                     }
-
                     // Условие выборки по наличию отзывов
                     if ($model->feedback) {
                         $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('feedback')->groupBy('contractor_id')->orderBy('contractor_id')->all();
                         $feedbacks = array_column($rows, 'contractor_id');
                         $query->andWhere(['user.id' => $feedbacks]);
                     }
-    
-                    // Условие выборки по присутствию в избранном
+                        // Условие выборки по присутствию в избранном
                     if ($model->favorite) {
                         $rows = (new Query())->select(['user_id'])->from('favorite')->orderBy('user_id')->all();
                         $favorites = array_column($rows, 'user_id');
                         $query->andWhere(['user.id' => $favorites]);
                     }
-
                 }
             }
         }
