@@ -82,20 +82,17 @@ $this->title = 'Список заданий - TaskForce';
 
         <fieldset class="search-task__categories">
             <legend>Дополнительно</legend>
-            <?=$form->field($model, 'replies', ['template' => "{label}\n{input}"])->checkbox([
-                'class' => 'visually-hidden checkbox__input',
-                'id' => 'replies',
-                'tag' => false,
-                'value' => 1
-            ], false)->label(false); ?>
-            <label for="replies">Без откликов</label>
-
-            <?= $form->field($model,  'location', ['template' => "{label}\n{input}"])->checkbox([
-                'class' => 'visually-hidden checkbox__input',
-                'id' => 'location',
-                'value' => 1
-            ], false)->label(false); ?>
-            <label for="location">Удаленная работа</label>
+            <?php foreach ($model->extraFields() as $attribute): ?>
+                <?php $options = [
+                    'class' => 'visually-hidden checkbox__input',
+                    'id' => $attribute,
+                    'name' => $attribute,
+                    'tag' => false,
+                    'value' => 1
+                ]; ?>
+                <?=$form->field($model, $attribute, ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
+                <label for="<?=$attribute;?>"><?=$model->attributeLabels()[$attribute];?></label>
+            <?php endforeach; ?>
         </fieldset>
 
         <label class="search-task__name" for="period">Период</label>

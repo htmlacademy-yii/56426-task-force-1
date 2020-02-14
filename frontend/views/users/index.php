@@ -27,35 +27,17 @@ $this->title = 'Список исполнителей - TaskForce';
         </ul>
     </div>
     <?php foreach($users as $user): ?>
-        <?php
-            $tasks = count($user->contractorTasks);
-            $feedbacks = count($user->feedbacks);
-            $rating = 0;
-            if($feedbacks > 0) {
-                $rating = array_sum(array_column($user->feedbacks, 'rating')) / $feedbacks;
-            }
-        ?>
         <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
                 <div class="user__search-icon">
                     <a href="#"><img src="./img/user-man.jpg" width="65" height="65"></a>
-                    <span><?=$tasks;?> заданий</span>
-                    <span><?=$feedbacks;?> отзывов</span>
+                    <span><?=$user->taskCount();?> заданий</span>
+                    <span><?=$user->feedbackCount();?> отзывов</span>
                 </div>
                 <div class="feedback-card__top--name user__search-card">
                     <p class="link-name"><a href="#" class="link-regular"><?=$user->name;?></a></p>
-                    <?php
-                        $stars = '';
-                        for($star = 1; $star <= 5; $star++) {
-                            if($rating >= $star) {
-                                $stars .= '<span></span>';
-                            } else {
-                                $stars .= '<span class="star-disabled"></span>';
-                            }
-                        }
-                    ?>
-                    <?=$stars;?>
-                    <b><?=sprintf("%0.2f", $rating);?></b>
+                    <?=$user->stars();?>
+                    <b><?=sprintf("%0.2f", $user->rating());?></b>
                     <p class="user__search-content"><?=$user->profile->about;?></p>
                 </div>
                 <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
@@ -112,8 +94,7 @@ $this->title = 'Список исполнителей - TaskForce';
 
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <?php $attributes = ['free', 'online', 'feedback', 'favorite']; ?>
-                <?php foreach ($attributes as $attribute): ?>
+                <?php foreach ($model->extraFields() as $attribute): ?>
                     <?php $options = [
                         'class' => 'visually-hidden checkbox__input',
                         'id' => $attribute,

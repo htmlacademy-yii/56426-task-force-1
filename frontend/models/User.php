@@ -25,6 +25,39 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+
+    public function taskCount()
+    {
+        return count($this->contractorTasks);
+    }
+
+    public function feedbackCount()
+    {
+        return count($this->feedbacks);
+    }
+
+    public function rating()
+    {
+        $rating = 0;
+        if(count($this->feedbacks) > 0) {
+            $rating = array_sum(array_column($this->feedbacks, 'rating')) / count($this->feedbacks);
+        }
+        return $rating;
+    }
+
+    public function stars()
+    {
+        $stars = '';
+        for($star = 1; $star <= 5; $star++) {
+            if($this->rating() >= $star) {
+                $stars .= '<span></span>';
+            } else {
+                $stars .= '<span class="star-disabled"></span>';
+            }
+        }
+        return $stars;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -12,16 +12,13 @@ class UsersController extends Controller
 {
     public function actionIndex()
     {
-        $rows = (new Query())->select(['user_id', 'count(*)'])->from('user_skill')->groupBy('user_id')->orderBy('user_id')->all();
-        $contractors = array_column($rows, 'user_id');
-
-        $query = User::find()->joinWith('profile')->joinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks')->where(['user.id' => $contractors]);
+        $query = User::find()->joinWith('profile')->joinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
 
         $model = new UserFilterForm();
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
-            if ($model->load($formData, '') && $model->validate()) {
+            if ($model->load($formData) && $model->validate()) {
 
                 // Условие выборки по совпадению в имени
                 if (!empty($model->search)) {
@@ -33,7 +30,7 @@ class UsersController extends Controller
                         $skills = ['or'];
                         foreach ($model->skills as $skill) {
                             $skills[] = [
-                                'skills.id' => $skill + 1
+                                'skill.id' => $skill + 1
                             ];
                         }
                         $query->andWhere($skills);

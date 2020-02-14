@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 
@@ -60,10 +61,10 @@ AppAsset::register($this);
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
                     <li class="site-list__item">
-                        <a href="/index.php?r=tasks">Задания</a>
+                        <a href="<?=Url::to(['/tasks']);?>">Задания</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="/index.php?r=users">Исполнители</a>
+                        <a href="<?=Url::to(['/users']);?>">Исполнители</a>
                     </li>
                     <li class="site-list__item">
                         <a href="#">Создать задание</a>

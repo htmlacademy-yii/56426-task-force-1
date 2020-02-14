@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\models;
 
 use yii\base\Model;
@@ -35,5 +36,9 @@ class UserFilterForm extends Model
         $this->online = 0;
         $this->feedback = 0;
         $this->favorite = 0;
+    }
+
+    public function extraFields() {
+        return ['free', 'online', 'feedback', 'favorite'];
     }
 }

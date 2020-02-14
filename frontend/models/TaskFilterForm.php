@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\models;
 
 use yii\base\Model;
@@ -28,5 +29,9 @@ class TaskFilterForm extends Model
         return [
             [['categories', 'replies', 'location', 'period', 'search'], 'safe'],
         ];
+    }
+
+    public function extraFields() {
+        return ['replies', 'location'];
     }
 }
