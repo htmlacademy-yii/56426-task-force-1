@@ -2,23 +2,28 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Список задач - TaskForce';
+use frontend\models\Category;
+use yii\helpers\Html;
+use yii\widgets\ActiveField;
+use yii\widgets\ActiveForm;
+
+$this->title = 'Список заданий - TaskForce';
 
 ?>
 
 <section class="new-task">
     <div class="new-task__wrapper">
         <h1>Новые задания</h1>
-        <?php foreach($tasks as $task): ?>
+        <?php foreach ($tasks as $task): ?>
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="#" class="link-regular"><h2><?= $task->name; ?></h2></a>
-                    <a  class="new-task__type link-regular" href="#"><p><?= $task->category->name; ?></p></a>
+                    <a class="new-task__type link-regular" href="#"><p><?= $task->category->name; ?></p></a>
                 </div>
                 <div class="new-task__icon new-task__icon--<?= $task->category->icon; ?>"></div>
                 <p class="new-task_description"><?= $task->description; ?></p>
                 <b class="new-task__price new-task__price--<?= $task->category->icon; ?>"><?= $task->budget; ?><b> ₽</b></b>
-                <p class="new-task__place"><?= $task->address; ?></p>
+                <p class="new-task__place"><?= ($task->address) ? $task->address : "Удаленная работа"; ?></p>
                 <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?></span>
             </div>
         <?php endforeach; ?>
@@ -26,46 +31,91 @@ $this->title = 'Список задач - TaskForce';
     <div class="new-task__pagination">
         <ul class="new-task__pagination-list">
             <li class="pagination__item"><a href="#"></a></li>
-            <li class="pagination__item pagination__item--current">
-                <a>1</a></li>
+            <li class="pagination__item pagination__item--current"><a>1</a></li>
             <li class="pagination__item"><a href="#">2</a></li>
             <li class="pagination__item"><a href="#">3</a></li>
             <li class="pagination__item"><a href="#"></a></li>
         </ul>
     </div>
 </section>
-<section  class="search-task">
+
+<section class="search-task">
     <div class="search-task__wrapper">
-        <form class="search-task__form" name="test" method="post" action="#">
+
+        <?php $form = ActiveForm::begin([
+            'id' => 'search-task-form',
+            'options' => [
+                'class' => 'search-task__form',
+                'name' => $model->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
+            ]
+        ]); ?>
+
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="" value="" checked>
-                <label for="1">Курьерские услуги </label>
-                <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="" value="" checked>
-                <label  for="2">Грузоперевозки </label>
-                <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="" value="">
-                <label  for="3">Переводы </label>
-                <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="" value="">
-                <label  for="4">Строительство и ремонт </label>
-                <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="" value="">
-                <label  for="5">Выгул животных </label>
+                <?php
+                echo $form->field($model, 'categories')->checkboxList(
+                    Category::find()->asArray()->all(),
+                    [
+                        'tag' => false,
+                        'itemOptions' => [
+
+                        ],
+                        'item' => function ($index, $label, $name, $checked, $value){
+                            return Html::checkbox($name, $checked, [
+                                'value' => $value,
+                                'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
+                                'labelOptions' => [
+                                    'class' => 'control-label'
+                                ],
+                                'class' => 'visually-hidden checkbox__input',
+                                'id' => $label['id']
+                            ]);
+                        },
+                    ])->label(false);
+                ?>
             </fieldset>
+
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="" value="">
-                <label for="6">Без исполнителя </label>
-                <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="" value="" checked>
-                <label for="7">Удаленная работа </label>
+                <?php foreach ($model->extraFields() as $attribute): ?>
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => $attribute,
+                        'tag' => false,
+                        'value' => 1
+                    ]; ?>
+                    <?=$form->field($model, $attribute, ['template' => "{label}\n{input}"])->checkbox($options, false)->label(false); ?>
+                    <label for="<?=$attribute;?>"><?=$model->attributeLabels()[$attribute];?></label>
+                <?php endforeach; ?>
             </fieldset>
-            <label class="search-task__name" for="8">Период</label>
-                <select class="multiple-select input" id="8"size="1" name="time[]">
-                <option value="day">За день</option>
-                <option selected value="week">За неделю</option>
-                <option value="month">За месяц</option>
-            </select>
-            <label class="search-task__name" for="9">Поиск по названию</label>
-                <input class="input-middle input" id="9" type="search" name="q" placeholder="">
+
+            <label class="search-task__name" for="period">Период</label>
+            <?=$form->field($model,  'period', ['template' => "{label}\n{input}"])
+                ->dropDownList(
+                    ['all' => 'За все время', 'day' => 'За день', 'week' => 'За неделю', 'month' => 'За месяц'],
+                    [
+                        'class' => 'multiple-select input',
+                        'id' => 'period',
+                        'size' => '1'
+                    ]
+                )->label(false); ?>
+
+            <label class="search-task__name" for="search"><?=$model->attributeLabels()['search'];?></label>
+            <?php $options = [
+                'class' => 'input-middle input',
+                'id' => 'search',
+                'tag' => false
+            ]; ?>
+            <?=$form->field($model, 'search', ['template' => "{label}\n{input}"])->input('text', $options)->label(false); ?>
+
             <button class="button" type="submit">Искать</button>
-        </form>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
 </section>

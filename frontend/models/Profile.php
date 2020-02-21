@@ -16,10 +16,7 @@ use Yii;
  * @property string|null $phone Номер телефона
  * @property string|null $skype Скайп
  * @property string|null $messenger Другой мессенджер
- * @property int $new_message Новое сообщение
- * @property int $task_action Действие по заданию
- * @property int $new_job Новый отклик
- * @property int $show_contacts Показывать мои контакты только заказчику
+ * @property string $last_activity Время последней активности
  *
  * @property User $user
  * @property City $city
@@ -66,11 +63,7 @@ class Profile extends \yii\db\ActiveRecord
             'about' => 'About',
             'phone' => 'Phone',
             'skype' => 'Skype',
-            'messenger' => 'Messenger',
-            'new_message' => 'New Message',
-            'task_action' => 'Task Action',
-            'new_job' => 'New Job',
-            'show_contacts' => 'Show Contacts',
+            'messenger' => 'Messenger'
         ];
     }
 

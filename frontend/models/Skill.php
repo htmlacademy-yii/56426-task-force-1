@@ -11,7 +11,7 @@ use Yii;
  * @property string $name Название специализации
  * @property string $dt_add Время создания записи
  *
- * @property UserSkill[] $userSkills
+ * @property User[] $user
  */
 class Skill extends \yii\db\ActiveRecord
 {
@@ -51,8 +51,8 @@ class Skill extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserSkills()
+    public function getUsers()
     {
-        return $this->hasMany(UserSkill::className(), ['skill_id' => 'id']);
+        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('user_skill', ['skill_id' => 'id']);
     }
 }
