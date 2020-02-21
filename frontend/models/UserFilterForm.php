@@ -32,6 +32,7 @@ class UserFilterForm extends Model
     }
 
     public function reset() {
+        $this->skills = [];
         $this->free = 0;
         $this->online = 0;
         $this->feedback = 0;

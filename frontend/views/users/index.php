@@ -98,7 +98,6 @@ $this->title = 'Список исполнителей - TaskForce';
                     <?php $options = [
                         'class' => 'visually-hidden checkbox__input',
                         'id' => $attribute,
-                        'name' => $attribute,
                         'tag' => false,
                         'value' => 1
                     ]; ?>
@@ -111,7 +110,6 @@ $this->title = 'Список исполнителей - TaskForce';
             <?php $options = [
                 'class' => 'input-middle input',
                 'id' => 'search',
-                'name' => 'search',
                 'tag' => false
             ]; ?>
             <?=$form->field($model, 'search', ['template' => "{label}\n{input}"])->input('text', $options)->label(false); ?>
