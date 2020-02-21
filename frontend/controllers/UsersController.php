@@ -7,12 +7,13 @@ use yii\db\Query;
 use yii\web\Controller;
 use frontend\models\User;
 use frontend\models\UserFilterForm;
+use HtmlAcademy\Models\TaskStatus;
 
 class UsersController extends Controller
 {
     public function actionIndex()
     {
-        $query = User::find()->joinWith('profile')->joinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
+        $query = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
 
         $model = new UserFilterForm();
 
@@ -37,9 +38,7 @@ class UsersController extends Controller
                     }
                     // Условие выборки по отсутствию назначенных заданий
                     if ($model->free) {
-                        $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('task')->where(['task.status' => '1'])->groupBy('contractor_id')->orderBy('contractor_id')->all();
-                        $inProgress = array_column($rows, 'contractor_id');
-                        $query->andWhere(['not in', 'user.id', $inProgress]);
+                        $query->andWhere(['<>', 'task.status', TaskStatus::IN_PROGRESS]);
                     }
                     // Условие выборки по признаку активности
                     if ($model->online) {
@@ -47,15 +46,11 @@ class UsersController extends Controller
                     }
                     // Условие выборки по наличию отзывов
                     if ($model->feedback) {
-                        $rows = (new Query())->select(['contractor_id', 'count(*)'])->from('feedback')->groupBy('contractor_id')->orderBy('contractor_id')->all();
-                        $feedbacks = array_column($rows, 'contractor_id');
-                        $query->andWhere(['user.id' => $feedbacks]);
+                        $query->andWhere(['is not', 'feedback.id', null]);
                     }
                         // Условие выборки по присутствию в избранном
                     if ($model->favorite) {
-                        $rows = (new Query())->select(['user_id'])->from('favorite')->orderBy('user_id')->all();
-                        $favorites = array_column($rows, 'user_id');
-                        $query->andWhere(['user.id' => $favorites]);
+                        $query->innerJoinWith('favorite');
                     }
                 }
             }

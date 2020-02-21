@@ -14,6 +14,7 @@ use Yii;
  * @property string $dt_add Время создания записи
  *
  * @property Chat[] $chats
+ * @property Favorite[] $favorite
  * @property Feedback[] $feedbacks
  * @property Job[] $jobs
  * @property Profile $profile
@@ -23,6 +24,7 @@ use Yii;
  * @property Task[] $contractorTasks
  * @property Skill[] $skills
  */
+
 class User extends \yii\db\ActiveRecord
 {
 
@@ -101,6 +103,16 @@ class User extends \yii\db\ActiveRecord
     public function getChats()
     {
         return $this->hasMany(Chat::className(), ['contractor_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Favorite]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavorite()
+    {
+        return $this->hasMany(Favorite::className(), ['user_id' => 'id']);
     }
 
     /**
