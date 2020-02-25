@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use frontend\models\Skill;
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
@@ -35,7 +36,7 @@ $this->title = 'Список исполнителей - TaskForce';
                     <span><?=$user->feedbackCount();?> отзывов</span>
                 </div>
                 <div class="feedback-card__top--name user__search-card">
-                    <p class="link-name"><a href="#" class="link-regular"><?=$user->name;?></a></p>
+                    <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=$user->name;?></a></p>
                     <?=$user->stars();?>
                     <b><?=sprintf("%0.2f", $user->rating());?></b>
                     <p class="user__search-content"><?=$user->profile->about;?></p>

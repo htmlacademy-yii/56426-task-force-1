@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use frontend\models\User;
 use frontend\models\UserFilterForm;
 use HtmlAcademy\Models\TaskStatus;
@@ -59,5 +60,14 @@ class UsersController extends Controller
         $users = $query->orderBy(['user.dt_add' => SORT_DESC])->all();
 
         return $this->render('index', ['users' => $users, 'model' => $model]);
+    }
+
+    public function actionView($id)
+    {
+        $user = User::findOne($id);
+        if (!$user) {
+            throw new NotFoundHttpException("Исполнитель с ID $id не найден");
+        }
+        return $this->render('view', ['user' => $user]);
     }
 }

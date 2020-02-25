@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use frontend\models\Task;
 use frontend\models\TaskFilterForm;
 use HtmlAcademy\Models\TaskStatus;
@@ -61,5 +62,14 @@ class TasksController extends Controller
         $tasks = $query->orderBy(['dt_add' => SORT_DESC])->all();
 
         return $this->render('index', ['tasks' => $tasks, 'model' => $model]);
+    }
+
+    public function actionView($id)
+    {
+        $task = Task::findOne($id);
+        if (!$task) {
+            throw new NotFoundHttpException("Задание с ID $id не найдено");
+        }
+        return $this->render('view', ['task' => $task]);
     }
 }
