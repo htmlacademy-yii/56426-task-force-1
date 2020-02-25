@@ -11,28 +11,27 @@ $this->title = 'Задание - TaskForce';
         <div class="content-view__card-wrapper">
             <div class="content-view__header">
                 <div class="content-view__headline">
-                    <h1>Убрать квартиру после вписки</h1>
-                    <span>Размещено в категории
-                        <a href="#" class="link-regular">Уборка</a>
-                        25 минут назад</span>
+                    <h1><?=$task->name;?></h1>
+                    <span>
+                        Размещено в категории
+                        <a href="#" class="link-regular"><?=$task->category->name;?></a>
+                        <?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?>
+                    </span>
                 </div>
-                <b class="new-task__price new-task__price--clean content-view-price">1500<b> ₽</b></b>
-                <div class="new-task__icon new-task__icon--clean content-view-icon"></div>
+                <b class="new-task__price new-task__price--<?=$task->category->icon;?> content-view-price"><?=$task->budget;?><b> ₽</b></b>
+                <div class="new-task__icon new-task__icon--<?=$task->category->icon;?> content-view-icon"></div>
             </div>
             <div class="content-view__description">
                 <h3 class="content-view__h3">Общее описание</h3>
-                <p>
-                    Внезапно, ключевые особенности структуры проекта неоднозначны и будут подвергнуты целой серии
-                    независимых исследований. Следует отметить, что высококачественный прототип будущего проекта, в
-                    своём классическом представлении, допускает внедрение своевременного выполнения сверхзадачи.
-                    Кстати, некоторые особенности внутренней политики будут функционально разнесены на независимые
-                    элементы.
-                </p>
+                <p><?=$task->description;?></p>
             </div>
             <div class="content-view__attach">
-                <h3 class="content-view__h3">Вложения</h3>
-                <a href="#">my_picture.jpeg</a>
-                <a href="#">agreement.docx</a>
+                <?php if ($task->files): ?>
+                    <h3 class="content-view__h3">Вложения</h3>
+                    <?php foreach ($task->files as $file): ?>
+                        <a href="#"><?=$file->original_name;?></a>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="content-view__location">
                 <h3 class="content-view__h3">Расположение</h3>
@@ -119,7 +118,7 @@ $this->title = 'Задание - TaskForce';
             <div class="profile-mini__top">
                 <img src="./img/man-brune.jpg" width="62" height="62" alt="Аватар заказчика">
                 <div class="profile-mini__name five-stars__rate">
-                    <p>Николай Демченко</p>
+                    <p><?=$task->customer->name;?></p>
                 </div>
             </div>
             <p class="info-customer"><span>12 заданий</span><span class="last-">2 года на сайте</span></p>

@@ -66,7 +66,7 @@ class TasksController extends Controller
 
     public function actionView($id)
     {
-        $task = Task::findOne($id);
+        $task = Task::find()->joinWith('category')->joinWith('files')->joinWith('customer')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }

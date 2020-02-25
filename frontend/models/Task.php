@@ -28,6 +28,7 @@ use Yii;
  * @property User $customer
  * @property Category $category
  * @property User $contractor
+ * @property File[] $files
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -148,5 +149,15 @@ class Task extends \yii\db\ActiveRecord
     public function getContractor()
     {
         return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+    }
+
+    /**
+     * Gets query for [[Files]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFiles()
+    {
+        return $this->hasMany(File::className(), ['id' => 'file_id'])->viaTable('attachment', ['task_id' => 'id']);
     }
 }
