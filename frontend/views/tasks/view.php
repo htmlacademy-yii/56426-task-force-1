@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
+
 $this->title = 'Задание - TaskForce';
 
 ?>
@@ -59,55 +61,32 @@ $this->title = 'Задание - TaskForce';
         </div>
     </div>
     <div class="content-view__feedback">
-        <h2>Отклики <span>(2)</span></h2>
-        <div class="content-view__feedback-wrapper">
-            <div class="content-view__feedback-card">
-                <div class="feedback-card__top">
-                    <a href="#"><img src="/img/man-glasses.jpg" width="55" height="55"></a>
-                    <div class="feedback-card__top--name">
-                        <p><a href="#" class="link-regular">Астахов Павел</a></p>
-                        <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                        <b>4.25</b>
+        <?php if ($replies): ?>
+            <h2>Отклики <span>(<?=count($replies);?>)</span></h2>
+            <div class="content-view__feedback-wrapper">
+                <?php foreach ($replies as $reply): ?>
+                <div class="content-view__feedback-card">
+                    <div class="feedback-card__top">
+                        <a href="#"><img src="/img/man-blond.jpg" width="55" height="55"></a>
+                        <div class="feedback-card__top--name">
+                            <p><a href="<?=Url::to(['users/view', 'id' => $reply->contractor->id]);?>" class="link-regular"><?=$reply->contractor->name;?></a></p>
+                            <?=$reply->contractor->stars();?>
+                            <b><?=sprintf("%0.2f", $reply->contractor->rating());?></b>
+                        </div>
+                        <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($reply->dt_add); ?></span>
                     </div>
-                    <span class="new-task__time">25 минут назад</span>
-                </div>
-                <div class="feedback-card__content">
-                    <p>
-                        Могу сделать всё в лучшем виде. У меня есть необходимый опыт и инструменты.
-                    </p>
-                    <span>1500 ₽</span>
-                </div>
-                <div class="feedback-card__actions">
-                    <a class="button__small-color request-button button"
-                            type="button">Подтвердить</a>
-                    <a class="button__small-color refusal-button button"
-                            type="button">Отказать</a>
-                </div>
-            </div>
-            <div class="content-view__feedback-card">
-                <div class="feedback-card__top">
-                    <a href="#"><img src="/img/man-blond.jpg" width="55" height="55"></a>
-                    <div class="feedback-card__top--name">
-                        <p class="link-name"><a href="#" class="link-regular">Богатырев Дмитрий</a></p>
-                        <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                        <b>4.25</b>
+                    <div class="feedback-card__content">
+                        <p><?=$reply->comment;?></p>
+                        <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
-                    <span class="new-task__time">25 минут назад</span>
+                    <div class="feedback-card__actions">
+                        <a class="button__small-color request-button button" type="button">Подтвердить</a>
+                        <a class="button__small-color refusal-button button" type="button">Отказать</a>
+                    </div>
                 </div>
-                <div class="feedback-card__content">
-                    <p>
-                        Примусь за выполнение задания в течение часа, сделаю быстро и качественно.
-                    </p>
-                    <span>1500 ₽</span>
-                </div>
-                <div class="feedback-card__actions">
-                    <a class="button__small-color request-button button"
-                            type="button">Подтвердить</a>
-                    <a class="button__small-color refusal-button button"
-                            type="button">Отказать</a>
-                </div>
+                <?php endforeach; ?>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -118,10 +97,10 @@ $this->title = 'Задание - TaskForce';
             <div class="profile-mini__top">
                 <img src="/img/man-brune.jpg" width="62" height="62" alt="Аватар заказчика">
                 <div class="profile-mini__name five-stars__rate">
-                    <p><?=$task->customer->name;?></p>
+                    <p><?=$customer->name;?></p>
                 </div>
             </div>
-            <p class="info-customer"><span>12 заданий</span><span class="last-">2 года на сайте</span></p>
+            <p class="info-customer"><span><?=count($customer->customerTasks);?> заданий</span><span class="last-">на сайте с <?= Yii::$app->formatter->asDate($customer->dt_add, 'dd.MM.yyyy'); ?></span></p>
             <a href="#" class="link-regular">Смотреть профиль</a>
         </div>
     </div>

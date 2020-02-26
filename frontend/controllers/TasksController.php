@@ -7,6 +7,8 @@ use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use frontend\models\Task;
+use frontend\models\User;
+use frontend\models\Reply;
 use frontend\models\TaskFilterForm;
 use HtmlAcademy\Models\TaskStatus;
 
@@ -66,10 +68,12 @@ class TasksController extends Controller
 
     public function actionView($id)
     {
-        $task = Task::find()->joinWith('category')->joinWith('files')->joinWith('customer')->where(['task.id' => $id])->one();
+        $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
-        return $this->render('view', ['task' => $task]);
+        $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
+        $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->all();
+        return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 }
