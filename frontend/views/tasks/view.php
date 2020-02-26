@@ -38,7 +38,7 @@ $this->title = 'Задание - TaskForce';
                 <div class="content-view__location-wrapper">
                     <div class="content-view__map">
                         <a href="#">
-                            <img src="./img/map.jpg" width="361" height="292" alt="Москва, Новый арбат, 23 к. 1">
+                            <img src="/img/map.jpg" width="361" height="292" alt="Москва, Новый арбат, 23 к. 1">
                         </a>
                     </div>
                     <div class="content-view__address">
@@ -63,7 +63,7 @@ $this->title = 'Задание - TaskForce';
         <div class="content-view__feedback-wrapper">
             <div class="content-view__feedback-card">
                 <div class="feedback-card__top">
-                    <a href="#"><img src="./img/man-glasses.jpg" width="55" height="55"></a>
+                    <a href="#"><img src="/img/man-glasses.jpg" width="55" height="55"></a>
                     <div class="feedback-card__top--name">
                         <p><a href="#" class="link-regular">Астахов Павел</a></p>
                         <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
@@ -86,7 +86,7 @@ $this->title = 'Задание - TaskForce';
             </div>
             <div class="content-view__feedback-card">
                 <div class="feedback-card__top">
-                    <a href="#"><img src="./img/man-blond.jpg" width="55" height="55"></a>
+                    <a href="#"><img src="/img/man-blond.jpg" width="55" height="55"></a>
                     <div class="feedback-card__top--name">
                         <p class="link-name"><a href="#" class="link-regular">Богатырев Дмитрий</a></p>
                         <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
@@ -116,7 +116,7 @@ $this->title = 'Задание - TaskForce';
         <div class="profile-mini__wrapper">
             <h3>Заказчик</h3>
             <div class="profile-mini__top">
-                <img src="./img/man-brune.jpg" width="62" height="62" alt="Аватар заказчика">
+                <img src="/img/man-brune.jpg" width="62" height="62" alt="Аватар заказчика">
                 <div class="profile-mini__name five-stars__rate">
                     <p><?=$task->customer->name;?></p>
                 </div>

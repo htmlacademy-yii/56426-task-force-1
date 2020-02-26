@@ -9,7 +9,7 @@ $this->title = 'Исполнитель - TaskForce';
 <section class="content-view">
     <div class="user__card-wrapper">
         <div class="user__card">
-            <img src="./img/man-hat.png" width="120" height="120" alt="Аватар пользователя">
+            <img src="/img/man-hat.png" width="120" height="120" alt="Аватар пользователя">
                 <div class="content-view__headline">
                     <h1>Мамедов Кумар</h1>
                     <p>Россия, Санкт-Петербург, 30 лет</p>
@@ -49,9 +49,9 @@ $this->title = 'Исполнитель - TaskForce';
                 </div>
             <div class="user__card-photo">
                 <h3 class="content-view__h3">Фото работ</h3>
-                <a href="#"><img src="./img/rome-photo.jpg" width="85" height="86" alt="Фото работы"></a>
-                <a href="#"><img src="./img/smartphone-photo.png" width="85" height="86" alt="Фото работы"></a>
-                <a href="#"><img src="./img/dotonbori-photo.png" width="85" height="86" alt="Фото работы"></a>
+                <a href="#"><img src="/img/rome-photo.jpg" width="85" height="86" alt="Фото работы"></a>
+                <a href="#"><img src="/img/smartphone-photo.png" width="85" height="86" alt="Фото работы"></a>
+                <a href="#"><img src="/img/dotonbori-photo.png" width="85" height="86" alt="Фото работы"></a>
                 </div>
         </div>
     </div>
@@ -61,7 +61,7 @@ $this->title = 'Исполнитель - TaskForce';
             <div class="feedback-card__reviews">
                 <p class="link-task link">Задание <a href="#" class="link-regular">«Выгулять моего боевого петуха»</a></p>
                 <div class="card__review">
-                    <a href="#"><img src="./img/man-glasses.jpg" width="55" height="54"></a>
+                    <a href="#"><img src="/img/man-glasses.jpg" width="55" height="54"></a>
                     <div class="feedback-card__reviews-content">
                         <p class="link-name link"><a href="#" class="link-regular">Астахов Павел</a></p>
                         <p class="review-text">
@@ -77,7 +77,7 @@ $this->title = 'Исполнитель - TaskForce';
                 <div class="feedback-card__reviews">
                     <p class="link-task link">Задание <a href="#" class="link-regular">«Повесить полочку»</a></p>
                     <div class="card__review">
-                        <a href="#"><img src="./img/woman-glasses.jpg" width="55" height="54"></a>
+                        <a href="#"><img src="/img/woman-glasses.jpg" width="55" height="54"></a>
                         <div class="feedback-card__reviews-content">
                             <p class="link-name link"><a href="#" class="link-regular">Морозова Евгения</a></p>
                             <p class="review-text">
