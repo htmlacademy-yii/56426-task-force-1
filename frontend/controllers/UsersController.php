@@ -64,7 +64,7 @@ class UsersController extends Controller
 
     public function actionView($id)
     {
-        $user = User::findOne($id);
+        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks')->where(['user.id' => $id])->one();
         if (!$user) {
             throw new NotFoundHttpException("Исполнитель с ID $id не найден");
         }

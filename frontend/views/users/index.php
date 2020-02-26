@@ -31,7 +31,7 @@ $this->title = 'Список исполнителей - TaskForce';
         <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
                 <div class="user__search-icon">
-                    <a href="#"><img src="./img/user-man.jpg" width="65" height="65"></a>
+                    <a href="#"><img src="/img/man-blond.jpg" width="65" height="65"></a>
                     <span><?=$user->taskCount();?> заданий</span>
                     <span><?=$user->feedbackCount();?> отзывов</span>
                 </div>
