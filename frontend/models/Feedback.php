@@ -14,6 +14,7 @@ use Yii;
  * @property string $dt_add Время создания записи
  *
  * @property User $contractor
+ * @property Task $task
  */
 class Feedback extends \yii\db\ActiveRecord
 {
@@ -87,5 +88,15 @@ class Feedback extends \yii\db\ActiveRecord
     public function getContractor()
     {
         return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+    }
+
+    /**
+     * Gets query for [[Task]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTask()
+    {
+        return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 }

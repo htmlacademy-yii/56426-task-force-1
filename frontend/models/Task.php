@@ -25,6 +25,7 @@ use Yii;
  * @property Chat[] $chats
  * @property Job[] $jobs
  * @property Reply[] $replies
+ * @property Feedback[] $feedbacks
  * @property User $customer
  * @property Category $category
  * @property User $contractor
@@ -119,6 +120,16 @@ class Task extends \yii\db\ActiveRecord
     public function getReplies()
     {
         return $this->hasMany(Reply::className(), ['task_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Feedbacks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFeedbacks()
+    {
+        return $this->hasMany(Feedback::className(), ['task_id' => 'id']);
     }
 
     /**

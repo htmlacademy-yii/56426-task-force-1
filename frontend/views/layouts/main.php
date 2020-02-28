@@ -31,7 +31,7 @@ AppAsset::register($this);
     <header class="page-header">
         <div class="main-container page-header__container">
             <div class="page-header__logo">
-                <a href="index.html">
+                <a href="<?=Url::to(['/']);?>">
                     <svg class="page-header__logo-image" id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
                         <title>taskforce_logo2-01</title>
                         <g>
@@ -60,18 +60,10 @@ AppAsset::register($this);
             </div>
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
-                    <li class="site-list__item">
-                        <a href="<?=Url::to(['/tasks']);?>">Задания</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a href="<?=Url::to(['/users']);?>">Исполнители</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a href="#">Создать задание</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a>Мой профиль</a>
-                    </li>
+                    <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
+                    <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
+                    <li class="site-list__item"><a href="#">Создать задание</a></li>
+                    <li class="site-list__item"><a href="#">Мой профиль</a></li>
                 </ul>
             </div>
             <div class="header__town">
@@ -101,25 +93,15 @@ AppAsset::register($this);
             </div>
             <div class="header__account">
                 <a class="header__account-photo">
-                    <img src="/img/user-photo.png"
-                         width="43" height="44"
-                         alt="Аватар пользователя">
+                    <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
                 </a>
-                <span class="header__account-name">
-                 Василий
-             </span>
+                <span class="header__account-name">Василий</span>
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">
-                    <li>
-                        <a href="#">Мои задания</a>
-                    </li>
-                    <li>
-                        <a href="#">Настройки</a>
-                    </li>
-                    <li>
-                        <a href="#">Выход</a>
-                    </li>
+                    <li><a href="#">Мои задания</a></li>
+                    <li><a href="#">Настройки</a></li>
+                    <li><a href="#">Выход</a></li>
                 </ul>
             </div>
         </div>
@@ -145,33 +127,16 @@ AppAsset::register($this);
             </div>
             <div class="page-footer__links">
                 <ul class="links__list">
-                    <li class="links__item">
-                        <a href="">Задания</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Мой профиль</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Исполнители</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Регистрация</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Создать задание</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Справка</a>
-                    </li>
+                    <li class="links__item"><a href="#">Задания</a></li>
+                    <li class="links__item"><a href="#">Мой профиль</a></li>
+                    <li class="links__item"><a href="#">Исполнители</a></li>
+                    <li class="links__item"><a href="#">Регистрация</a></li>
+                    <li class="links__item"><a href="#">Создать задание</a></li>
+                    <li class="links__item"><a href="#">Справка</a></li>
                 </ul>
             </div>
             <div class="page-footer__copyright">
-                <a>
-                    <img class="copyright-logo"
-                         src="./img/academy-logo.png"
-                         width="185" height="63"
-                         alt="Логотип HTML Academy">
-                </a>
+                <a href="#"><img class="copyright-logo" src="/img/academy-logo.png" width="185" height="63" alt="Логотип HTML Academy"></a>
             </div>
         </div>
     </footer>

@@ -52,12 +52,9 @@ $this->title = 'Задание - TaskForce';
             </div>
         </div>
         <div class="content-view__action-buttons">
-                <button class=" button button__big-color response-button open-modal"
-                        type="button" data-for="response-form">Откликнуться</button>
-                <button class="button button__big-color refusal-button open-modal"
-                        type="button" data-for="refuse-form">Отказаться</button>
-            <button class="button button__big-color request-button open-modal"
-                    type="button" data-for="complete-form">Завершить</button>
+            <button class="button button__big-color response-button open-modal" type="button" data-for="response-form">Откликнуться</button>
+            <button class="button button__big-color refusal-button open-modal" type="button" data-for="refuse-form">Отказаться</button>
+            <button class="button button__big-color request-button open-modal" type="button" data-for="complete-form">Завершить</button>
         </div>
     </div>
     <div class="content-view__feedback">
@@ -100,7 +97,10 @@ $this->title = 'Задание - TaskForce';
                     <p><?=$customer->name;?></p>
                 </div>
             </div>
-            <p class="info-customer"><span><?=count($customer->customerTasks);?> заданий</span><span class="last-">на сайте с <?= Yii::$app->formatter->asDate($customer->dt_add, 'dd.MM.yyyy'); ?></span></p>
+            <p class="info-customer">
+                <span><?=count($customer->customerTasks);?> заданий</span>
+                <span class="last-"><?=date_diff(date_create($customer->dt_add), date_create())->format("%y лет");?> на сайте</span>
+            </p>
             <a href="#" class="link-regular">Смотреть профиль</a>
         </div>
     </div>

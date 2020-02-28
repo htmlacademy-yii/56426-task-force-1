@@ -114,10 +114,12 @@ create table `chat` (
 create table `feedback` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`contractor_id` int not null comment 'Исполнитель',
+	`task_id` int not null comment 'Задание',
 	`rating` enum('1', '2', '3', '4', '5') not null comment 'Оценка',
 	`description` text not null comment 'Текст отзыва',
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`contractor_id`) references `user`(`id`)
+	foreign key (`contractor_id`) references `user`(`id`),
+	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
 
 create table `file` (

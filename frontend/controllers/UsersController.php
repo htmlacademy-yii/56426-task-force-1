@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use frontend\models\User;
 use frontend\models\UserFilterForm;
+use frontend\models\Feedback;
 use HtmlAcademy\Models\TaskStatus;
 
 class UsersController extends Controller
@@ -64,10 +65,11 @@ class UsersController extends Controller
 
     public function actionView($id)
     {
-        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks')->where(['user.id' => $id])->one();
+        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->where(['user.id' => $id])->one();
         if (!$user) {
             throw new NotFoundHttpException("Исполнитель с ID $id не найден");
         }
-        return $this->render('view', ['user' => $user]);
+        $feedbacks = Feedback::find()->joinWith('task')->where(['feedback.contractor_id' => $id])->all();
+        return $this->render('view', ['user' => $user, 'feedbacks' => $feedbacks]);
     }
 }
