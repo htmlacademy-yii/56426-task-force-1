@@ -1616,16 +1616,31 @@ footer {
     top: 16px;
     left: 30px; }
 
-.five-rate {
-  color: #ff7f50; }
-  .five-rate span {
-    background-image: url("../img/star-rate.png"); }
+.one-rate {
+  color: #ff0000; }
+  .one-rate span {
+    background-image: url("../img/one-rate.png"); }
+
+.two-rate {
+  color: #ff6633; }
+  .two-rate span {
+    background-image: url("../img/two-rate.png"); }
 
 .three-rate {
-  color: #c71d1d; }
+  color: #ffcc33; }
   .three-rate span {
     background-image: url("../img/three-rate.png"); }
 
+.four-rate {
+  color: #99cc00; }
+  .four-rate span {
+    background-image: url("../img/four-rate.png"); }
+
+.five-rate {
+  color: #33ff33; }
+  .five-rate span {
+    background-image: url("../img/five-rate.png"); }
+      
 .registration__user {
   margin-right: auto;
   padding-left: 10px; }

@@ -14,9 +14,36 @@ use Yii;
  * @property string $dt_add Время создания записи
  *
  * @property User $contractor
+ * @property Task $task
  */
 class Feedback extends \yii\db\ActiveRecord
 {
+
+    public function ratingClass()
+    {
+        switch ($this->rating){
+            case 1:
+                $ratingClass = 'one-rate';
+                break;
+            case 2:
+                $ratingClass = 'two-rate';
+                break;
+            case 3:
+                $ratingClass = 'three-rate';
+                break;
+            case 4:
+                $ratingClass = 'four-rate';
+                break;
+            case 5:
+                $ratingClass = 'five-rate';
+                break;
+            default:
+                $ratingClass = '';
+        }
+
+        return $ratingClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -61,5 +88,15 @@ class Feedback extends \yii\db\ActiveRecord
     public function getContractor()
     {
         return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+    }
+
+    /**
+     * Gets query for [[Task]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTask()
+    {
+        return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 }
