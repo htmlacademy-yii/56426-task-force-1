@@ -38,7 +38,7 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
-            [['user_id', 'city_id', 'new_message', 'task_action', 'new_job', 'show_contacts'], 'integer'],
+            [['user_id', 'city_id'], 'integer'],
             [['birthday'], 'safe'],
             [['about'], 'string'],
             [['address'], 'string', 'max' => 255],
