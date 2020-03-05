@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use Yii;
 use yii\base\Model;
 
 class UserSignupForm extends Model
@@ -33,5 +34,19 @@ class UserSignupForm extends Model
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8]
         ];
+    }
+
+    public function signup()
+    {
+        $user = new User();
+        $user->email = $this->email;
+        $user->name = $this->name;
+        $user->password = Yii::$app->security->generatePasswordHash($this->password);
+        if ($user->save()) {
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile->city_id = $this->city;
+            return $profile->save();
+        }
     }
 }
