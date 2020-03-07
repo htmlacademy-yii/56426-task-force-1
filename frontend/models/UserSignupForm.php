@@ -48,5 +48,6 @@ class UserSignupForm extends Model
             $profile->city_id = $this->city;
             return $profile->save();
         }
+        return false;
     }
 }
