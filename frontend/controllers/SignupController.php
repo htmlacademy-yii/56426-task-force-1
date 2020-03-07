@@ -25,17 +25,8 @@ class SignupController extends Controller
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {
-                $user = new User();
-                $user->email = $model->email;
-                $user->name = $model->name;
-                $user->password = $model->password;
-                if ($user->save()) {
-                    $profile = new Profile();
-                    $profile->user_id = $user->id;
-                    $profile->city_id = $model->city;
-                    if ($profile->save()) {
-                        return Yii::$app->getResponse()->redirect(['tasks']);
-                    }
+                if ($model->signup()) {
+                    return Yii::$app->getResponse()->redirect(['tasks']);
                 }
             }
         }
