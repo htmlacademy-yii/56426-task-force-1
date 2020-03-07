@@ -14,6 +14,7 @@ class UserLoginForm extends Model
     public function rules()
     {
         return [
+            [['email', 'password'], 'safe'],
             [['email', 'password'], 'required'],
             ['password', 'validatePassword'],
         ];

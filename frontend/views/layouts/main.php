@@ -96,7 +96,7 @@ AppAsset::register($this);
                 <a class="header__account-photo">
                     <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
                 </a>
-                <span class="header__account-name">Василий</span>
+                <span class="header__account-name">Василий <?="ID=".Yii::$app->user->getId();?></span>
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">

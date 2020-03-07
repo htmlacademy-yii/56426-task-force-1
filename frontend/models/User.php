@@ -29,17 +29,6 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-
-    public static function findIdentity($id)
-    {
-        return self::findOne($id);
-    }
-
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
@@ -75,6 +64,33 @@ class User extends ActiveRecord implements IdentityInterface
             }
         }
         return $stars;
+    }
+
+    // Implement IdentityInterface methods
+
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // Implement findIdentityByAccessToken() method
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        // Implement getAuthKey() method
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        // Implement validateAuthKey() method
     }
 
     /**

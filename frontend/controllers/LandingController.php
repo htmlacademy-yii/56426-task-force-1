@@ -9,23 +9,29 @@ use frontend\models\UserLoginForm;
 class LandingController extends Controller
 {
     public $layout = 'landing';
+    public $model;
 
     public function actionIndex()
     {
+        $this->model = new UserLoginForm();
+
         return $this->render('index');
     }
 
     public function actionLogin()
     {
-        $model = new UserLoginForm();
+        $this->model = new UserLoginForm();
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                $user = $model->getUser();
+            if ($this->model->load($formData) && $this->model->validate()) {
+                $user = $this->model->getUser();
                 Yii::$app->user->login($user);
-                return $this->goHome();
+                return $this->redirect('/signup');
+                //return $this->redirect('/tasks');
             }
         }
+
+        return $this->goHome();
     }
 }

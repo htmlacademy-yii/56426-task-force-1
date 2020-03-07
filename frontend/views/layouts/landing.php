@@ -5,6 +5,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 AppAsset::register($this);
@@ -103,17 +104,33 @@ AppAsset::register($this);
 
     <section class="modal enter-form form-modal" id="enter-form">
         <h2>Вход на сайт</h2>
-        <form action="/login" method="post">
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['/login']),
+            'options' => [
+                'name' => $this->context->model->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
+            ]
+        ]); ?>
+
             <p>
                 <label class="form-modal-description" for="enter-email">Email</label>
                 <input class="enter-form-email input input-middle" type="email" name="email" id="enter-email">
             </p>
+
             <p>
                 <label class="form-modal-description" for="enter-password">Пароль</label>
                 <input class="enter-form-email input input-middle" type="password" name="password" id="enter-password">
             </p>
+
             <button class="button" type="submit">Войти</button>
-        </form>
+
+        <?php ActiveForm::end(); ?>
+
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
 

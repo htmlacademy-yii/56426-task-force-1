@@ -11,7 +11,7 @@ use frontend\models\UserFilterForm;
 use frontend\models\Feedback;
 use HtmlAcademy\Models\TaskStatus;
 
-class UsersController extends Controller
+class UsersController extends SecuredController
 {
     public function actionIndex()
     {

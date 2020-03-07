@@ -12,7 +12,7 @@ use frontend\models\Reply;
 use frontend\models\TaskFilterForm;
 use HtmlAcademy\Models\TaskStatus;
 
-class TasksController extends Controller
+class TasksController extends SecuredController
 {
     public function actionIndex()
     {
