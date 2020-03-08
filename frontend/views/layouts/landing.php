@@ -118,13 +118,23 @@ AppAsset::register($this);
         ]); ?>
 
             <p>
-                <label class="form-modal-description" for="enter-email">Email</label>
-                <input class="enter-form-email input input-middle" type="email" name="email" id="enter-email">
+                <label class="form-modal-description" for="enter-email"><?=$this->context->model->attributeLabels()['email'];?></label>
+                <?php $options = [
+                    'class' => 'enter-form-email input input-middle',
+                    'id' => 'enter-email',
+                    'tag' => false
+                ]; ?>
+                <?=$form->field($this->context->model, 'email', ['template' => "{label}\n{input}"])->input('email', $options)->label(false); ?>
             </p>
 
             <p>
-                <label class="form-modal-description" for="enter-password">Пароль</label>
-                <input class="enter-form-email input input-middle" type="password" name="password" id="enter-password">
+                <label class="form-modal-description" for="enter-password"><?=$this->context->model->attributeLabels()['password'];?></label>
+                <?php $options = [
+                    'class' => 'enter-form-email input input-middle',
+                    'id' => 'enter-password',
+                    'tag' => false
+                ]; ?>
+                <?=$form->field($this->context->model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(false); ?>
             </p>
 
             <button class="button" type="submit">Войти</button>

@@ -11,6 +11,14 @@ class UserLoginForm extends Model
 
     private $_user;
 
+    public function attributeLabels()
+    {
+        return [
+            'email' => 'E-mail',
+            'password' => 'Пароль'
+        ];
+    }
+
     public function rules()
     {
         return [
@@ -30,7 +38,7 @@ class UserLoginForm extends Model
         }
     }
 
-    protected function getUser()
+    public function getUser()
     {
         if ($this->_user === null) {
             $this->_user = User::findOne(['email' => $this->email]);
