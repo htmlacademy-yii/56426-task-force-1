@@ -44,6 +44,7 @@ return [
             'rules' => [
                 '/' => 'landing/index',
                 '/login' => 'landing/login',
+                '/logout' => 'landing/logout',
                 '/tasks' => 'tasks/index',
                 '/users' => 'users/index',
                 'task/<id:\d+>' => 'tasks/view',

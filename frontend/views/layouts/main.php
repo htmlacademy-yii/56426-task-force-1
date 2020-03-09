@@ -102,7 +102,7 @@ AppAsset::register($this);
                 <ul class="account__pop-up-list">
                     <li><a href="#">Мои задания</a></li>
                     <li><a href="#">Настройки</a></li>
-                    <li><a href="#">Выход</a></li>
+                    <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
             <?php endif; ?>

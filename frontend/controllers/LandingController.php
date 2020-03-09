@@ -30,6 +30,12 @@ class LandingController extends Controller
             }
         }
 
-        return $this->redirect('/signup');
+        return $this->redirect('/');
+    }
+
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+        return $this->redirect('/');
     }
 }
