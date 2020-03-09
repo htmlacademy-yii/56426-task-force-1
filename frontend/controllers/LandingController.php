@@ -30,12 +30,13 @@ class LandingController extends Controller
             }
         }
 
-        return $this->redirect('/');
+        return $this->goHome();
     }
 
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->redirect('/');
+        
+        return $this->goHome();
     }
 }

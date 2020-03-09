@@ -66,7 +66,7 @@ AppAsset::register($this);
                     <li class="site-list__item"><a href="#">Мой профиль</a></li>
                 </ul>
             </div>
-            <?php if (strpos(Url::current(), 'signup') === false): ?>
+            <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
             <div class="header__town">
                 <select class="multiple-select input town-select" size="1" name="town[]">
                     <option value="Moscow">Москва</option>
@@ -96,7 +96,7 @@ AppAsset::register($this);
                 <a class="header__account-photo">
                     <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
                 </a>
-                <span class="header__account-name">Василий <?="ID=".Yii::$app->user->getId();?></span>
+                <span class="header__account-name"><?=Yii::$app->user->getIdentity()->name;?><?=" (".Yii::$app->user->getId().")";?></span>
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">
