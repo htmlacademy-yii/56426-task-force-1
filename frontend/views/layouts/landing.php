@@ -5,6 +5,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 AppAsset::register($this);
@@ -23,16 +24,16 @@ AppAsset::register($this);
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="landing">
 <?php $this->beginBody() ?>
 
 <div class="table-layout">
 
-    <header class="page-header">
-        <div class="main-container page-header__container">
-            <div class="page-header__logo">
-                <a href="<?=Url::to(['/']);?>">
-                    <svg class="page-header__logo-image" id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
+    <header class=" page-header--index">
+        <div class="main-container page-header__container page-header__container--index">
+            <div class="page-header__logo--index">
+                <a>
+                    <svg class="logo-image--index" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
                         <title>taskforce_logo2-01</title>
                         <g>
                             <g>
@@ -57,60 +58,18 @@ AppAsset::register($this);
                         </g>
                     </svg>
                 </a>
+                <p>Работа там, где ты!</p>
             </div>
-            <div class="header__nav">
-                <ul class="header-nav__list site-list">
-                    <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
-                    <li class="site-list__item"><a href="#">Создать задание</a></li>
-                    <li class="site-list__item"><a href="#">Мой профиль</a></li>
-                </ul>
+            <div class="header__account--index">
+                <a href="#" class="header__account-enter open-modal" data-for="enter-form"><span>Вход</span></a>
+                или
+                <a href="/signup" class="header__account-registration">Регистрация</a>
             </div>
-            <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
-            <div class="header__town">
-                <select class="multiple-select input town-select" size="1" name="town[]">
-                    <option value="Moscow">Москва</option>
-                    <option selected value="SPB">Санкт-Петербург</option>
-                    <option value="Krasnodar">Краснодар</option>
-                    <option value="Irkutsk">Иркутск</option>
-                    <option value="Vladivostok">Владивосток</option>
-                </select>
-            </div>
-            <div class="header__lightbulb"></div>
-            <div class="lightbulb__pop-up">
-                <h3>Новые события</h3>
-                <p class="lightbulb__new-task lightbulb__new-task--message">
-                    Новое сообщение в чате
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--executor">
-                    Выбран исполнитель для
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--close">
-                    Завершено задание
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-            </div>
-            <div class="header__account">
-                <a class="header__account-photo">
-                    <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
-                </a>
-                <span class="header__account-name"><?=Yii::$app->user->getIdentity()->name;?></span>
-            </div>
-            <div class="account__pop-up">
-                <ul class="account__pop-up-list">
-                    <li><a href="#">Мои задания</a></li>
-                    <li><a href="#">Настройки</a></li>
-                    <li><a href="/logout">Выход</a></li>
-                </ul>
-            </div>
-            <?php endif; ?>
         </div>
     </header>
 
-    <main class="page-main">
-        <div class="main-container page-container">
+    <main>
+        <div class="landing-container">
             <?= $content ?>
         </div>
     </main>
@@ -140,22 +99,56 @@ AppAsset::register($this);
             <div class="page-footer__copyright">
                 <a href="#"><img class="copyright-logo" src="/img/academy-logo.png" width="185" height="63" alt="Логотип HTML Academy"></a>
             </div>
-            <?php if (strpos(Url::current(), 'signup') !== false): ?>
-            <div class="clipart-woman">
-                <img src="/img/clipart-woman.png" width="238" height="450">
-            </div>
-            <div class="clipart-message">
-                <div class="clipart-message-text">
-                    <h2>Знаете ли вы, что?</h2>
-                    <p>После регистрации вам будет доступно более двух тысяч заданий из двадцати разных категорий.</p>
-                    <p>В среднем, наши исполнители зарабатывают от 500 рублей в час.</p>
-                </div>
-            </div>
-            <?php endif; ?>
         </div>
     </footer>
 
+    <section class="modal enter-form form-modal" id="enter-form">
+        <h2>Вход на сайт</h2>
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['/login']),
+            'options' => [
+                'name' => $this->context->model->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
+            ]
+        ]); ?>
+
+            <p>
+                <label class="form-modal-description" for="enter-email"><?=$this->context->model->attributeLabels()['email'];?></label>
+                <?php $options = [
+                    'class' => 'enter-form-email input input-middle',
+                    'id' => 'enter-email',
+                    'tag' => false
+                ]; ?>
+                <?=$form->field($this->context->model, 'email', ['template' => "{label}\n{input}"])->input('email', $options)->label(false); ?>
+            </p>
+
+            <p>
+                <label class="form-modal-description" for="enter-password"><?=$this->context->model->attributeLabels()['password'];?></label>
+                <?php $options = [
+                    'class' => 'enter-form-email input input-middle',
+                    'id' => 'enter-password',
+                    'tag' => false
+                ]; ?>
+                <?=$form->field($this->context->model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(false); ?>
+            </p>
+
+            <button class="button" type="submit">Войти</button>
+
+        <?php ActiveForm::end(); ?>
+
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+
 </div>
+
+<div class="overlay"></div>
+
+<script src="js/main.js"></script>
 
 <?php $this->endBody() ?>
 </body>

@@ -17,7 +17,7 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'frontend\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -42,10 +42,14 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                '/' => 'landing/index',
+                '/login' => 'landing/login',
+                '/logout' => 'logout/index',
+                '/signup' => 'signup/index',
                 '/tasks' => 'tasks/index',
                 '/users' => 'users/index',
-                'task/<id:\d+>' => 'tasks/view',
-                'user/<id:\d+>' => 'users/view'
+                '/task/<id:\d+>' => 'tasks/view',
+                '/user/<id:\d+>' => 'users/view'
             ],
         ],
     ],

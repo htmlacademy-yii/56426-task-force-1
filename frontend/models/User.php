@@ -3,6 +3,8 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -25,8 +27,12 @@ use Yii;
  * @property Skill[] $skills
  */
 
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
 
     public function taskCount()
     {
@@ -58,6 +64,33 @@ class User extends \yii\db\ActiveRecord
             }
         }
         return $stars;
+    }
+
+    // Implement IdentityInterface methods
+
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // Implement findIdentityByAccessToken() method
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        // Implement getAuthKey() method
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        // Implement validateAuthKey() method
     }
 
     /**
