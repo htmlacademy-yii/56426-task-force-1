@@ -5,7 +5,7 @@ namespace frontend\controllers;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 
-abstract class SecuredController extends Controller
+abstract class UnsecuredController extends Controller
 {
     public function behaviors()
     {
@@ -15,13 +15,13 @@ abstract class SecuredController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@']
+                        'roles' => ['?']
                     ],
                     [
                         'allow' => false,
-                        'roles' => ['?'],
+                        'roles' => ['@'],
                         'denyCallback' => function($rule, $action) {
-                            return $this->goHome();
+                            return $this->redirect('/tasks');
                         }
                     ]
                 ]

@@ -9,7 +9,7 @@ use frontend\models\User;
 use frontend\models\Profile;
 use frontend\models\UserSignupForm;
 
-class SignupController extends Controller
+class SignupController extends UnsecuredController
 {
     public function actionIndex()
     {

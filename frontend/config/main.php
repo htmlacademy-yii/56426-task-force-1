@@ -44,11 +44,12 @@ return [
             'rules' => [
                 '/' => 'landing/index',
                 '/login' => 'landing/login',
-                '/logout' => 'landing/logout',
+                '/logout' => 'logout/index',
+                '/signup' => 'signup/index',
                 '/tasks' => 'tasks/index',
                 '/users' => 'users/index',
-                'task/<id:\d+>' => 'tasks/view',
-                'user/<id:\d+>' => 'users/view'
+                '/task/<id:\d+>' => 'tasks/view',
+                '/user/<id:\d+>' => 'users/view'
             ],
         ],
     ],

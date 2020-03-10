@@ -6,7 +6,7 @@ use Yii;
 use yii\web\Controller;
 use frontend\models\UserLoginForm;
 
-class LandingController extends Controller
+class LandingController extends UnsecuredController
 {
     public $layout = 'landing';
     public $model;
@@ -30,13 +30,6 @@ class LandingController extends Controller
             }
         }
 
-        return $this->goHome();
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-        
         return $this->goHome();
     }
 }
