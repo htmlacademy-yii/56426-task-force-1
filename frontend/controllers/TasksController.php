@@ -76,4 +76,9 @@ class TasksController extends SecuredController
         $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->all();
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
+
+    public function actionCreate()
+    {
+        return $this->render('create');
+    }
 }
