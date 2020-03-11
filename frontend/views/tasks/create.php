@@ -104,11 +104,20 @@ $this->title = 'Создать задание - TaskForce';
                 <h3>Файлы</h3>
                 <p>Если загружаете фотографии объекта, то убедитесь, что всё в фокусе, а фото показывает объект со всех ракурсов.</p>
             </div>
-            <div class="warning-item warning-item--error">
-                <h2>Ошибки заполнения формы</h2>
-                <h3>Категория</h3>
-                <p>Это поле должно быть выбрано.<br>Задание должно принадлежать одной из категорий</p>
-            </div>
+            <?php if (count($model->getErrors())): ?>
+                <div class="warning-item warning-item--error">
+                    <h2>Ошибки заполнения формы</h2>
+                    <?php foreach ($model->getErrors() as $attribute => $messages): ?>
+                        <h3><?=$model->attributeLabels()[$attribute];?></h3>
+                        <p>
+                        <?php for ($i = 0; $i < count($messages); $i++): ?>
+                            <?=$messages[$i];?>
+                            <?=($i < count($messages) - 1) ? '<br>' : '';?>
+                        <?php endfor; ?>
+                        </p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
 
     </div>

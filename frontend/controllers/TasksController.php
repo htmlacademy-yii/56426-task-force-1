@@ -98,9 +98,9 @@ class TasksController extends SecuredController
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {
-                //if ($model->save()) {
+                if ($model->save()) {
                     return $this->redirect('/tasks');
-                //}
+                }
             }
         }
 

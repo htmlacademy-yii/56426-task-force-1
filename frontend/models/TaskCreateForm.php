@@ -30,12 +30,11 @@ class TaskCreateForm extends Model
         return [
             [['name', 'description', 'category', 'budget', 'expire'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
-            [['name'], 'string', 'min' => 1],
-            [['description'], 'string', 'min' => 1],
-            [['category'], 'integer'],
+            [['name'], 'string'],
+            [['description'], 'string'],
             [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
-            [['expire'], 'date', 'format' => 'php:%d.%m.%Y']
+            [['expire'], 'date', 'format' => 'php:Y-m-d']
         ];
     }
 
@@ -48,7 +47,7 @@ class TaskCreateForm extends Model
 
         $task->name = $this->name;
         $task->description = $this->description;
-        $task->category = $this->category;
+        $task->category_id = $this->category;
         $task->budget = $this->budget;
         $task->expire = $this->expire;
 
