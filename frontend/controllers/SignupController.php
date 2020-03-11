@@ -26,7 +26,8 @@ class SignupController extends UnsecuredController
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {
                 if ($model->signup()) {
-                    return Yii::$app->getResponse()->redirect(['tasks']);
+                    //return Yii::$app->getResponse()->redirect(['tasks']);
+                    return $this->redirect('/tasks');
                 }
             }
         }

@@ -9,7 +9,9 @@ use yii\web\NotFoundHttpException;
 use frontend\models\Task;
 use frontend\models\User;
 use frontend\models\Reply;
+use frontend\models\Category;
 use frontend\models\TaskFilterForm;
+use frontend\models\TaskCreateForm;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
@@ -84,6 +86,24 @@ class TasksController extends SecuredController
             return $this->redirect('/tasks');
         }
 
-        return $this->render('create');
+        $model = new TaskCreateForm();
+
+        $categories = Category::find()->orderBy(['id' => SORT_ASC])->all();
+
+        $items = ['none' => ''];
+        foreach ($categories as $category) {
+            $items[$category->id] = $category->name;
+        }
+
+        if (Yii::$app->request->getIsPost()) {
+            $formData = Yii::$app->request->post();
+            if ($model->load($formData) && $model->validate()) {
+                //if ($model->save()) {
+                    return $this->redirect('/tasks');
+                //}
+            }
+        }
+
+        return $this->render('create', ['model' => $model, 'items' => $items]);
     }
 }
