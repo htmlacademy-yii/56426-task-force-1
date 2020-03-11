@@ -11,6 +11,7 @@ use frontend\models\User;
 use frontend\models\Reply;
 use frontend\models\TaskFilterForm;
 use HtmlAcademy\Models\TaskStatus;
+use HtmlAcademy\Models\UserRole;
 
 class TasksController extends SecuredController
 {
@@ -79,6 +80,10 @@ class TasksController extends SecuredController
 
     public function actionCreate()
     {
+        if (User::getRole() !== UserRole::CUSTOMER) {
+            return $this->redirect('/tasks');
+        }
+
         return $this->render('create');
     }
 }
