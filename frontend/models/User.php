@@ -5,6 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use HtmlAcademy\Models\UserRole;
 
 /**
  * This is the model class for table "user".
@@ -29,6 +30,14 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public static function getRole()
+    {
+        if (UserSkill::find()->where(['user_id' => Yii::$app->user->getId()])->count()) {
+            return UserRole::CONTRACTOR;
+        }
+        return UserRole::CUSTOMER;
+    }
+
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);

@@ -12,8 +12,6 @@ class TaskFilterForm extends Model
     public $search;
     public $categories;
 
-    //нет нужды устанавливать значения, без них мы просто не будем включать это условие в запрос
-
     public function attributeLabels()
     {
         return [

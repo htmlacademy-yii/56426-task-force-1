@@ -62,7 +62,7 @@ AppAsset::register($this);
                 <ul class="header-nav__list site-list">
                     <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
                     <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
-                    <li class="site-list__item"><a href="#">Создать задание</a></li>
+                    <li class="site-list__item"><a href="<?=Url::to(['/task/create']);?>">Создать задание</a></li>
                     <li class="site-list__item"><a href="#">Мой профиль</a></li>
                 </ul>
             </div>
@@ -102,7 +102,7 @@ AppAsset::register($this);
                 <ul class="account__pop-up-list">
                     <li><a href="#">Мои задания</a></li>
                     <li><a href="#">Настройки</a></li>
-                    <li><a href="/logout">Выход</a></li>
+                    <li><a href="<?=Url::to(['/logout']);?>">Выход</a></li>
                 </ul>
             </div>
             <?php endif; ?>

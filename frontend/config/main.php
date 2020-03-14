@@ -49,7 +49,8 @@ return [
                 '/tasks' => 'tasks/index',
                 '/users' => 'users/index',
                 '/task/<id:\d+>' => 'tasks/view',
-                '/user/<id:\d+>' => 'users/view'
+                '/user/<id:\d+>' => 'users/view',
+                '/task/create' => 'tasks/create'
             ],
         ],
     ],
