@@ -28,34 +28,31 @@ $this->title = 'Создать задание - TaskForce';
             ]
         ]); ?>
 
-            <label for="name"><?=$model->attributeLabels()['name'];?></label>
             <?php $options = [
                 'class' => 'input textarea',
                 'rows' => '1',
                 'id' => 'name',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(false);?>
+            <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(null, ['for' => 'name']);?>
             <span>Кратко опишите суть работы</span>
 
-            <label for="description"><?=$model->attributeLabels()['description'];?></label>
             <?php $options = [
                 'class' => 'input textarea',
                 'rows' => '7',
                 'id' => 'description',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'description', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(false);?>
+            <?=$form->field($model, 'description', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(null, ['for' => 'description']);?>
             <span>Укажите все пожелания и детали, чтобы исполнителям было проще соориентироваться</span>
 
-            <label for="category"><?=$model->attributeLabels()['category'];?></label>
             <?php $options = [
                 'class' => 'multiple-select input multiple-select-big',
                 'size' => '1',
                 'id' => 'category',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(false); ?>
+            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(null, ['for' => 'category']);?>
             <span>Выберите категорию</span>
 
             <label>Файлы</label>
@@ -71,25 +68,23 @@ $this->title = 'Создать задание - TaskForce';
 
             <div class="create__price-time">
                 <div class="create__price-time--wrapper">
-                    <label for="budget"><?=$model->attributeLabels()['budget'];?></label>
                     <?php $options = [
                         'class' => 'input textarea input-money',
                         'rows' => '1',
                         'id' => 'budget',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'budget', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(false);?>
+                    <?=$form->field($model, 'budget', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(null, ['for' => 'expire']);?>
                     <span>Не заполняйте для оценки исполнителем</span>
                 </div>
                 <div class="create__price-time--wrapper">
-                    <label for="expire"><?=$model->attributeLabels()['expire'];?></label>
                     <?php $options = [
                         'class' => 'input-middle input input-date',
                         'rows' => '1',
                         'id' => 'expire',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'expire', ['template' => "{label}\n{input}"])->input('date', $options)->label(false);?>
+                    <?=$form->field($model, 'expire', ['template' => "{label}\n{input}"])->input('date', $options)->label(null, ['for' => 'date']);?>
                     <span>Укажите крайний срок исполнения</span>
                 </div>
             </div>
