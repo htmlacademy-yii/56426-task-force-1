@@ -5,6 +5,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 AppAsset::register($this);
@@ -155,21 +156,50 @@ AppAsset::register($this);
         </div>
     </footer>
 
+    <?php if (isset($this->context->replyForm)): ?>
     <section class="modal response-form form-modal" id="response-form">
         <h2>Отклик на задание</h2>
-        <form action="#" method="post">
-            <p>
-                <label class="form-modal-description" for="response-payment">Ваша цена</label>
-                <input class="response-form-payment input input-middle input-money" type="text" name="response-payment" id="response-payment">
-            </p>
-            <p>
-                <label class="form-modal-description" for="response-comment">Комментарий</label>
-                <textarea class="input textarea" rows="4" id="response-comment" name="response-comment" placeholder="Place your text"></textarea>
-            </p>
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(["/task/".$this->context->taskId."/reply"]),
+            'options' => [
+                'name' => $this->context->replyForm->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => 'p'
+                ]
+            ]
+        ]); ?>
+
+            <?php $inputOptions = [
+                'class' => 'response-form-payment input input-middle input-money',
+                'id' => 'response-payment'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'response-payment'
+            ]; ?>
+            <?=$form->field($this->context->replyForm, 'price', ['template' => "{label}\n{input}"])->input('text', $inputOptions)->label(null, $labelOptions);?>
+
+            <?php $inputOptions = [
+                'class' => 'input textarea',
+                'id' => 'response-comment',
+                'rows' => '4'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'response-comment'
+            ]; ?>
+            <?=$form->field($this->context->replyForm, 'comment', ['template' => "{label}\n{input}"])->textarea($inputOptions)->label(null, $labelOptions);?>
+
             <button class="button modal-button" type="submit">Отправить</button>
-        </form>
+
+        <?php ActiveForm::end(); ?>
+
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
+    <?php endif; ?>
 
     <section class="modal completion-form form-modal" id="complete-form">
         <h2>Завершение задания</h2>

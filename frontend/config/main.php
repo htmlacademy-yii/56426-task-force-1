@@ -50,7 +50,8 @@ return [
                 '/users' => 'users/index',
                 '/task/<id:\d+>' => 'tasks/view',
                 '/user/<id:\d+>' => 'users/view',
-                '/task/create' => 'tasks/create'
+                '/task/create' => 'tasks/create',
+                '/task/<id:\d+>/reply' => 'tasks/reply'
             ],
         ],
     ],

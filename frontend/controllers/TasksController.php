@@ -12,11 +12,15 @@ use frontend\models\Reply;
 use frontend\models\Category;
 use frontend\models\TaskFilterForm;
 use frontend\models\TaskCreateForm;
+use frontend\models\ReplyCreateForm;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
 class TasksController extends SecuredController
 {
+    public $taskId;
+    public $replyForm;
+
     public function actionIndex()
     {
         $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
@@ -71,6 +75,9 @@ class TasksController extends SecuredController
 
     public function actionView($id)
     {
+        $this->taskId = $id;
+        $this->replyForm = new ReplyCreateForm();
+
         $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
@@ -105,5 +112,19 @@ class TasksController extends SecuredController
         }
 
         return $this->render('create', ['model' => $model, 'items' => $items]);
+    }
+
+    public function actionReply($id)
+    {
+        $model = new ReplyCreateForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $model->load(Yii::$app->request->post());
+            if ($model->validate()) {
+                $model->save($id);
+            }
+        }
+
+        return $this->redirect("/task/$id");
     }
 }
