@@ -13,6 +13,7 @@ use frontend\models\Category;
 use frontend\models\TaskFilterForm;
 use frontend\models\TaskCreateForm;
 use frontend\models\ReplyCreateForm;
+use frontend\models\TaskCompleteForm;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
@@ -20,6 +21,7 @@ class TasksController extends SecuredController
 {
     public $taskId;
     public $replyForm;
+    public $completeForm;
 
     public function actionIndex()
     {
@@ -77,6 +79,7 @@ class TasksController extends SecuredController
     {
         $this->taskId = $id;
         $this->replyForm = new ReplyCreateForm();
+        $this->completeForm = new TaskCompleteForm();
 
         $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
         if (!$task) {
@@ -122,6 +125,20 @@ class TasksController extends SecuredController
             $model->load(Yii::$app->request->post());
             if ($model->validate()) {
                 $model->save($id);
+            }
+        }
+
+        return $this->redirect("/task/$id");
+    }
+
+    public function actionComplete($id)
+    {
+        $model = new TaskCompleteForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $model->load(Yii::$app->request->post());
+            if ($model->validate() && $model->save($id)) {
+                return $this->redirect("/tasks");
             }
         }
 

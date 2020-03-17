@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
+use HtmlAcademy\Models\TaskStatus;
 
 AppAsset::register($this);
 
@@ -201,18 +202,53 @@ AppAsset::register($this);
     </section>
     <?php endif; ?>
 
+    <?php if (isset($this->context->completeForm)): ?>
     <section class="modal completion-form form-modal" id="complete-form">
         <h2>Завершение задания</h2>
         <p class="form-modal-description">Задание выполнено?</p>
-        <form action="#" method="post">
-            <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes" name="completion" value="yes">
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(["/task/".$this->context->taskId."/complete"]),
+            'options' => [
+                'name' => $this->context->completeForm->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
+            ]
+        ]); ?>
+
+            <?php $options = [
+                'class' => 'visually-hidden completion-input completion-input--yes',
+                'id' => 'completion-radio--yes',
+                'value' => TaskStatus::COMPLETED,
+                'checked' => ''
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'status', ['template' => "{input}\n{label}"])->input('radio', $options)->label(false);?>
             <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
-            <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet" name="completion" value="difficulties">
-            <label  class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
+
+            <?php $options = [
+                'class' => 'visually-hidden completion-input completion-input--difficult',
+                'id' => 'completion-radio--yet',
+                'value' => TaskStatus::FAILED
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'status', ['template' => "{input}\n{label}"])->input('radio', $options)->label(false);?>
+            <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
+
             <p>
-                <label class="form-modal-description" for="completion-comment">Комментарий</label>
-                <textarea class="input textarea" rows="4" id="completion-comment" name="completion-comment" placeholder="Place your text"></textarea>
+            <?php $inputOptions = [
+                'class' => 'input textarea',
+                'id' => 'completion-comment',
+                'rows' => '4'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'completion-comment'
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'comment', ['template' => "{label}\n{input}"])->textarea($inputOptions)->label(null, $labelOptions);?>
             </p>
+
             <p class="form-modal-description">
                 Оценка
                 <div class="feedback-card__top--name completion-form-star">
@@ -223,11 +259,15 @@ AppAsset::register($this);
                     <span class="star-disabled"></span>
                 </div>
             </p>
-            <input type="hidden" name="rating" id="rating">
+            <?=$form->field($this->context->completeForm, 'rating', ['template' => "{label}\n{input}"])->hiddenInput(['id' => 'rating'])->label(false);?>
+
             <button class="button modal-button" type="submit">Отправить</button>
-        </form>
+
+        <?php ActiveForm::end(); ?>
+
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
+    <?php endif; ?>
 
     <section class="modal form-modal refusal-form" id="refuse-form">
         <h2>Отказ от задания</h2>
