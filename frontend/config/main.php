@@ -54,7 +54,9 @@ return [
                 '/task/<id:\d+>/reply' => 'tasks/reply',
                 '/task/<id:\d+>/reject' => 'tasks/reject',
                 '/task/<id:\d+>/cancel' => 'tasks/cancel',
-                '/task/<id:\d+>/complete' => 'tasks/complete'
+                '/task/<id:\d+>/complete' => 'tasks/complete',
+                '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
+                '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse'
             ],
         ],
     ],

@@ -795,7 +795,7 @@ footer {
   margin-left: 20px;
   padding: 14px 20px; }
 
-.feedback-card__actions .response-button::before {
+.feedback-card__actions .request-button::before {
   position: absolute;
   content: "";
   width: 19px;

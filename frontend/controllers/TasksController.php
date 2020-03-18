@@ -86,7 +86,7 @@ class TasksController extends SecuredController
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
-        $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->all();
+        $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id, 'reply.active' => true])->all();
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 
@@ -157,5 +157,20 @@ class TasksController extends SecuredController
         $task->status = TaskStatus::CANCELED;
         $task->save();
         return $this->redirect("/tasks");
+    }
+
+    public function actionApply($task, $user) {
+        $task = Task::findOne($task);
+        $task->status = TaskStatus::IN_PROGRESS;
+        $task->contractor_id = $user;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
+
+    public function actionRefuse($task, $reply) {
+        $reply = Reply::findOne($reply);
+        $reply->active = (integer)false;
+        $reply->save();
+        return $this->redirect("/task/$task");
     }
 }

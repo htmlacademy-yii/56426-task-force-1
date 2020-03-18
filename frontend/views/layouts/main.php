@@ -273,6 +273,7 @@ AppAsset::register($this);
     </section>
     <?php endif; ?>
 
+    <?php if (isset($this->context->taskId)): ?>
     <section class="modal form-modal refusal-form" id="refuse-form">
         <h2>Отказ от задания</h2>
         <p>Вы собираетесь отказаться от выполнения задания. Это действие приведёт к снижению вашего рейтинга. Вы уверены?</p>
@@ -284,7 +285,9 @@ AppAsset::register($this);
 
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
+    <?php endif; ?>
 
+    <?php if (isset($this->context->taskId)): ?>
     <section class="modal form-modal refusal-form" id="cancel-form">
         <h2>Отмена задания</h2>
         <p>Вы собираетесь отменить задание. Это действие приведёт к невозможности его исполнения. Вы уверены?</p>
@@ -296,6 +299,7 @@ AppAsset::register($this);
 
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
+    <?php endif; ?>
 
 </div>
 

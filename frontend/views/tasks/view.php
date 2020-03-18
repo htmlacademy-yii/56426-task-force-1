@@ -78,8 +78,8 @@ $this->title = 'Задание - TaskForce';
                         <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
                     <div class="feedback-card__actions">
-                        <a class="button__small-color request-button button" type="button">Подтвердить</a>
-                        <a class="button__small-color refusal-button button" type="button">Отказать</a>
+                        <a href="<?=Url::to(['tasks/apply', 'task' => $task->id, 'user' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
+                        <a href="<?=Url::to(['tasks/refuse', 'task' => $task->id, 'reply' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
                     </div>
                 </div>
                 <?php endforeach; ?>

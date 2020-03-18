@@ -12,8 +12,7 @@ use Yii;
  * @property int $contractor_id Исполнитель
  * @property int|null $price Цена
  * @property string|null $comment Комментарий
- * @property string|null $rating Оценка
- * @property string|null $completed_at Время завершения работы
+ * @property int $active Признак активности
  * @property string $dt_add Время создания записи
  *
  * @property Task $task
@@ -36,9 +35,8 @@ class Reply extends \yii\db\ActiveRecord
     {
         return [
             [['task_id', 'contractor_id'], 'required'],
-            [['task_id', 'contractor_id', 'price'], 'integer'],
-            [['comment', 'rating'], 'string'],
-            [['completed_at', 'dt_add'], 'safe'],
+            [['task_id', 'contractor_id', 'price', 'active'], 'integer'],
+            [['comment'], 'string'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
             [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
         ];
@@ -55,8 +53,7 @@ class Reply extends \yii\db\ActiveRecord
             'contractor_id' => 'Contractor ID',
             'price' => 'Price',
             'comment' => 'Comment',
-            'rating' => 'Rating',
-            'completed_at' => 'Completed At',
+            'active' => 'Active',
             'dt_add' => 'Dt Add',
         ];
     }
