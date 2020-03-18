@@ -52,6 +52,8 @@ return [
                 '/user/<id:\d+>' => 'users/view',
                 '/task/create' => 'tasks/create',
                 '/task/<id:\d+>/reply' => 'tasks/reply',
+                '/task/<id:\d+>/reject' => 'tasks/reject',
+                '/task/<id:\d+>/cancel' => 'tasks/cancel',
                 '/task/<id:\d+>/complete' => 'tasks/complete'
             ],
         ],

@@ -144,4 +144,18 @@ class TasksController extends SecuredController
 
         return $this->redirect("/task/$id");
     }
+
+    public function actionReject($id) {
+        $task = Task::findOne($id);
+        $task->status = TaskStatus::FAILED;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
+
+    public function actionCancel($id) {
+        $task = Task::findOne($id);
+        $task->status = TaskStatus::CANCELED;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
 }
