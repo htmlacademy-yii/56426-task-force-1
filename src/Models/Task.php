@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace HtmlAcademy\Models;
 
@@ -24,7 +23,7 @@ class Task {
         ]
     ];
 
-    public function __construct(int $customerId, int $deadlineAt = NULL) {
+    public function __construct($customerId, $deadlineAt = NULL) {
         $this->customerId = $customerId;
         $this->contractorId = NULL;
         $this->createdAt = time();
@@ -32,7 +31,7 @@ class Task {
         $this->currentStatus = TaskStatus::NEW_TASK;
     }
 
-    public function getStatusNext(string $action): ?int {
+    public function getStatusNext($action) {
         if (!in_array($action, AvailableActions::getAll())) {
             throw new DataTypeException("Действие '".$action."' не существует.");
         }

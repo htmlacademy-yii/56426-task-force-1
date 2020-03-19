@@ -1,22 +1,21 @@
 <?php
-declare(strict_types=1);
 
 namespace HtmlAcademy\Models;
 
 class ActionAccept extends Actions {
 
-    public static function getName(): string {
+    public static function getName() {
         return 'Принять';
     }
 
-    public static function getInnerName(): string {
+    public static function getInnerName() {
         return 'ActionAccept';
     }
 
-    public static function isAvailable(Task $task, int $userRole, int $userId): bool {
-        return $task->currentStatus === TaskStatus::NEW_TASK &&
+    public static function isAvailable($task, $userRole, $userId) {
+        return $task->status === TaskStatus::NEW_TASK &&
                $userRole === UserRole::CONTRACTOR &&
-               $task->customerId !== $userId;
+               $task->customer_id !== $userId;
     }
 
 }

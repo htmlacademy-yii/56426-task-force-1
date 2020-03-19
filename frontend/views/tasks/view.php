@@ -5,6 +5,11 @@
 use Yii;
 use yii\helpers\Url;
 use HtmlAcademy\Models\TaskStatus;
+use HtmlAcademy\Models\ActionAccept;
+use HtmlAcademy\Models\ActionReject;
+use HtmlAcademy\Models\ActionCancel;
+use HtmlAcademy\Models\ActionComplete;
+use HtmlAcademy\Models\AvailableActions;
 
 $this->title = 'Задание - TaskForce';
 
@@ -54,10 +59,20 @@ $this->title = 'Задание - TaskForce';
             </div>
         </div>
         <div class="content-view__action-buttons">
-            <button class="button button__big-color response-button open-modal" type="button" data-for="response-form">Откликнуться</button>
-            <button class="button button__big-color refusal-button open-modal" type="button" data-for="refuse-form">Отказаться</button>
-            <button class="button button__big-color refusal-button open-modal" type="button" data-for="cancel-form">Отменить</button>
-            <button class="button button__big-color request-button open-modal" type="button" data-for="complete-form">Завершить</button>
+            <?php foreach (AvailableActions::getActions($task) as $action): ?>
+                <?php if ($action === ActionAccept::class): ?>
+                    <button class="button button__big-color response-button open-modal" type="button" data-for="response-form">Откликнуться</button>
+                <?php endif; ?>
+                <?php if ($action === ActionReject::class): ?>
+                    <button class="button button__big-color refusal-button open-modal" type="button" data-for="refuse-form">Отказаться</button>
+                <?php endif; ?>
+                <?php if ($action === ActionCancel::class): ?>
+                    <button class="button button__big-color refusal-button open-modal" type="button" data-for="cancel-form">Отменить</button>
+                <?php endif; ?>
+                <?php if ($action === ActionComplete::class): ?>
+                    <button class="button button__big-color request-button open-modal" type="button" data-for="complete-form">Завершить</button>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="content-view__feedback">

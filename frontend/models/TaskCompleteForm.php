@@ -37,7 +37,7 @@ class TaskCompleteForm extends Model
 
         $feedback = new Feedback();
         $feedback->task_id = $taskId;
-        $feedback->contractor_id = Yii::$app->user->getId();
+        $feedback->contractor_id = $task->contractor_id;
         $feedback->rating = $this->rating;
         $feedback->description = $this->comment;
 
