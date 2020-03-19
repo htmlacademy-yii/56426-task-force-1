@@ -2,7 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use Yii;
 use yii\helpers\Url;
+use HtmlAcademy\Models\TaskStatus;
 
 $this->title = 'Задание - TaskForce';
 
@@ -77,10 +79,12 @@ $this->title = 'Задание - TaskForce';
                         <p><?=$reply->comment;?></p>
                         <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
+                    <?php if ($reply->active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
                     <div class="feedback-card__actions">
                         <a href="<?=Url::to(['tasks/apply', 'task' => $task->id, 'user' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
                         <a href="<?=Url::to(['tasks/refuse', 'task' => $task->id, 'reply' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             </div>

@@ -86,7 +86,11 @@ class TasksController extends SecuredController
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
-        $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id, 'reply.active' => true])->all();
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id]);
+        if ($task->customer_id !== Yii::$app->user->getId()) {
+            $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
+        }
+        $replies = $query->all();
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 
