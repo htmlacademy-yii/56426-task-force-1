@@ -94,8 +94,7 @@ create table `reply` (
 	`contractor_id` int not null comment 'Исполнитель',
 	`price` int default null comment 'Цена',
 	`comment` text default null comment 'Комментарий',
-	`rating` enum('1', '2', '3', '4', '5') default null comment 'Оценка',
-	`completed_at` datetime default null comment 'Время завершения работы',
+	`active` boolean not null default true comment 'Признак активности',
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`contractor_id`) references `user`(`id`)

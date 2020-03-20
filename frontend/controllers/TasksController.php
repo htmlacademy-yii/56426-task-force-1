@@ -12,11 +12,17 @@ use frontend\models\Reply;
 use frontend\models\Category;
 use frontend\models\TaskFilterForm;
 use frontend\models\TaskCreateForm;
+use frontend\models\ReplyCreateForm;
+use frontend\models\TaskCompleteForm;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
 class TasksController extends SecuredController
 {
+    public $taskId;
+    public $replyForm;
+    public $completeForm;
+
     public function actionIndex()
     {
         $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
@@ -71,12 +77,20 @@ class TasksController extends SecuredController
 
     public function actionView($id)
     {
+        $this->taskId = $id;
+        $this->replyForm = new ReplyCreateForm();
+        $this->completeForm = new TaskCompleteForm();
+
         $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
-        $replies = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->all();
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id]);
+        if ($task->customer_id !== Yii::$app->user->getId()) {
+            $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
+        }
+        $replies = $query->all();
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 
@@ -105,5 +119,62 @@ class TasksController extends SecuredController
         }
 
         return $this->render('create', ['model' => $model, 'items' => $items]);
+    }
+
+    public function actionReply($id)
+    {
+        $model = new ReplyCreateForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $model->load(Yii::$app->request->post());
+            if ($model->validate()) {
+                $model->save($id);
+            }
+        }
+
+        return $this->redirect("/task/$id");
+    }
+
+    public function actionComplete($id)
+    {
+        $model = new TaskCompleteForm();
+
+        if (Yii::$app->request->getIsPost()) {
+            $model->load(Yii::$app->request->post());
+            if ($model->validate() && $model->save($id)) {
+                return $this->redirect("/tasks");
+            }
+        }
+
+        return $this->redirect("/task/$id");
+    }
+
+    public function actionReject($id) {
+        $task = Task::findOne($id);
+        $task->status = TaskStatus::FAILED;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
+
+    public function actionCancel($id) {
+        $task = Task::findOne($id);
+        $task->status = TaskStatus::CANCELED;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
+
+    public function actionApply($task, $user) {
+        $task = Task::findOne($task);
+        $task->status = TaskStatus::IN_PROGRESS;
+        $task->contractor_id = $user;
+        $task->save();
+        return $this->redirect("/tasks");
+    }
+
+    public function actionRefuse($task, $reply) {
+        $reply = Reply::findOne($reply);
+        $reply->active = (integer)false;
+        $reply->save();
+        return $this->redirect("/task/$task");
     }
 }

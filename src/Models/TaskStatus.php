@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace HtmlAcademy\Models;
 
@@ -19,7 +18,7 @@ class TaskStatus {
         self::FAILED => "Провалено"
     ];
 
-    public static function getAll(): array {
+    public static function getAll() {
         return self::$statuses;
     }
 

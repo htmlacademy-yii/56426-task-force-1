@@ -1,22 +1,21 @@
 <?php
-declare(strict_types=1);
 
 namespace HtmlAcademy\Models;
 
 class ActionCancel extends Actions {
 
-    public static function getName(): string {
+    public static function getName() {
         return 'Отменить';
     }
 
-    public static function getInnerName(): string {
+    public static function getInnerName() {
         return 'ActionCancel';
     }
 
-    public static function isAvailable(Task $task, int $userRole, int $userId): bool {
-        return $task->currentStatus === TaskStatus::NEW_TASK &&
+    public static function isAvailable($task, $userRole, $userId) {
+        return $task->status === TaskStatus::NEW_TASK &&
                $userRole === UserRole::CUSTOMER &&
-               $task->customerId === $userId;
+               $task->customer_id === $userId;
     }
 
 }

@@ -2,7 +2,14 @@
 
 /* @var $this yii\web\View */
 
+use Yii;
 use yii\helpers\Url;
+use HtmlAcademy\Models\TaskStatus;
+use HtmlAcademy\Models\ActionAccept;
+use HtmlAcademy\Models\ActionReject;
+use HtmlAcademy\Models\ActionCancel;
+use HtmlAcademy\Models\ActionComplete;
+use HtmlAcademy\Models\AvailableActions;
 
 $this->title = 'Задание - TaskForce';
 
@@ -52,9 +59,20 @@ $this->title = 'Задание - TaskForce';
             </div>
         </div>
         <div class="content-view__action-buttons">
-            <button class="button button__big-color response-button open-modal" type="button" data-for="response-form">Откликнуться</button>
-            <button class="button button__big-color refusal-button open-modal" type="button" data-for="refuse-form">Отказаться</button>
-            <button class="button button__big-color request-button open-modal" type="button" data-for="complete-form">Завершить</button>
+            <?php foreach (AvailableActions::getActions($task) as $action): ?>
+                <?php if ($action === ActionAccept::class): ?>
+                    <button class="button button__big-color response-button open-modal" type="button" data-for="response-form">Откликнуться</button>
+                <?php endif; ?>
+                <?php if ($action === ActionReject::class): ?>
+                    <button class="button button__big-color refusal-button open-modal" type="button" data-for="refuse-form">Отказаться</button>
+                <?php endif; ?>
+                <?php if ($action === ActionCancel::class): ?>
+                    <button class="button button__big-color refusal-button open-modal" type="button" data-for="cancel-form">Отменить</button>
+                <?php endif; ?>
+                <?php if ($action === ActionComplete::class): ?>
+                    <button class="button button__big-color request-button open-modal" type="button" data-for="complete-form">Завершить</button>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="content-view__feedback">
@@ -76,10 +94,12 @@ $this->title = 'Задание - TaskForce';
                         <p><?=$reply->comment;?></p>
                         <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
+                    <?php if ($reply->active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
                     <div class="feedback-card__actions">
-                        <a class="button__small-color request-button button" type="button">Подтвердить</a>
-                        <a class="button__small-color refusal-button button" type="button">Отказать</a>
+                        <a href="<?=Url::to(['tasks/apply', 'task' => $task->id, 'user' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
+                        <a href="<?=Url::to(['tasks/refuse', 'task' => $task->id, 'reply' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             </div>

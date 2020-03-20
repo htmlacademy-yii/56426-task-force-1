@@ -5,7 +5,9 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
+use HtmlAcademy\Models\TaskStatus;
 
 AppAsset::register($this);
 
@@ -156,6 +158,152 @@ AppAsset::register($this);
     </footer>
 
 </div>
+
+<div class="overlay">
+
+    <?php if (isset($this->context->replyForm)): ?>
+    <section class="modal response-form form-modal" id="response-form">
+        <h2>Отклик на задание</h2>
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(["/task/".$this->context->taskId."/reply"]),
+            'options' => [
+                'name' => $this->context->replyForm->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => 'p'
+                ]
+            ]
+        ]); ?>
+
+            <?php $inputOptions = [
+                'class' => 'response-form-payment input input-middle input-money',
+                'id' => 'response-payment'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'response-payment'
+            ]; ?>
+            <?=$form->field($this->context->replyForm, 'price', ['template' => "{label}\n{input}"])->input('text', $inputOptions)->label(null, $labelOptions);?>
+
+            <?php $inputOptions = [
+                'class' => 'input textarea',
+                'id' => 'response-comment',
+                'rows' => '4'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'response-comment'
+            ]; ?>
+            <?=$form->field($this->context->replyForm, 'comment', ['template' => "{label}\n{input}"])->textarea($inputOptions)->label(null, $labelOptions);?>
+
+            <button class="button modal-button" type="submit">Отправить</button>
+
+        <?php ActiveForm::end(); ?>
+
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+    <?php endif; ?>
+
+    <?php if (isset($this->context->completeForm)): ?>
+    <section class="modal completion-form form-modal" id="complete-form">
+        <h2>Завершение задания</h2>
+        <p class="form-modal-description">Задание выполнено?</p>
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(["/task/".$this->context->taskId."/complete"]),
+            'options' => [
+                'name' => $this->context->completeForm->formName()
+            ],
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ]
+            ]
+        ]); ?>
+
+            <?php $options = [
+                'class' => 'visually-hidden completion-input completion-input--yes',
+                'id' => 'completion-radio--yes',
+                'value' => TaskStatus::COMPLETED,
+                'checked' => ''
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'status', ['template' => "{input}\n{label}"])->input('radio', $options)->label(false);?>
+            <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
+
+            <?php $options = [
+                'class' => 'visually-hidden completion-input completion-input--difficult',
+                'id' => 'completion-radio--yet',
+                'value' => TaskStatus::FAILED
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'status', ['template' => "{input}\n{label}"])->input('radio', $options)->label(false);?>
+            <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
+
+            <p>
+            <?php $inputOptions = [
+                'class' => 'input textarea',
+                'id' => 'completion-comment',
+                'rows' => '4'
+            ];
+            $labelOptions = [
+                'class' => 'form-modal-description',
+                'for' => 'completion-comment'
+            ]; ?>
+            <?=$form->field($this->context->completeForm, 'comment', ['template' => "{label}\n{input}"])->textarea($inputOptions)->label(null, $labelOptions);?>
+            </p>
+
+            <p class="form-modal-description">
+                Оценка
+                <div class="feedback-card__top--name completion-form-star">
+                    <span class="star-disabled"></span>
+                    <span class="star-disabled"></span>
+                    <span class="star-disabled"></span>
+                    <span class="star-disabled"></span>
+                    <span class="star-disabled"></span>
+                </div>
+            </p>
+            <?=$form->field($this->context->completeForm, 'rating', ['template' => "{label}\n{input}"])->hiddenInput(['id' => 'rating'])->label(false);?>
+
+            <button class="button modal-button" type="submit">Отправить</button>
+
+        <?php ActiveForm::end(); ?>
+
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+    <?php endif; ?>
+
+    <?php if (isset($this->context->taskId)): ?>
+    <section class="modal form-modal refusal-form" id="refuse-form">
+        <h2>Отказ от задания</h2>
+        <p>Вы собираетесь отказаться от выполнения задания. Это действие приведёт к снижению вашего рейтинга. Вы уверены?</p>
+        <button class="button__form-modal button" id="close-modal-refuse" type="button">Закрыть</button>
+
+        <?php ActiveForm::begin(['action' => Url::to(["/task/".$this->context->taskId."/reject"])]); ?>
+            <button class="button__form-modal refusal-button button" type="submit">Отказаться</button>
+        <?php ActiveForm::end(); ?>
+
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+    <?php endif; ?>
+
+    <?php if (isset($this->context->taskId)): ?>
+    <section class="modal form-modal refusal-form" id="cancel-form">
+        <h2>Отмена задания</h2>
+        <p>Вы собираетесь отменить задание. Это действие приведёт к невозможности его исполнения. Вы уверены?</p>
+        <button class="button__form-modal button" id="close-modal-cancel" type="button">Закрыть</button>
+
+        <?php ActiveForm::begin(['action' => Url::to(["/task/".$this->context->taskId."/cancel"])]); ?>
+            <button class="button__form-modal refusal-button button" type="submit">Отменить</button>
+        <?php ActiveForm::end(); ?>
+
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+    <?php endif; ?>
+
+</div>
+
+<script src="/js/main.js"></script>
 
 <?php $this->endBody() ?>
 </body>

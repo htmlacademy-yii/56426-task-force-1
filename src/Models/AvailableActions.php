@@ -1,9 +1,9 @@
 <?php
-declare(strict_types=1);
 
 namespace HtmlAcademy\Models;
 
-use HtmlAcademy\Exceptions\DataTypeException;
+use Yii;
+use frontend\models\User;
 
 class AvailableActions {
 
@@ -14,20 +14,17 @@ class AvailableActions {
         ActionReject::class
     ];
 
-    public static function getAll(): array {
+    public static function getAll() {
         return self::$actions;
     }
 
-    public static function getActions(Task $task, int $userRole, int $userId): array {
-        if (!in_array($userRole, UserRole::getAll())) {
-            throw new DataTypeException("Недопустимое значение роли пользователя.");
-        }
+    public static function getActions($task) {
 
         $actionsList = [];
 
         foreach (self::$actions as $action) {
-            if ($action::isAvailable($task, $userRole, $userId)) {
-                $actionsList[] = $action::getName();
+            if ($action::isAvailable($task, User::getRole(), Yii::$app->user->getId())) {
+                $actionsList[] = $action;
             }
         }
 
