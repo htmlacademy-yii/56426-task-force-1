@@ -11,6 +11,7 @@ class TaskCreateForm extends Model
     public $name;
     public $description;
     public $category;
+    public $address;
     public $budget;
     public $expire;
 
@@ -20,6 +21,7 @@ class TaskCreateForm extends Model
             'name' => 'Мне нужно',
             'description' => 'Подробности задания',
             'category' => 'Категория',
+            'address' => 'Локация',
             'budget' => 'Бюджет',
             'expire' => 'Срок исполнения'
         ];
@@ -28,10 +30,9 @@ class TaskCreateForm extends Model
     public function rules()
     {
         return [
-            [['name', 'description', 'category', 'budget', 'expire'], 'safe'],
+            [['name', 'description', 'category', 'address', 'budget', 'expire'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
-            [['name'], 'string'],
-            [['description'], 'string'],
+            [['name', 'description', 'address'], 'string'],
             [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
             [['expire'], 'date', 'format' => 'php:Y-m-d']

@@ -24,6 +24,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/autoComplete.css">
     <?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=e666f398-c983-4bde-8f14-e3fec900592a&lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
@@ -312,6 +313,8 @@ AppAsset::register($this);
 
 </div>
 
+<script src="/js/autoComplete.min.js"></script>
+<script src="/js/address.js"></script>
 <script src="/js/main.js"></script>
 
 <?php $this->endBody() ?>
