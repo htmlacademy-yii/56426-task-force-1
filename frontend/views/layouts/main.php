@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -24,6 +25,16 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/autoComplete.css">
+    <?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        function init() {
+            var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
+        }
+    </script>
+    <?php endif; ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -303,6 +314,8 @@ AppAsset::register($this);
 
 </div>
 
+<script src="/js/autoComplete.min.js"></script>
+<script src="/js/address.js"></script>
 <script src="/js/main.js"></script>
 
 <?php $this->endBody() ?>

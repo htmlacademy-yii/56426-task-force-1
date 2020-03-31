@@ -20,6 +20,8 @@ use HtmlAcademy\Models\UserRole;
 class TasksController extends SecuredController
 {
     public $taskId;
+    public $taskLat;
+    public $taskLong;
     public $replyForm;
     public $completeForm;
 
@@ -85,12 +87,18 @@ class TasksController extends SecuredController
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
+
+        $this->taskLat = $task->lat;
+        $this->taskLong = $task->long;
+
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
+
         $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id]);
         if ($task->customer_id !== Yii::$app->user->getId()) {
             $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
         }
         $replies = $query->all();
+
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 

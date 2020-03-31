@@ -62,8 +62,12 @@ $this->title = 'Создать задание - TaskForce';
                 <!--<input type="file" name="files[]" class="dropzone">-->
             </div>
 
-            <label for="address">Локация</label>
-            <input class="input-navigation input-middle input" id="address" type="search" name="">
+            <?php $options = [
+                'class' => 'input-navigation input-middle input',
+                'id' => 'address',
+                'tag' => false
+            ]; ?>
+            <?=$form->field($model, 'address', ['template' => "{label}\n{input}"])->input('search', $options)->label(null, ['for' => 'address']);?>
             <span>Укажите адрес исполнения, если задание требует присутствия</span>
 
             <div class="create__price-time">
@@ -80,7 +84,6 @@ $this->title = 'Создать задание - TaskForce';
                 <div class="create__price-time--wrapper">
                     <?php $options = [
                         'class' => 'input-middle input input-date',
-                        'rows' => '1',
                         'id' => 'expire',
                         'tag' => false
                     ]; ?>

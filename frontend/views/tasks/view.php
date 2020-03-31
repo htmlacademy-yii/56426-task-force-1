@@ -47,13 +47,13 @@ $this->title = 'Задание - TaskForce';
                 <div class="content-view__location-wrapper">
                     <div class="content-view__map">
                         <a href="#">
-                            <img src="/img/map.jpg" width="361" height="292" alt="Москва, Новый арбат, 23 к. 1">
+                            <div id="task-location-map" style="width: 361px; height: 292px; background-color: lightgray;"></div>
                         </a>
                     </div>
                     <div class="content-view__address">
-                        <span class="address__town">Москва</span><br>
-                        <span>Новый арбат, 23 к. 1</span>
-                        <p>Вход под арку, код домофона 1122</p>
+                        <span class="address__town"><?=explode(', ', $task->address)[0];?></span><br>
+                        <span><?=implode(', ', array_slice(explode(', ', $task->address), 1));?></span>
+                        <p></p>
                     </div>
                 </div>
             </div>
