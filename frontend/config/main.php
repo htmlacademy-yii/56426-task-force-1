@@ -56,7 +56,8 @@ return [
                 '/task/<id:\d+>/cancel' => 'tasks/cancel',
                 '/task/<id:\d+>/complete' => 'tasks/complete',
                 '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
-                '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse'
+                '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse',
+                '/location' => 'location/index'
             ],
         ],
     ],

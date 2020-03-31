@@ -56,6 +56,7 @@ class TaskCreateForm extends Model
         $response = $client->request('GET', '1.x', ['query' => $query]);
 
         $content = $response->getBody()->getContents();
+
         $response_data = json_decode($content, true);
 
         if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['text'])) {

@@ -90,15 +90,17 @@
   -webkit-transition: all -webkit-transform 0.1s ease;
 }
 
+.no_result {
+  list-style: none;
+}
+
 .autoComplete_result {
   margin: 0.15rem auto;
   padding: 0.6rem;
-  max-width: 280px;
   border: 0.05rem solid #e3e3e3;
   list-style: none;
   text-align: left;
-  font-size: 1.1rem;
-  color: rgb(123, 123, 123);
+  font-size: 14px;
   transition: all 0.1s ease-in-out;
   background-color: #fff;
 }
@@ -132,8 +134,9 @@
 
 .autoComplete_highlighted {
   opacity: 1;
-  color: rgba(255, 122, 122, 1);
-  font-weight: bold;
+  color: rgba(255, 122, 122, 1) !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
 }
 
 .autoComplete_highlighted::selection {

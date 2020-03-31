@@ -2,33 +2,23 @@ new autoComplete({
   data: {                              // Data src [Array, Function, Async] | (REQUIRED)
     src: async () => {
       // API key token
-      const token = "e666f398-c983-4bde-8f14-e3fec900592a";
+      const token = "";
       // User search query
       const query = document.querySelector("#address").value;
       // Fetch External Data Source
-      const source = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=${token}&geocode=${query}`);
+      const source = await fetch(`/location?query=${query}`);
       // Format data into JSON
       const data = await source.json();
       // Return Fetched data
-      return data.recipes;
+      return data;
     },
-    key: ["title"],
+    key: ["name"],
     cache: false
   },
-  query: {                               // Query Interceptor               | (Optional)
-        manipulate: (query) => {
-          return query.replace("original text", "alternative text");
-        }
-  },
-  sort: (a, b) => {                      // Sort rendered results ascendingly | (Optional)
-      if (a.match < b.match) return -1;
-      if (a.match > b.match) return 1;
-      return 0;
-  },
-  placeHolder: "Адрес задания...",       // Place Holder text                 | (Optional)
+  placeHolder: "Место задания...",       // Place Holder text                 | (Optional)
   selector: "#address",                  // Input field selector              | (Optional)
   threshold: 3,                          // Min. Chars length to start Engine | (Optional)
-  debounce: 300,                         // Post duration for engine to start | (Optional)
+  debounce: 1000,                        // Post duration for engine to start | (Optional)
   searchEngine: "strict",                // Search Engine type/mode           | (Optional)
   resultsList: {                         // Rendered results list object      | (Optional)
       render: true,
@@ -51,10 +41,10 @@ new autoComplete({
       const result = document.createElement("li");
       result.setAttribute("class", "no_result");
       result.setAttribute("tabindex", "1");
-      result.innerHTML = "No Results";
+      result.innerHTML = "Место не найдено";
       document.querySelector("#address_list").appendChild(result);
   },
   onSelection: feedback => {             // Action script onSelection event | (Optional)
-      console.log(feedback.selection.value);
+      document.querySelector("#address").value = feedback.selection.value["name"];
   }
 });
