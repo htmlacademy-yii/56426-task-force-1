@@ -27,14 +27,15 @@ AppAsset::register($this);
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/autoComplete.css">
     <?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
-    <script type="text/javascript">
-        ymaps.ready(init);
-        function init() {
-            var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
-        }
-    </script>
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
+        <script type="text/javascript">
+            ymaps.ready(init);
+            function init() {
+                var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
+            }
+        </script>
     <?php endif; ?>
+    <script src="/js/messenger.js" type="text/javascript"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>

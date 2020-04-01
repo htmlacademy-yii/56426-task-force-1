@@ -12,6 +12,11 @@ return [
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'api' => [
+            'class' => 'frontend\modules\api\Module'
+        ]
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -57,7 +62,8 @@ return [
                 '/task/<id:\d+>/complete' => 'tasks/complete',
                 '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
                 '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse',
-                '/location' => 'location/index'
+                '/location' => 'location/index',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/contacts']
             ],
         ],
     ],
