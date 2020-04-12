@@ -125,6 +125,6 @@ $this->title = 'Задание - TaskForce';
         </div>
     </div>
     <div id="chat-container">
-        <chat class="connect-desk__chat" task="1"></chat>
+        <chat class="connect-desk__chat" task="<?=$task->id;?>"></chat>
     </div>
 </section>

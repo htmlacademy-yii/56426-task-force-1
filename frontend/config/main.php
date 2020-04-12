@@ -20,6 +20,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'frontend\models\User',
@@ -63,7 +66,7 @@ return [
                 '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
                 '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse',
                 '/location' => 'location/index',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/contacts']
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/messages']
             ],
         ],
     ],
