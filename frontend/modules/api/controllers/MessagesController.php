@@ -3,9 +3,9 @@
 namespace frontend\modules\api\controllers;
 
 use yii\rest\ActiveController;
-use frontend\models\Task;
+use frontend\models\Chat;
 
 class MessagesController extends ActiveController
 {
-    public $modelClass = Task::class;
+    public $modelClass = Chat::class;
 }
