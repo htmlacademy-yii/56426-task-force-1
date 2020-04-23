@@ -2,8 +2,8 @@ Vue.component('chat', {
   props: ['task'],
   template: `<div><h3>Переписка</h3>
              <div class="chat__overflow">
-               <div class="chat__message" v-for="item in messages" :class="{'chat__message--out': item.is_mine}">
-                <p class="chat__message-time">{{ item.published_at }}</p>
+               <div class="chat__message" v-for="item in messages" :class="{'chat__message--out': item.is_mine == 1}">
+                <p class="chat__message-time">{{ item.dt_add }}</p>
                 <p class="chat__message-text">{{ item.message }}</p>
                </div>
               </div>
@@ -26,7 +26,7 @@ Vue.component('chat', {
     sendMessage: function() {
       fetch(this.api_url, {
         method: 'POST',
-        body: JSON.stringify({message: this.message})
+        body: JSON.stringify({task: this.task, message: this.message})
       })
       .then(result => {
         if (result.status !== 201) {

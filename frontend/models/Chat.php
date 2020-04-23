@@ -9,12 +9,13 @@ use Yii;
  *
  * @property int $id Идентификатор
  * @property int $task_id Задание
- * @property int $user_id Пользователь
+ * @property int $contractor_id Исполнитель
+ * @property int $is_mine Сообщение заказчика
  * @property string $message Текст сообщения
  * @property string $dt_add Время создания записи
  *
  * @property Task $task
- * @property User $user
+ * @property User $contractor
  */
 class Chat extends \yii\db\ActiveRecord
 {
@@ -32,12 +33,12 @@ class Chat extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'user_id', 'message'], 'required'],
-            [['task_id', 'user_id'], 'integer'],
+            [['task_id', 'contractor_id', 'is_mine', 'message'], 'required'],
+            [['task_id', 'contractor_id', 'is_mine'], 'integer'],
             [['dt_add'], 'safe'],
             [['message'], 'string', 'max' => 255],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
         ];
     }
 
@@ -49,7 +50,8 @@ class Chat extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'task_id' => 'Task ID',
-            'user_id' => 'User ID',
+            'contractor_id' => 'Contractor ID',
+            'is_mine' => 'Is Mine',
             'message' => 'Message',
             'dt_add' => 'Dt Add',
         ];
@@ -66,12 +68,12 @@ class Chat extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Contractor]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getContractor()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'contractor_id']);
     }
 }
