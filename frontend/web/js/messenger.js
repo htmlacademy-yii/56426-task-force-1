@@ -25,8 +25,8 @@ Vue.component('chat', {
   methods: {
     sendMessage: function() {
       fetch(this.api_url, {
-        method: 'POST',
-        body: JSON.stringify({task: this.task, message: this.message})
+        method: 'PUT',
+        body: JSON.stringify({message: this.message})
       })
       .then(result => {
         if (result.status !== 201) {

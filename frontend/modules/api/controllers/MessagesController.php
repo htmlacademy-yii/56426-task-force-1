@@ -15,7 +15,7 @@ class MessagesController extends ActiveController
     {
         $actions = parent::actions();
 
-        unset($actions['index'], $actions['view'], $actions['create']);
+        unset($actions['index'], $actions['view'], $actions['update']);
 
         return $actions;
     }
@@ -30,8 +30,19 @@ class MessagesController extends ActiveController
         return Chat::find()->joinWith('task')->where(['chat.task_id' => $id, 'chat.contractor_id' => Yii::$app->user->getId()])->orderBy(['dt_add' => SORT_ASC])->asArray()->all();
     }
 
-    public function actionCreate()
+    public function actionUpdate($id)
     {
-        return new $this->modelClass();
+        $data = json_decode(Yii::$app->getRequest()->getRawBody());
+
+        if (strlen($data->message)) {
+            $model = new Chat();
+            $model->task_id = $id;
+            $model->contractor_id = Yii::$app->user->getId();
+            $model->is_mine = 0;
+            $model->message = $data->message;
+            $model->save();
+        }
+
+        return;
     }
 }
