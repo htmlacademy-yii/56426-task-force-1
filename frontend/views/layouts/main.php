@@ -104,7 +104,7 @@ AppAsset::register($this);
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">
-                    <li><a href="#">Мои задания</a></li>
+                    <li><a href="<?=Url::to(['/list']);?>">Мои задания</a></li>
                     <li><a href="#">Настройки</a></li>
                     <li><a href="<?=Url::to(['/logout']);?>">Выход</a></li>
                 </ul>
