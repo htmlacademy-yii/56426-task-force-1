@@ -10,6 +10,7 @@ use Yii;
  * @property int $id Идентификатор
  * @property int $task_id Задание
  * @property int $contractor_id Исполнитель
+ * @property int $is_mine Сообщение заказчика
  * @property string $message Текст сообщения
  * @property string $dt_add Время создания записи
  *
@@ -32,8 +33,8 @@ class Chat extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'contractor_id', 'message'], 'required'],
-            [['task_id', 'contractor_id'], 'integer'],
+            [['task_id', 'contractor_id', 'is_mine', 'message'], 'required'],
+            [['task_id', 'contractor_id', 'is_mine'], 'integer'],
             [['dt_add'], 'safe'],
             [['message'], 'string', 'max' => 255],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
@@ -50,12 +51,15 @@ class Chat extends \yii\db\ActiveRecord
             'id' => 'ID',
             'task_id' => 'Task ID',
             'contractor_id' => 'Contractor ID',
+            'is_mine' => 'Is Mine',
             'message' => 'Message',
             'dt_add' => 'Dt Add',
         ];
     }
 
     /**
+     * Gets query for [[Task]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getTask()
@@ -64,6 +68,8 @@ class Chat extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Contractor]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getContractor()

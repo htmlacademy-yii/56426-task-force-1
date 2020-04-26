@@ -104,6 +104,7 @@ create table `chat` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`task_id` int not null comment 'Задание',
 	`contractor_id` int not null comment 'Исполнитель',
+	`is_mine` boolean not null default false comment 'Сообщение заказчика',
 	`message` varchar(255) not null comment 'Текст сообщения',
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`task_id`) references `task`(`id`),

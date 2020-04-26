@@ -26,15 +26,6 @@ AppAsset::register($this);
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/autoComplete.css">
-    <?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
-    <script type="text/javascript">
-        ymaps.ready(init);
-        function init() {
-            var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
-        }
-    </script>
-    <?php endif; ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -314,9 +305,24 @@ AppAsset::register($this);
 
 </div>
 
-<script src="/js/autoComplete.min.js"></script>
-<script src="/js/address.js"></script>
-<script src="/js/main.js"></script>
+<script src="/js/autoComplete.min.js" type="text/javascript"></script>
+<script src="/js/address.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+<?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        function init() {
+            var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
+        }
+    </script>
+<?php endif; ?>
+
+<?php if (isset($this->context->taskId)): ?>
+    <script src="/js/messengerLib.js" type="text/javascript"></script>
+    <script src="/js/messenger.js" type="text/javascript"></script>
+<?php endif; ?>
 
 <?php $this->endBody() ?>
 </body>
