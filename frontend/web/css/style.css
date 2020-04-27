@@ -1717,11 +1717,20 @@ footer {
       align-self: center;
   color: #ffffff; }
 
-.done-status {
-  background-color: #00b894; }
-
 .new-status {
   background-color: #ff7f50; }
+
+.active-status {
+  background-color: #20b800; }
+
+.completed-status {
+  background-color: #00b894; }
+
+.canceled-status {
+  background-color: #626262; }
+
+.failed-status {
+  background-color: #007cb8; }
 
 .my-list__bottom {
   display: -webkit-box;
