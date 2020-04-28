@@ -24,6 +24,7 @@ class TasksController extends SecuredController
     public $taskLong;
     public $replyForm;
     public $completeForm;
+    public $autoComplete;
 
     public function actionIndex()
     {
@@ -104,6 +105,8 @@ class TasksController extends SecuredController
 
     public function actionCreate()
     {
+        $this->autoComplete = true;
+
         if (User::getRole() !== UserRole::CUSTOMER) {
             return $this->redirect('/tasks');
         }

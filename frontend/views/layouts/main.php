@@ -67,7 +67,7 @@ AppAsset::register($this);
                     <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
                     <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
                     <li class="site-list__item"><a href="<?=Url::to(['/task/create']);?>">Создать задание</a></li>
-                    <li class="site-list__item"><a href="#">Мой профиль</a></li>
+                    <li class="site-list__item"><a href="<?=Url::to(['/account']);?>">Мой профиль</a></li>
                 </ul>
             </div>
             <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
@@ -105,7 +105,7 @@ AppAsset::register($this);
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">
                     <li><a href="<?=Url::to(['/list']);?>">Мои задания</a></li>
-                    <li><a href="#">Настройки</a></li>
+                    <li><a href="<?=Url::to(['/account']);?>">Настройки</a></li>
                     <li><a href="<?=Url::to(['/logout']);?>">Выход</a></li>
                 </ul>
             </div>
@@ -305,23 +305,49 @@ AppAsset::register($this);
 
 </div>
 
-<script src="/js/autoComplete.min.js" type="text/javascript"></script>
-<script src="/js/address.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+
+<?php if (isset($this->context->autoComplete)): ?>
+    <script src="js/autoComplete.min.js" type="text/javascript"></script>
+    <script src="js/address.js" type="text/javascript"></script>
+<?php endif; ?>
 
 <?php if (isset($this->context->taskLat) && isset($this->context->taskLong)): ?>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=<?=Yii::$app->params['apiKey'];?>&lang=<?=Yii::$app->language;?>" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(init);
         function init() {
-            var myMap = new ymaps.Map("task-location-map", {center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>], zoom: 15});
+            var myMap = new ymaps.Map(
+                "task-location-map",
+                {
+                    center: [<?=$this->context->taskLat;?>, <?=$this->context->taskLong;?>],
+                    zoom: 15
+                }
+            );
         }
     </script>
 <?php endif; ?>
 
 <?php if (isset($this->context->taskId)): ?>
-    <script src="/js/messengerLib.js" type="text/javascript"></script>
-    <script src="/js/messenger.js" type="text/javascript"></script>
+    <script src="js/messengerLib.js" type="text/javascript"></script>
+    <script src="js/messenger.js" type="text/javascript"></script>
+<?php endif; ?>
+
+<?php if (isset($this->context->dropzone)): ?>
+    <script src="js/dropzone.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        Dropzone.autoDiscover = false;
+        var dropzone = new Dropzone(
+            ".dropzone",
+            {
+                url: window.location.href,
+                maxFiles: 6,
+                uploadMultiple: true,
+                acceptedFiles: 'image/*',
+                previewTemplate: '<a href="#"><img data-dz-thumbnail alt="Фото работы"></a>'
+            }
+        );
+    </script>
 <?php endif; ?>
 
 <?php $this->endBody() ?>
