@@ -43,6 +43,21 @@ create table `settings` (
 	foreign key (`user_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
+create table `notice` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`secrecy` boolean not null default false comment 'Признак скрытности',
+	`name` varchar(64) not null unique comment 'Название уведомления',
+	`dt_add` timestamp not null default now() comment 'Время создания записи'
+) engine `innodb` character set `utf8`;
+
+create table `user_notice` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null comment 'Пользователь',
+	`notice_id` int not null comment 'Уведомление',
+	foreign key (`user_id`) references `user`(`id`),
+	foreign key (`notice_id`) references `notice`(`id`)
+) engine `innodb` character set `utf8`;
+
 create table `favorite` (
 	`user_id` int not null unique comment 'Пользователь',
 	foreign key (`user_id`) references `user`(`id`)
