@@ -5,7 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 
-class UserSignupForm extends Model
+class UserAccountForm extends Model
 {
     public $name;
     public $email;
@@ -17,6 +17,26 @@ class UserSignupForm extends Model
     public $phone;
     public $skype;
     public $messenger;
+
+    private $user;
+    private $profile;
+
+    function __construct() {
+        $userId = Yii::$app->user->getId();
+
+        $this->user = User::findOne($userId);
+        $this->profile = Profile::find()->where(['user_id' => $userId])->one();
+
+        $this->name = $this->user->name;
+        $this->email = $this->user->email;
+        
+        $this->city = $this->profile->city_id;
+        $this->birthday = $this->profile->birthday;
+        $this->about = $this->profile->about;
+        $this->phone = $this->profile->phone;
+        $this->skype = $this->profile->skype;
+        $this->messenger = $this->profile->messenger;
+    }
 
     public function attributeLabels()
     {
@@ -37,37 +57,34 @@ class UserSignupForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'phone', 'skype', 'messenger'], 'safe'],
-            [['name', 'email', 'city', 'password'], 'required'],
+            [['name', 'email', 'city', 'birthday', 'about', 'password', 'repassword', 'phone', 'skype', 'messenger'], 'safe'],
+            [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
             [['email'], 'unique', 'targetClass' => User::className()],
             [['city'], 'integer'],
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
-            [['password'], 'string', 'min' => 8]
+            [['password', 'repassword'], 'string', 'min' => 8]
         ];
     }
 
     public function save()
     {
-        $userId = Yii::$app->user->getId();
-
-        $user = User::findOne($userId);
-        $profile = Profile::find()->where(['user_id' => $userId])->one();
-
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->password = Yii::$app->security->generatePasswordHash($this->password);
+        $this->user->name = $this->name;
+        $this->user->email = $this->email;
+        if (!empty($this->password)) {
+            $this->user->password = Yii::$app->security->generatePasswordHash($this->password);
+        }
         
-        $profile->city_id = $this->city;
-        $profile->birthday = $this->birthday;
-        $profile->about = $this->about;
-        $profile->phone = $this->phone;
-        $profile->skype = $this->skype;
-        $profile->messenger = $this->messenger;
+        $this->profile->city_id = $this->city;
+        $this->profile->birthday = $this->birthday;
+        $this->profile->about = $this->about;
+        $this->profile->phone = $this->phone;
+        $this->profile->skype = $this->skype;
+        $this->profile->messenger = $this->messenger;
 
         $transaction = Yii::$app->db->beginTransaction();
-        if ($user->save() && $profile->save()) {
+        if ($this->user->save() && $this->profile->save()) {
             $transaction->commit();
             return true;
         } else {

@@ -2,14 +2,37 @@
 
 /* @var $this yii\web\View */
 
+use yii\widgets\ActiveForm;
+
 $this->title = 'Настройки аккаунта - TaskForce';
 
 ?>
 
+<div style="margin-right:20px;width:260px;">
+<?php
+    if (empty($model->password)) $model->password = null;
+    if (empty($model->repassword)) $model->repassword = null;
+?>
+<?php foreach ($model->attributes as $key => $value): ?>
+    <span style="padding-right:10px;display:inline-block;width:100px;text-align:right;"><?=$key;?>:</span><?=(isset($value)) ? $value : "<i>empty</i>";?><br>
+<?php endforeach; ?>
+</div>
+
 <section class="account__redaction-wrapper">
     <h1>Редактирование настроек профиля</h1>
 
-    <form enctype="multipart/form-data" id="account" method="post">
+    <?php $form = ActiveForm::begin([
+        'id' => 'account',
+        'options' => [
+            'enctype' => 'multipart/form-data',
+            'name' => $model->formName()
+        ],
+        'fieldConfig' => [
+            'options' => [
+                'tag' => false
+            ]
+        ]
+    ]); ?>
 
         <div class="account__redaction-section">
 
@@ -17,36 +40,57 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="./img/man-glasses.jpg" width="156" height="156">
+                    <img src="img/man-glasses.jpg" width="156" height="156">
                     <input type="file" name="avatar" id="upload-avatar">
                     <label for="upload-avatar" class="link-regular">Сменить аватар</label>
                 </div>
                 <div class="account__redaction">
                     <div class="account__input account__input--name">
-                        <label for="200">Ваше имя</label>
-                        <input class="input textarea" id="200" name="" placeholder="Титов Денис" disabled>
+                        <?php $options = [
+                            'class' => 'input textarea',
+                            'id' => 'name',
+                            'disabled' => '',
+                            //'placeholder' => 'Input your name',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'name']);?>
                     </div>
                     <div class="account__input account__input--email">
-                        <label for="201">email</label>
-                        <input class="input textarea" id="201" name="" placeholder="DenisT@bk.ru">
+                    <?php $options = [
+                            'class' => 'input textarea',
+                            'id' => 'email',
+                            //'placeholder' => 'Student@htmlacademy.ru',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'email', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'email']);?>
                     </div>
                     <div class="account__input account__input--name">
-                        <label for="202">Город</label>
-                        <select class="multiple-select input multiple-select-big" size="1" id="202" name="town[]">
-                            <option value="Moscow">Москва</option>
-                            <option selected="" value="SPB">Санкт-Петербург</option>
-                            <option value="Krasnodar">Краснодар</option>
-                            <option value="Irkutsk">Иркутск</option>
-                            <option value="Vladivostok">Владивосток</option>
-                        </select>
+                        <?php $options = [
+                            'class' => 'multiple-select input multiple-select-big',
+                            'size' => '1',
+                            'id' => 'city',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(null, ['for' => 'city']);?>
                     </div>
                     <div class="account__input account__input--date">
-                        <label for="203">День рождения</label>
-                        <input id="203" class="input-middle input input-date" type="date" placeholder="15.08.1987">
+                        <?php $options = [
+                            'class' => 'input-middle input input-date',
+                            'id' => 'birthday',
+                            //'placeholder' => 'dd.mm.yyyy',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'birthday', ['template' => "{label}\n{input}"])->input('date', $options)->label(null, ['for' => 'birthday']);?>
                     </div>
                     <div class="account__input account__input--info">
-                        <label for="204">Информация о себе</label>
-                        <textarea class="input textarea" rows="7" id="204" name="" placeholder="Place your text"></textarea>
+                        <?php $options = [
+                            'class' => 'input textarea',
+                            'rows' => '7',
+                            'id' => 'about',
+                            //'placeholder' => 'Place your text',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'about', ['template' => "{label}\n{input}"])->textarea($options)->label(null, ['for' => 'about']);?>
                     </div>
                 </div>
             </div>
@@ -74,12 +118,22 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                    <label for="211">Новый пароль</label>
-                    <input class="input textarea" type="password" id="211" name="" value="moiparol">
+                        <?php $options = [
+                            'class' => 'input textarea',
+                            'id' => 'password',
+                            //'placeholder' => 'Input new password',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
                 </div>
                 <div class="account__input">
-                    <label for="212">Повтор пароля</label>
-                    <input class="input textarea" type="password" id="212" name="" value="moiparol">
+                <?php $options = [
+                            'class' => 'input textarea',
+                            'id' => 'repassword',
+                            //'placeholder' => 'Input new password',
+                            'tag' => false
+                        ]; ?>
+                        <?=$form->field($model, 'repassword', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'repassword']);?>
                 </div>
             </div>
 
@@ -93,16 +147,31 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                    <label for="213">Телефон</label>
-                    <input class="input textarea" type="tel" id="213" name="" placeholder="8 (555) 187 44 87">
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'phone',
+                        //'placeholder' => '8 (123) 456-78-90',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'phone', ['template' => "{label}\n{input}"])->input('tel', $options)->label(null, ['for' => 'phone']);?>
                 </div>
                 <div class="account__input">
-                    <label for="214">Skype</label>
-                    <input class="input textarea" type="password" id="214" name="" placeholder="DenisT">
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'skype',
+                        //'placeholder' => 'Student',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'skype', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'skype']);?>
                 </div>
                 <div class="account__input">
-                    <label for="215">Telegram</label>
-                    <input class="input textarea" id="215" name="" placeholder="@DenisT">
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'messenger',
+                        //'placeholder' => 'Input your name',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'messenger', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'messenger']);?>
                 </div>
             </div>
 
@@ -130,6 +199,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
         <button class="button" type="submit">Сохранить изменения</button>
 
-    </form>
+    <?php ActiveForm::end(); ?>
 
 </section>

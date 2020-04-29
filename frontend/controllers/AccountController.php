@@ -2,6 +2,10 @@
 
 namespace frontend\controllers;
 
+use Yii;
+use frontend\models\City;
+use frontend\models\UserAccountForm;
+
 class AccountController extends SecuredController
 {
     public $dropzone;
@@ -10,6 +14,19 @@ class AccountController extends SecuredController
     {
         $this->dropzone = true;
 
-        return $this->render('index');
+        $model = new UserAccountForm();
+
+        $cities = City::find()->orderBy(['name' => SORT_ASC])->all();
+
+        $items = ['none' => ''];
+        foreach ($cities as $city) {
+            $items[$city->id] = $city->name;
+        }
+
+        if (Yii::$app->request->getIsPost()) {
+            $model->load(Yii::$app->request->post());
+        }
+
+        return $this->render('index', ['model' => $model, 'items' => $items]);
     }
 }
