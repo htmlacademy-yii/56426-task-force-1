@@ -8,13 +8,14 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
 ?>
 
-<div style="margin-right:20px;width:260px;">
+<div style="margin-right:20px;width:300px;">
 <?php
     if (empty($model->password)) $model->password = null;
-    if (empty($model->repassword)) $model->repassword = null;
+    if (empty($model->password_retype)) $model->password_retype = null;
 ?>
 <?php foreach ($model->attributes as $key => $value): ?>
-    <span style="padding-right:10px;display:inline-block;width:100px;text-align:right;"><?=$key;?>:</span><?=(isset($value)) ? $value : "<i>empty</i>";?><br>
+    <span style="padding-right:10px;display:inline-block;width:120px;text-align:right;"><?=$key;?>:</span>
+    <?=(isset($value)) ? $value : "<i>empty</i>";?><br>
 <?php endforeach; ?>
 </div>
 
@@ -129,11 +130,11 @@ $this->title = 'Настройки аккаунта - TaskForce';
                 <div class="account__input">
                 <?php $options = [
                             'class' => 'input textarea',
-                            'id' => 'repassword',
+                            'id' => 'password_retype',
                             //'placeholder' => 'Input new password',
                             'tag' => false
                         ]; ?>
-                        <?=$form->field($model, 'repassword', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'repassword']);?>
+                        <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
                 </div>
             </div>
 

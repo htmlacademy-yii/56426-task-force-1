@@ -25,6 +25,9 @@ class AccountController extends SecuredController
 
         if (Yii::$app->request->getIsPost()) {
             $model->load(Yii::$app->request->post());
+            if ($model->validate() && $model->save()) {
+                $model->loadAccountData(Yii::$app->user->getId());
+            }
         }
 
         return $this->render('index', ['model' => $model, 'items' => $items]);

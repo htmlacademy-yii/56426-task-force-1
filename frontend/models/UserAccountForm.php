@@ -13,7 +13,7 @@ class UserAccountForm extends Model
     public $birthday;
     public $about;
     public $password;
-    public $repassword;
+    public $password_retype;
     public $phone;
     public $skype;
     public $messenger;
@@ -21,21 +21,9 @@ class UserAccountForm extends Model
     private $user;
     private $profile;
 
-    function __construct() {
-        $userId = Yii::$app->user->getId();
-
-        $this->user = User::findOne($userId);
-        $this->profile = Profile::find()->where(['user_id' => $userId])->one();
-
-        $this->name = $this->user->name;
-        $this->email = $this->user->email;
-        
-        $this->city = $this->profile->city_id;
-        $this->birthday = $this->profile->birthday;
-        $this->about = $this->profile->about;
-        $this->phone = $this->profile->phone;
-        $this->skype = $this->profile->skype;
-        $this->messenger = $this->profile->messenger;
+    function __construct()
+    {
+        $this->loadAccountData(Yii::$app->user->getId());
     }
 
     public function attributeLabels()
@@ -47,7 +35,7 @@ class UserAccountForm extends Model
             'birthday' => 'День рождения',
             'about' => 'Информация о себе',
             'password' => 'Новый пароль',
-            'repassword' => 'Повтор пароля',
+            'password_retype' => 'Повтор пароля',
             'phone' => 'Телефон',
             'skype' => 'Skype',
             'messenger' => 'Telegram'
@@ -57,14 +45,15 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'repassword', 'phone', 'skype', 'messenger'], 'safe'],
+            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger'], 'safe'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::className()],
+            [['email'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => ['email' => 'email']],
             [['city'], 'integer'],
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
-            [['password', 'repassword'], 'string', 'min' => 8]
+            [['password'], 'string', 'min' => 8],
+            [['password'], 'compare', 'compareAttribute' => 'password_retype']
         ];
     }
 
@@ -91,5 +80,27 @@ class UserAccountForm extends Model
             $transaction->rollback();
             return false;
         }
+    }
+
+    public function loadAccountData($userId)
+    {
+        $this->user = User::findOne($userId);
+        $this->profile = Profile::find()->where(['user_id' => $userId])->one();
+
+        if (is_null($this->user) || is_null($this->profile)) return false;
+
+        $this->name = $this->user->name;
+        $this->email = $this->user->email;
+        $this->password = null;
+        $this->password_retype = null;
+        
+        $this->city = $this->profile->city_id;
+        $this->birthday = $this->profile->birthday;
+        $this->about = $this->profile->about;
+        $this->phone = $this->profile->phone;
+        $this->skype = $this->profile->skype;
+        $this->messenger = $this->profile->messenger;
+
+        return true;
     }
 }
