@@ -16,20 +16,19 @@ class AccountController extends SecuredController
 
         $model = new UserAccountForm();
 
-        $cities = City::find()->orderBy(['name' => SORT_ASC])->all();
-
-        $items = ['none' => ''];
-        foreach ($cities as $city) {
-            $items[$city->id] = $city->name;
+        $cities = ['none' => ''];
+        $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
+        foreach ($rows as $item) {
+            $cities[$item->id] = $item->name;
         }
 
         if (Yii::$app->request->getIsPost()) {
             $model->load(Yii::$app->request->post());
             if ($model->validate() && $model->save()) {
-                $model->loadAccountData(Yii::$app->user->getId());
+                    //$model->loadAccountData(Yii::$app->user->getId());
             }
         }
 
-        return $this->render('index', ['model' => $model, 'items' => $items]);
+        return $this->render('index', ['model' => $model, 'cities' => $cities]);
     }
 }

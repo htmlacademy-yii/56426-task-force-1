@@ -17,6 +17,7 @@ class UserAccountForm extends Model
     public $phone;
     public $skype;
     public $messenger;
+    public $skills;
 
     private $user;
     private $profile;
@@ -45,7 +46,7 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger'], 'safe'],
+            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills'], 'safe'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
@@ -100,6 +101,24 @@ class UserAccountForm extends Model
         $this->phone = $this->profile->phone;
         $this->skype = $this->profile->skype;
         $this->messenger = $this->profile->messenger;
+
+        // Список всех навыков
+        $skills = Skill::find()->asArray()->all();
+
+        // Список навыков пользователя
+        $rows = UserSkill::find()->where(['user_id' => $userId])->all();
+        $userSkill = [];
+        foreach ($rows as $item) {
+            $userSkill[] = $item->skill_id;
+        }
+
+        // Список порядковых номеров галочек
+        $this->skills = [];
+        foreach ($skills as $key =>$value) {
+            if (in_array($value['id'], $userSkill)) {
+                $this->skills[] = $key;
+            }
+        }
 
         return true;
     }

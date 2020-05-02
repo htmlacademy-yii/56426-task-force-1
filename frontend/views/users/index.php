@@ -75,20 +75,17 @@ $this->title = 'Список исполнителей - TaskForce';
                     Skill::find()->asArray()->all(),
                     [
                         'tag' => false,
-                        'itemOptions' => [
-
-                        ],
-                        'item' => function ($index, $label, $name, $checked, $value){
+                        'item' => function ($index, $label, $name, $checked, $value) {
                             return Html::checkbox($name, $checked, [
                                 'value' => $value,
-                                'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
+                                'label' => '<label for="'.$label['id'].'">'.$label['name'].'</label>',
                                 'labelOptions' => [
                                     'class' => 'control-label'
                                 ],
                                 'class' => 'visually-hidden checkbox__input',
                                 'id' => $label['id']
                             ]);
-                        },
+                        }
                     ])->label(false);
                 ?>
             </fieldset>

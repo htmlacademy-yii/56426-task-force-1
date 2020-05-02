@@ -699,7 +699,7 @@ footer {
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 12px;
   width: 18px;
   height: 18px;
   background-image: url("../img/checkbox-off.png");
@@ -710,7 +710,7 @@ footer {
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 12px;
   width: 18px;
   height: 18px;
   background-image: url("../img/checkbox-on.png");

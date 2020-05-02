@@ -2,7 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\models\Skill;
 
 $this->title = 'Настройки аккаунта - TaskForce';
 
@@ -15,8 +17,9 @@ $this->title = 'Настройки аккаунта - TaskForce';
 ?>
 <?php foreach ($model->attributes as $key => $value): ?>
     <span style="padding-right:10px;display:inline-block;width:120px;text-align:right;"><?=$key;?>:</span>
-    <?=(isset($value)) ? $value : "<i>empty</i>";?><br>
+    <?=(isset($value)) ? var_dump($value) : "<i>empty</i>";?><br>
 <?php endforeach; ?>
+
 </div>
 
 <section class="account__redaction-wrapper">
@@ -72,7 +75,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                             'id' => 'city',
                             'tag' => false
                         ]; ?>
-                        <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(null, ['for' => 'city']);?>
+                        <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($cities, $options)->label(null, ['for' => 'city']);?>
                     </div>
                     <div class="account__input account__input--date">
                         <?php $options = [
@@ -100,18 +103,24 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper">
                 <div class="search-task__categories account_checkbox--bottom">
-                    <input class="visually-hidden checkbox__input" id="205" type="checkbox" name="" value="" checked>
-                    <label for="205">Курьерские услуги</label>
-                    <input class="visually-hidden checkbox__input" id="206" type="checkbox" name="" value="" checked>
-                    <label for="206">Грузоперевозки</label>
-                    <input class="visually-hidden checkbox__input" id="207" type="checkbox" name="" value="">
-                    <label for="207">Перевод текстов</label>
-                    <input class="visually-hidden checkbox__input" id="208" type="checkbox" name="" value="" checked>
-                    <label for="208">Ремонт транспорта</label>
-                    <input class="visually-hidden checkbox__input" id="209" type="checkbox" name="" value="">
-                    <label for="209">Удалённая помощь</label>
-                    <input class="visually-hidden checkbox__input" id="210" type="checkbox" name="" value="">
-                    <label for="210">Выезд на стрелку</label>
+                    <?php
+                    echo $form->field($model, 'skills')->checkboxList(
+                        Skill::find()->asArray()->all(),
+                        [
+                            'tag' => false,
+                            'item' => function ($index, $label, $name, $checked, $value) {
+                                return Html::checkbox($name, $checked, [
+                                    'value' => $value,
+                                    'label' => '<label for="'.$label['id'].'">'.$label['name'].'</label>',
+                                    'labelOptions' => [
+                                        'class' => 'control-label'
+                                    ],
+                                    'class' => 'visually-hidden checkbox__input',
+                                    'id' => $label['id']
+                                ]);
+                            }
+                        ])->label(false);
+                    ?>
                 </div>
             </div>
 

@@ -670,7 +670,7 @@ footer {
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 12px;
   width: 18px;
   height: 18px;
   background-image: url("../img/checkbox-off.png");
@@ -681,7 +681,7 @@ footer {
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 12px;
   width: 18px;
   height: 18px;
   background-image: url("../img/checkbox-on.png");
@@ -2509,4 +2509,5 @@ footer {
   padding-bottom: 0 !important;
   padding-left: 0 !important;
   padding-top: 0 !important;
+  margin-right: 26px;
 }
