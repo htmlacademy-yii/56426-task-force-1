@@ -23,9 +23,9 @@ class AccountController extends SecuredController
         }
 
         if (Yii::$app->request->getIsPost()) {
-            $model->load(Yii::$app->request->post());
-            if ($model->validate() && $model->save()) {
-                    //$model->loadAccountData(Yii::$app->user->getId());
+            $formData = Yii::$app->request->post();
+            if ($model->load($formData) && $model->validate()) {
+                $model->save();
             }
         }
 

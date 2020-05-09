@@ -1,6 +1,6 @@
-create database `yii2advanced` character set `utf8` collate `utf8_general_ci`;
+create database `56426-task-force-1` character set `utf8` collate `utf8_general_ci`;
 
-use `yii2advanced`;
+use `56426-task-force-1`;
 
 create table `city` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
@@ -36,26 +36,12 @@ create table `profile` (
 create table `settings` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`user_id` int not null unique comment 'Пользователь',
+	`task_actions` boolean not null default true comment 'Действия по заданию',
 	`new_message` boolean not null default true comment 'Новое сообщение',
-	`task_action` boolean not null default true comment 'Действие по заданию',
-	`new_job` boolean not null default true comment 'Новый отзыв',
-	`show_contacts` boolean not null default true comment 'Показывать мои контакты только заказчику',
+	`new_feedback` boolean not null default true comment 'Новый отзыв',
+	`show_contacts` boolean not null default false comment 'Показывать мои контакты только заказчику',
+	`hide_profile` boolean not null default true comment 'Не показывать мой профиль',
 	foreign key (`user_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
-
-create table `notice` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`secrecy` boolean not null default false comment 'Признак скрытности',
-	`name` varchar(64) not null unique comment 'Название уведомления',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
-
-create table `user_notice` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null comment 'Пользователь',
-	`notice_id` int not null comment 'Уведомление',
-	foreign key (`user_id`) references `user`(`id`),
-	foreign key (`notice_id`) references `notice`(`id`)
 ) engine `innodb` character set `utf8`;
 
 create table `favorite` (

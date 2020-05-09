@@ -131,7 +131,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         <?php $options = [
                             'class' => 'input textarea',
                             'id' => 'password',
-                            //'placeholder' => 'Input new password',
                             'tag' => false
                         ]; ?>
                         <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
@@ -140,7 +139,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
                 <?php $options = [
                             'class' => 'input textarea',
                             'id' => 'password_retype',
-                            //'placeholder' => 'Input new password',
                             'tag' => false
                         ]; ?>
                         <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
@@ -160,7 +158,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php $options = [
                         'class' => 'input textarea',
                         'id' => 'phone',
-                        //'placeholder' => '8 (123) 456-78-90',
                         'tag' => false
                     ]; ?>
                     <?=$form->field($model, 'phone', ['template' => "{label}\n{input}"])->input('tel', $options)->label(null, ['for' => 'phone']);?>
@@ -169,7 +166,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php $options = [
                         'class' => 'input textarea',
                         'id' => 'skype',
-                        //'placeholder' => 'Student',
                         'tag' => false
                     ]; ?>
                     <?=$form->field($model, 'skype', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'skype']);?>
@@ -178,7 +174,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php $options = [
                         'class' => 'input textarea',
                         'id' => 'messenger',
-                        //'placeholder' => 'Input your name',
                         'tag' => false
                     ]; ?>
                     <?=$form->field($model, 'messenger', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'messenger']);?>
@@ -189,20 +184,50 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <h4>Уведомления</h4>
             <div class="account__redaction-section-wrapper account_section--bottom">
+
                 <div class="search-task__categories account_checkbox--bottom">
-                    <input class="visually-hidden checkbox__input" id="216" type="checkbox" name="" value="" checked>
-                    <label for="216">Новое сообщение</label>
-                    <input class="visually-hidden checkbox__input" id="217" type="checkbox" name="" value="" checked>
-                    <label for="217">Действия по заданию</label>
-                    <input class="visually-hidden checkbox__input" id="218" type="checkbox" name="" value="" checked>
-                    <label for="218">Новый отзыв</label>
+
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => 'task_actions',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'task_actions', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'task_actions']);?>
+    
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => 'new_message',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'new_message', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_message']);?>
+
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => 'new_feedback',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'new_feedback', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_feedback']);?>
+
                 </div>
+
                 <div class="search-task__categories account_checkbox account_checkbox--secrecy">
-                    <input class="visually-hidden checkbox__input" id="219" type="checkbox" name="" value="">
-                    <label for="219">Показывать мои контакты только заказчику</label>
-                    <input class="visually-hidden checkbox__input" id="220" type="checkbox" name="" value="" checked>
-                    <label for="220">Не показывать мой профиль</label>
+
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => 'show_contacts',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'show_contacts', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'show_contacts']);?>
+    
+                    <?php $options = [
+                        'class' => 'visually-hidden checkbox__input',
+                        'id' => 'hide_profile',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'hide_profile', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'hide_profile']);?>
+
                 </div>
+
             </div>
 
         </div>
