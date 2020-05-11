@@ -2577,9 +2577,22 @@ fieldset {
   background-image: url("../img/star.png"); }
 
 .dz-image,
+.dz-message span,
 .dz-success-mark,
 .dz-error-mark {
   display: none !important;
+}
+
+.dz-clickable {
+  cursor: pointer;
+}
+
+.dz-message{
+  margin-bottom: 10px;
+}
+
+.dz-image-preview {
+  margin-right: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

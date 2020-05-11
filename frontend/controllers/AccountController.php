@@ -21,17 +21,17 @@ class AccountController extends SecuredController
         foreach ($rows as $item) {
             $cities[$item->id] = $item->name;
         }
-
+        $formData = [];
         if (Yii::$app->request->getIsPost()) {
             if (Yii::$app->request->getIsAjax()) {
                 return "AJAX query accepted";
             }
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {
-                $model->save();
+                //$model->save();
             }
         }
 
-        return $this->render('index', ['model' => $model, 'cities' => $cities]);
+        return $this->render('index', ['model' => $model, 'cities' => $cities, 'formData' => $formData]);
     }
 }

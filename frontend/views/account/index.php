@@ -19,6 +19,8 @@ $this->title = 'Настройки аккаунта - TaskForce';
     <span style="padding-right:10px;display:inline-block;width:120px;text-align:right;"><?=$key;?>:</span>
     <?=(isset($value)) ? var_dump($value) : "<i>empty</i>";?><br>
 <?php endforeach; ?>
+<span style="padding-right:10px;display:inline-block;width:120px;text-align:right;">formData:</span>
+<?=(isset($formData)) ? var_dump($formData) : "<i>empty</i>";?><br>
 
 </div>
 
