@@ -123,6 +123,18 @@ create table `feedback` (
 	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
 
+create table `event` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null comment 'Пользователь',
+	`task_id` int not null comment 'Задание',
+	`is_viewed` boolean not null default false comment 'Признак просмотра',
+	`type` enum('close', 'executor', 'message') not null comment 'Тип события',
+	`text` varchar(255) not null comment 'Текст события',
+	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	foreign key (`user_id`) references `user`(`id`),
+	foreign key (`task_id`) references `task`(`id`)
+) engine `innodb` character set `utf8`;
+
 create table `file` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`path` varchar(255) not null unique comment 'Путь к файлу',

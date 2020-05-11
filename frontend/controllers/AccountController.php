@@ -23,6 +23,9 @@ class AccountController extends SecuredController
         }
 
         if (Yii::$app->request->getIsPost()) {
+            if (Yii::$app->request->getIsAjax()) {
+                return "AJAX query accepted";
+            }
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {
                 $model->save();

@@ -26,6 +26,9 @@ footer {
   display: table-row;
   height: 1px; }
 
+fieldset {
+  border: none; }
+
 @font-face {
   font-family: MyriadPro;
   src: url(../fonts/MyriadPro-Light.woff);
@@ -205,16 +208,19 @@ footer {
   width: 180px;
   border: 1px solid #000000;
   border-radius: 8px; }
-  .lightbulb__pop-up h3 {
-    position: relative;
-    font-size: 16px;
-    margin-top: 7px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid #ececec; }
-  .lightbulb__pop-up p {
-    font-size: 11px; }
-  .lightbulb__pop-up:hover {
-    display: block; }
+
+.lightbulb__pop-up h3 {
+  position: relative;
+  font-size: 16px;
+  margin-top: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ececec; }
+
+.lightbulb__pop-up p {
+  font-size: 11px; }
+
+.lightbulb__pop-up:hover {
+  display: block; }
 
 .lightbulb__pop-up h3::after {
   position: absolute;
@@ -231,6 +237,23 @@ footer {
   border-bottom: 15px solid #000000;
   top: -37px;
   left: 70px; }
+
+.lightbulb__viewed {
+  display: block;
+  position: absolute;
+  top: 12px;
+  right: 8px;
+  width: 60px;
+  font-size: 10px;
+  font-style: italic;
+  color: #1e90ff;
+  cursor: pointer;
+  z-index: 15;
+}
+
+.lightbulb__viewed--hidden {
+  display: none;
+}
 
 .lightbulb__new-task {
   position: relative;
@@ -585,6 +608,7 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: column;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
@@ -2040,6 +2064,8 @@ footer {
     width: 219px;
     padding-top: 10px;
     padding-bottom: 10px; }
+  .account_checkbox--bottom .control-label {
+    margin-right: 26px; }
 
 .account_checkbox--secrecy label {
   width: 345px; }
@@ -2555,4 +2581,11 @@ footer {
 .dz-error-mark {
   display: none !important;
 }
+
 /*# sourceMappingURL=style.css.map */
+
+.control-label {
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+}

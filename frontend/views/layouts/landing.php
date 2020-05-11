@@ -63,7 +63,7 @@ AppAsset::register($this);
             <div class="header__account--index">
                 <a href="#" class="header__account-enter open-modal" data-for="enter-form"><span>Вход</span></a>
                 или
-                <a href="/signup" class="header__account-registration">Регистрация</a>
+                <a href="<?=Url::to(['/signup']);?>" class="header__account-registration">Регистрация</a>
             </div>
         </div>
     </header>
@@ -88,12 +88,12 @@ AppAsset::register($this);
             </div>
             <div class="page-footer__links">
                 <ul class="links__list">
-                    <li class="links__item"><a href="#">Задания</a></li>
-                    <li class="links__item"><a href="#">Мой профиль</a></li>
-                    <li class="links__item"><a href="#">Исполнители</a></li>
-                    <li class="links__item"><a href="#">Регистрация</a></li>
-                    <li class="links__item"><a href="#">Создать задание</a></li>
-                    <li class="links__item"><a href="#">Справка</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/account']);?>">Мой профиль</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/signup']);?>">Регистрация</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/task/create']);?>">Создать задание</a></li>
+                    <li class="links__item"><a href="<?=Url::to(['/help']);?>">Справка</a></li>
                 </ul>
             </div>
             <div class="page-footer__copyright">
