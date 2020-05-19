@@ -4,6 +4,8 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 class UserAccountForm extends Model
 {
@@ -23,11 +25,13 @@ class UserAccountForm extends Model
     public $new_feedback;
     public $show_contacts;
     public $hide_profile;
-    public $file;
+    public $image_files;
 
     private $user;
     private $profile;
     private $settings;
+
+    private $saved_files;
 
     function __construct()
     {
@@ -58,7 +62,7 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile', 'file'], 'safe'],
+            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile', 'image_files'], 'safe'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
@@ -66,7 +70,8 @@ class UserAccountForm extends Model
             [['city'], 'integer'],
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
-            [['password'], 'compare', 'compareAttribute' => 'password_retype']
+            [['password'], 'compare', 'compareAttribute' => 'password_retype'],
+            [['image_files'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 6],
         ];
     }
 
@@ -101,6 +106,14 @@ class UserAccountForm extends Model
             $userSkill->save();
         }
 
+        $files = is_array($this->saved_files) ? $this->saved_files : [];
+        foreach ($files as $file) {
+            $photo = new Photo();
+            $photo->user_id = Yii::$app->user->getId();
+            $photo->file = $file;
+            $photo->save();
+        }
+
         $transaction = Yii::$app->db->beginTransaction();
         if ($this->user->save() && $this->profile->save() && $this->settings->save()) {
             $transaction->commit();
@@ -109,6 +122,27 @@ class UserAccountForm extends Model
             $transaction->rollback();
             return false;
         }
+    }
+
+    public function upload()
+    {
+        $path = 'files/'.Yii::$app->user->getId().'/'.date('Ymd');
+
+        if (!file_exists($path)) {
+            if (!mkdir($path, 0755, true)) {
+                return false;
+            }
+        }
+
+        $this->saved_files = [];
+        foreach ($this->image_files as $file) {
+            $fileName = $path.'/'.$file->baseName.'.'.$file->extension;
+            if ($file->saveAs($fileName)) {
+                $this->saved_files[] = $fileName;
+            }
+        }
+
+        return true;
     }
 
     public function loadAccountData($userId)

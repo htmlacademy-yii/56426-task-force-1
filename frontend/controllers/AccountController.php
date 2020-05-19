@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\web\UploadedFile;
 use frontend\models\City;
 use frontend\models\UserAccountForm;
 
@@ -21,17 +22,16 @@ class AccountController extends SecuredController
         foreach ($rows as $item) {
             $cities[$item->id] = $item->name;
         }
-        $formData = [];
+
         if (Yii::$app->request->getIsPost()) {
-            if (Yii::$app->request->getIsAjax()) {
-                return "AJAX query accepted";
-            }
-            $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                //$model->save();
-            }
+//            $model->load(Yii::$app->request->post());
+            $model->image_files = UploadedFile::getInstances($model, 'image_files');
+//            if ($model->validate()) {
+                $model->upload();
+                $model->save();
+//            }
         }
 
-        return $this->render('index', ['model' => $model, 'cities' => $cities, 'formData' => $formData]);
+        return $this->render('index', ['model' => $model, 'cities' => $cities]);
     }
 }

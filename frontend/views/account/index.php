@@ -11,16 +11,16 @@ $this->title = 'Настройки аккаунта - TaskForce';
 ?>
 
 <div style="margin-right:20px;width:300px;">
+
 <?php
     if (empty($model->password)) $model->password = null;
     if (empty($model->password_retype)) $model->password_retype = null;
 ?>
+
 <?php foreach ($model->attributes as $key => $value): ?>
     <span style="padding-right:10px;display:inline-block;width:120px;text-align:right;"><?=$key;?>:</span>
     <?=(isset($value)) ? var_dump($value) : "<i>empty</i>";?><br>
 <?php endforeach; ?>
-<span style="padding-right:10px;display:inline-block;width:120px;text-align:right;">formData:</span>
-<?=(isset($formData)) ? var_dump($formData) : "<i>empty</i>";?><br>
 
 </div>
 
@@ -150,6 +150,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
             <h3 class="div-line">Фото работ</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
+                <?=$form->field($model, 'image_files[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
                 <span class="dropzone">Выбрать фотографии</span>
             </div>
 

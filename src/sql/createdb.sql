@@ -149,3 +149,10 @@ create table `attachment` (
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`file_id`) references `file`(`id`)
 ) engine `innodb` character set `utf8`;
+
+create table `photo` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null comment 'Пользователь',
+	`file` varchar(255) not null unique comment 'Файл',
+	foreign key (`user_id`) references `user`(`id`)
+) engine `innodb` character set `utf8`;
