@@ -56,7 +56,7 @@ $this->title = 'Список заданий - TaskForce';
             ]
         ]); ?>
 
-            <fieldset class="search-task__categories">
+            <fieldset class="search-task__categories  search-task__filter">
                 <legend>Категории</legend>
                 <?php
                 echo $form->field($model, 'categories')->checkboxList(
@@ -78,7 +78,7 @@ $this->title = 'Список заданий - TaskForce';
                 ?>
             </fieldset>
 
-            <fieldset class="search-task__categories">
+            <fieldset class="search-task__categories  search-task__filter">
                 <legend>Дополнительно</legend>
                 <?php foreach ($model->extraFields() as $attribute): ?>
                     <?php $options = [

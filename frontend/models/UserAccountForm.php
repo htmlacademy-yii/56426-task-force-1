@@ -19,12 +19,15 @@ class UserAccountForm extends Model
     public $phone;
     public $skype;
     public $messenger;
+
     public $skills;
+
     public $task_actions;
     public $new_message;
     public $new_feedback;
     public $show_contacts;
     public $hide_profile;
+
     public $image_files;
 
     private $user;
@@ -71,7 +74,7 @@ class UserAccountForm extends Model
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
             [['password'], 'compare', 'compareAttribute' => 'password_retype'],
-            [['image_files'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 6],
+            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 6],
         ];
     }
 
@@ -90,11 +93,11 @@ class UserAccountForm extends Model
         $this->profile->skype = $this->skype;
         $this->profile->messenger = $this->messenger;
 
-        $this->settings->task_actions = $this->task_actions;
-        $this->settings->new_message = $this->new_message;
-        $this->settings->new_feedback = $this->new_feedback;
-        $this->settings->show_contacts = $this->show_contacts;
-        $this->settings->hide_profile = $this->hide_profile;
+        $this->settings->task_actions = (int)$this->task_actions;
+        $this->settings->new_message = (int)$this->new_message;
+        $this->settings->new_feedback = (int)$this->new_feedback;
+        $this->settings->show_contacts = (int)$this->show_contacts;
+        $this->settings->hide_profile = (int)$this->hide_profile;
 
         UserSkill::deleteAll(['user_id' => Yii::$app->user->getId()]);
         $allSkills = Skill::find()->asArray()->all();
@@ -179,11 +182,11 @@ class UserAccountForm extends Model
             $this->settings->user_id = $userId;
         }
         
-        $this->task_actions = $this->settings->task_actions;
-        $this->new_message = $this->settings->new_message;
-        $this->new_feedback = $this->settings->new_feedback;
-        $this->show_contacts = $this->settings->show_contacts;
-        $this->hide_profile = $this->settings->hide_profile;
+        $this->task_actions = (boolean)$this->settings->task_actions;
+        $this->new_message = (boolean)$this->settings->new_message;
+        $this->new_feedback = (boolean)$this->settings->new_feedback;
+        $this->show_contacts = (boolean)$this->settings->show_contacts;
+        $this->hide_profile = (boolean)$this->settings->hide_profile;
 
         // Список всех навыков
         $allSkills = Skill::find()->asArray()->all();
@@ -203,5 +206,23 @@ class UserAccountForm extends Model
         }
 
         return true;
+    }
+
+    public function clearSettings()
+    {
+        $this->task_actions = false;
+        $this->new_message = false;
+        $this->new_feedback = false;
+        $this->show_contacts = false;
+        $this->hide_profile = false;
+    }
+
+    public function convertSettings()
+    {
+        $this->task_actions = (boolean)$this->task_actions;
+        $this->new_message = (boolean)$this->new_message;
+        $this->new_feedback = (boolean)$this->new_feedback;
+        $this->show_contacts = (boolean)$this->show_contacts;
+        $this->hide_profile = (boolean)$this->hide_profile;
     }
 }

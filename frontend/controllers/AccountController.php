@@ -24,12 +24,14 @@ class AccountController extends SecuredController
         }
 
         if (Yii::$app->request->getIsPost()) {
-//            $model->load(Yii::$app->request->post());
+            $model->clearSettings();
+            $model->load(Yii::$app->request->post());
+            $model->convertSettings();
             $model->image_files = UploadedFile::getInstances($model, 'image_files');
-//            if ($model->validate()) {
+            if ($model->validate()) {
                 $model->upload();
                 $model->save();
-//            }
+            }
         }
 
         return $this->render('index', ['model' => $model, 'cities' => $cities]);

@@ -473,28 +473,42 @@ fieldset {
   height: 50px;
   border: 3px solid transparent;
   border-radius: 10px;
-  margin-top: 33px; }
-
-.new-task__icon--translation {
-  background-image: url("../img/man-running.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 35px;
+  margin-top: 33px; }
+
+.new-task__icon--translation {
+  background-image: url("../img/translate.png");
   background-color: #5f5f5f; }
 
 .new-task__icon--clean {
   background-image: url("../img/clean.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 32px;
   background-color: #ff6b81; }
 
 .new-task__icon--cargo {
   background-image: url("../img/cargo.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 35px;
   background-color: #ff7f50; }
+
+.new-task__icon--neo {
+  background-image: url("../img/computer.png");
+  background-color: #373cff; }
+
+.new-task__icon--flat {
+  background-image: url("../img/roller.png");
+  background-color: #ff2f4d; }
+
+.new-task__icon--repair {
+  background-image: url("../img/repair.png");
+  background-color: #232323; }
+
+.new-task__icon--beauty {
+  background-image: url("../img/hairdryer.png");
+  background-color: #ff4dd1; }
+
+.new-task__icon--photo {
+  background-image: url("../img/camera.png");
+  background-color: #ff9245; }
 
 .new-task__price {
   font-weight: 700;
@@ -512,6 +526,21 @@ fieldset {
 
 .new-task__price--cargo {
   color: #ff7f50; }
+
+.new-task__price--neo {
+  color: #373cff; }
+
+.new-task__price--flat {
+  color: #ff2f4d; }
+
+.new-task__price--repair {
+  color: #232323; }
+
+.new-task__price--beauty {
+  color: #ff4dd1; }
+
+.new-task__price--photo {
+  color: #ff9245; }
 
 .new-task_description {
   margin-top: 0; }
@@ -802,6 +831,10 @@ fieldset {
 .connection-button {
   background-color: #00e096; }
 
+.request-button {
+  background-color: #3366ff;
+}
+
 .button__chat {
   width: 32px;
   height: 32px;
@@ -900,6 +933,7 @@ fieldset {
 
 .link-regular {
   color: #1e90ff;
+  cursor: pointer;
   text-decoration: none; }
   .link-regular:hover {
     text-decoration: underline;
@@ -1660,7 +1694,7 @@ fieldset {
   color: #33ff33; }
   .five-rate span {
     background-image: url("../img/five-rate.png"); }
-      
+
 .registration__user {
   margin-right: auto;
   padding-left: 10px; }
@@ -2053,8 +2087,6 @@ fieldset {
     width: 219px;
     padding-top: 10px;
     padding-bottom: 10px; }
-  .account_checkbox--bottom .control-label {
-    margin-right: 26px; }
 
 .account_checkbox--secrecy label {
   width: 345px; }
@@ -2333,6 +2365,42 @@ fieldset {
   background-repeat: no-repeat;
   background-color: #2f3542; }
 
+.task-translation {
+  background-image: url("../img/translate.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #5f5f5f; }
+
+.task-neo {
+  background-image: url("../img/computer.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #373cff; }
+
+.task-flat {
+  background-image: url("../img/roller.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #ff2f4d; }
+
+.task-repair {
+  background-image: url("../img/repair.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #232323; }
+
+.task-beauty {
+  background-image: url("../img/hairdryer.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #ff4dd1; }
+
+.task-photo {
+  background-image: url("../img/camera.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #ff9245; }
+
 .landing-task-description {
   padding-left: 20px;
   padding-right: 10px;
@@ -2550,8 +2618,12 @@ fieldset {
 
 /*# sourceMappingURL=style.css.map */
 
-.control-label {
-  padding-bottom: 0 !important;
-  padding-left: 0 !important;
-  padding-top: 0 !important;
+.search-task__filter > .control-label {
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-top: 0;
+}
+
+.search-task__account > .control-label {
+  margin-right: 26px;
 }

@@ -835,7 +835,6 @@ fieldset {
   background-color: #3366ff;
 }
 
-
 .button__chat {
   width: 32px;
   height: 32px;
@@ -934,7 +933,7 @@ fieldset {
 
 .link-regular {
   color: #1e90ff;
-  cursor:pointer;
+  cursor: pointer;
   text-decoration: none; }
   .link-regular:hover {
     text-decoration: underline;
@@ -1671,15 +1670,30 @@ fieldset {
     top: 16px;
     left: 30px; }
 
-.five-rate {
-  color: #ff7f50; }
-  .five-rate span {
-    background-image: url("../img/star-rate.png"); }
+.one-rate {
+  color: #ff0000; }
+  .one-rate span {
+    background-image: url("../img/one-rate.png"); }
+
+.two-rate {
+  color: #ff6633; }
+  .two-rate span {
+    background-image: url("../img/two-rate.png"); }
 
 .three-rate {
-  color: #c71d1d; }
+  color: #ffcc33; }
   .three-rate span {
     background-image: url("../img/three-rate.png"); }
+
+.four-rate {
+  color: #99cc00; }
+  .four-rate span {
+    background-image: url("../img/four-rate.png"); }
+
+.five-rate {
+  color: #33ff33; }
+  .five-rate span {
+    background-image: url("../img/five-rate.png"); }
 
 .registration__user {
   margin-right: auto;
@@ -1757,11 +1771,20 @@ fieldset {
       align-self: center;
   color: #ffffff; }
 
-.done-status {
-  background-color: #00b894; }
-
 .new-status {
   background-color: #ff7f50; }
+
+.active-status {
+  background-color: #20b800; }
+
+.completed-status {
+  background-color: #00b894; }
+
+.canceled-status {
+  background-color: #626262; }
+
+.failed-status {
+  background-color: #007cb8; }
 
 .my-list__bottom {
   display: -webkit-box;
@@ -2064,8 +2087,6 @@ fieldset {
     width: 219px;
     padding-top: 10px;
     padding-bottom: 10px; }
-  .account_checkbox--bottom .control-label {
-    margin-right: 26px; }
 
 .account_checkbox--secrecy label {
   width: 345px; }
@@ -2543,8 +2564,8 @@ fieldset {
   margin-bottom: 14px; }
 
 .completion-input:checked + label {
-  -webkit-box-shadow: inset 0 0px 10px rgba(0, 0, 0, 0.2);
-          box-shadow: inset 0 0px 10px rgba(0, 0, 0, 0.2); }
+  -webkit-box-shadow: inset 0 0px 10px rgba(0, 0, 0, 0.5);
+          box-shadow: inset 0 0px 10px rgba(0, 0, 0, 0.5); }
 
 .completion-input--yes:checked + label {
   background-color: #00df82; }
@@ -2554,13 +2575,13 @@ fieldset {
 
 .completion-label--yes {
   width: 108px;
-  background-color: #00e096;
+  background-color: #00bb7d;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px; }
 
 .completion-label--difficult {
   width: 227px;
-  background-color: #ffaa00;
+  background-color: #bb7d00;
   margin-left: -6px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px; }
@@ -2597,8 +2618,12 @@ fieldset {
 
 /*# sourceMappingURL=style.css.map */
 
-.control-label {
-  padding-bottom: 0 !important;
-  padding-left: 0 !important;
-  padding-top: 0 !important;
+.search-task__filter > .control-label {
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-top: 0;
+}
+
+.search-task__account > .control-label {
+  margin-right: 26px;
 }
