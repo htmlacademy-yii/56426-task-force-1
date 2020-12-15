@@ -28,7 +28,7 @@ class EventsController extends SecuredController
         $events = Event::find()->where(['user_id' => Yii::$app->user->getId(), 'is_viewed' => false])->all();
         foreach ($events as $event) {
             $event->is_viewed = 1;
-            $event->save();
+            $event->update();
         }
 
         return true;

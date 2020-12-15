@@ -14,7 +14,7 @@ class ListController extends SecuredController
     {
         $query = Task::find()->joinWith('category'); //->where(['task.status' => TaskStatus::NEW_TASK]);
 
-        if (User::getRole() == UserRole::CUSTOMER) {
+        if (User::getRole() === UserRole::CUSTOMER) {
             $query->joinWith('contractor')->andWhere(['task.customer_id' => Yii::$app->user->getId()]);
         } else {
             $query->joinWith('customer')->andWhere(['task.contractor_id' => Yii::$app->user->getId()]);

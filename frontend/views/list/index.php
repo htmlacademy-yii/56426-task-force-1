@@ -77,12 +77,12 @@ $this->title = 'Мои задания - TaskForce';
                 </div>
                 <div class="task-status <?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
                 <p class="new-task_description"><?=$task->description;?></p>
-                <?php $user = ($role == UserRole::CUSTOMER) ? $task->contractor : $task->customer; ?>
+                <?php $user = ($role === UserRole::CUSTOMER) ? $task->contractor : $task->customer; ?>
                 <?php if (isset($user)): ?>
                 <div class="feedback-card__top ">
                     <a href="#"><img src="img/man-glasses.jpg" width="36" height="36"></a>
                     <div class="feedback-card__top--name my-list__bottom">
-                        <p class="link-name"><a <?=($role == UserRole::CUSTOMER) ? 'href="'.Url::to(['/user/'.$user->id]).'"' : '' ;?> class="link-regular"><?=$user->name;?></a></p>
+                        <p class="link-name"><a <?=($role === UserRole::CUSTOMER) ? 'href="'.Url::to(['/user/'.$user->id]).'"' : '' ;?> class="link-regular"><?=$user->name;?></a></p>
                         <a href="#" class="my-list__bottom-chat  my-list__bottom-chat--new"><b>3</b></a>
                         <?=$user->stars();?>
                         <b><?=sprintf("%0.2f", $user->rating());?></b>

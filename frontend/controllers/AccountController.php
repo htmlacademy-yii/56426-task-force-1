@@ -17,11 +17,8 @@ class AccountController extends SecuredController
 
         $model = new UserAccountForm();
 
-        $cities = ['none' => ''];
         $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
-        foreach ($rows as $item) {
-            $cities[$item->id] = $item->name;
-        }
+        $cities = ['none' => ''] + array_column($rows, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
             $model->clearSettings();

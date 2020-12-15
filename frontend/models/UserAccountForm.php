@@ -182,20 +182,17 @@ class UserAccountForm extends Model
             $this->settings->user_id = $userId;
         }
         
-        $this->task_actions = (boolean)$this->settings->task_actions;
-        $this->new_message = (boolean)$this->settings->new_message;
-        $this->new_feedback = (boolean)$this->settings->new_feedback;
-        $this->show_contacts = (boolean)$this->settings->show_contacts;
-        $this->hide_profile = (boolean)$this->settings->hide_profile;
+        $this->task_actions = (bool)$this->settings->task_actions;
+        $this->new_message = (bool)$this->settings->new_message;
+        $this->new_feedback = (bool)$this->settings->new_feedback;
+        $this->show_contacts = (bool)$this->settings->show_contacts;
+        $this->hide_profile = (bool)$this->settings->hide_profile;
 
         // Список всех навыков
         $allSkills = Skill::find()->asArray()->all();
 
         // Список идентификаторов навыков пользователя
-        $userSkills = [];
-        foreach ($this->user->skills as $skill) {
-            $userSkills[] = $skill->id;
-        }
+        $userSkills = array_column($this->user->skills, 'id');
 
         // Список порядковых номеров галочек
         $this->skills = [];
@@ -219,10 +216,10 @@ class UserAccountForm extends Model
 
     public function convertSettings()
     {
-        $this->task_actions = (boolean)$this->task_actions;
-        $this->new_message = (boolean)$this->new_message;
-        $this->new_feedback = (boolean)$this->new_feedback;
-        $this->show_contacts = (boolean)$this->show_contacts;
-        $this->hide_profile = (boolean)$this->hide_profile;
+        $this->task_actions = (bool)$this->task_actions;
+        $this->new_message = (bool)$this->new_message;
+        $this->new_feedback = (bool)$this->new_feedback;
+        $this->show_contacts = (bool)$this->show_contacts;
+        $this->hide_profile = (bool)$this->hide_profile;
     }
 }
