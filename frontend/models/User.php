@@ -26,6 +26,7 @@ use HtmlAcademy\Models\UserRole;
  * @property Task[] $customerTasks
  * @property Task[] $contractorTasks
  * @property Skill[] $skills
+ * @property Notice[] $notices
  */
 
 class User extends ActiveRecord implements IdentityInterface
@@ -235,5 +236,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function getSkills()
     {
         return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Notices]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotices()
+    {
+        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
     }
 }

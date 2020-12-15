@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Алексей Фетисов](https://up.htmlacademy.ru/yii/1/user/56426).
-* Наставник: [Влад Григорев](https://up.htmlacademy.ru/yii/1/user/1249831).
+* Наставник: [Evgeny Savich](https://up.htmlacademy.ru/yii/1/user/68926).
 
 ---
 

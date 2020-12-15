@@ -78,7 +78,7 @@ $this->title = 'Создать задание - TaskForce';
                         'id' => 'budget',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'budget', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(null, ['for' => 'expire']);?>
+                    <?=$form->field($model, 'budget', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(null, ['for' => 'budget']);?>
                     <span>Не заполняйте для оценки исполнителем</span>
                 </div>
                 <div class="create__price-time--wrapper">
@@ -87,7 +87,7 @@ $this->title = 'Создать задание - TaskForce';
                         'id' => 'expire',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'expire', ['template' => "{label}\n{input}"])->input('date', $options)->label(null, ['for' => 'date']);?>
+                    <?=$form->field($model, 'expire', ['template' => "{label}\n{input}"])->input('date', $options)->label(null, ['for' => 'expire']);?>
                     <span>Укажите крайний срок исполнения</span>
                 </div>
             </div>

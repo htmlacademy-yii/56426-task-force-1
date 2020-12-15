@@ -56,32 +56,29 @@ $this->title = 'Список заданий - TaskForce';
             ]
         ]); ?>
 
-            <fieldset class="search-task__categories">
+            <fieldset class="search-task__categories  search-task__filter">
                 <legend>Категории</legend>
                 <?php
                 echo $form->field($model, 'categories')->checkboxList(
                     Category::find()->asArray()->all(),
                     [
                         'tag' => false,
-                        'itemOptions' => [
-
-                        ],
-                        'item' => function ($index, $label, $name, $checked, $value){
+                        'item' => function ($index, $label, $name, $checked, $value) {
                             return Html::checkbox($name, $checked, [
                                 'value' => $value,
-                                'label' => '<label for="' . $label['id'] . '">' . $label['name'] . '</label>',
+                                'label' => '<label for="'.$label['id'].'">'.$label['name'].'</label>',
                                 'labelOptions' => [
                                     'class' => 'control-label'
                                 ],
                                 'class' => 'visually-hidden checkbox__input',
                                 'id' => $label['id']
                             ]);
-                        },
+                        }
                     ])->label(false);
                 ?>
             </fieldset>
 
-            <fieldset class="search-task__categories">
+            <fieldset class="search-task__categories  search-task__filter">
                 <legend>Дополнительно</legend>
                 <?php foreach ($model->extraFields() as $attribute): ?>
                     <?php $options = [

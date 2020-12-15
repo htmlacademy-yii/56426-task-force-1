@@ -1,6 +1,6 @@
-create database `yii2advanced` character set `utf8` collate `utf8_general_ci`;
+create database `56426-task-force-1` character set `utf8` collate `utf8_general_ci`;
 
-use `yii2advanced`;
+use `56426-task-force-1`;
 
 create table `city` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
@@ -36,10 +36,11 @@ create table `profile` (
 create table `settings` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`user_id` int not null unique comment 'Пользователь',
+	`task_actions` boolean not null default true comment 'Действия по заданию',
 	`new_message` boolean not null default true comment 'Новое сообщение',
-	`task_action` boolean not null default true comment 'Действие по заданию',
-	`new_job` boolean not null default true comment 'Новый отзыв',
-	`show_contacts` boolean not null default true comment 'Показывать мои контакты только заказчику',
+	`new_feedback` boolean not null default true comment 'Новый отзыв',
+	`show_contacts` boolean not null default false comment 'Показывать мои контакты только заказчику',
+	`hide_profile` boolean not null default true comment 'Не показывать мой профиль',
 	foreign key (`user_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
@@ -122,6 +123,18 @@ create table `feedback` (
 	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
 
+create table `event` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null comment 'Пользователь',
+	`task_id` int not null comment 'Задание',
+	`is_viewed` boolean not null default false comment 'Признак просмотра',
+	`type` enum('close', 'executor', 'message') not null comment 'Тип события',
+	`text` varchar(255) not null comment 'Текст события',
+	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	foreign key (`user_id`) references `user`(`id`),
+	foreign key (`task_id`) references `task`(`id`)
+) engine `innodb` character set `utf8`;
+
 create table `file` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`path` varchar(255) not null unique comment 'Путь к файлу',
@@ -135,4 +148,11 @@ create table `attachment` (
 	`file_id` int not null comment 'Файл',
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`file_id`) references `file`(`id`)
+) engine `innodb` character set `utf8`;
+
+create table `photo` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`user_id` int not null comment 'Пользователь',
+	`file` varchar(255) not null unique comment 'Файл',
+	foreign key (`user_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
