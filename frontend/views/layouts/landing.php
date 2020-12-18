@@ -139,6 +139,8 @@ AppAsset::register($this);
 
             <button class="button" type="submit">Войти</button>
 
+            <a href="<?=Url::to(['/tasks']);?>"><button class="button  button__oauth">Вход через ВКонтакте</button></a>
+
         <?php ActiveForm::end(); ?>
 
         <button class="form-modal-close" type="button">Закрыть</button>

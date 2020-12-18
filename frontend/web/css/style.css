@@ -848,6 +848,9 @@ fieldset {
   margin-left: 20px;
   padding: 14px 20px; }
 
+.button__oauth {
+  margin-top: 20px; }
+
 .feedback-card__actions .request-button::before {
   position: absolute;
   content: "";
