@@ -139,9 +139,11 @@ AppAsset::register($this);
 
             <button class="button" type="submit">Войти</button>
 
-            <a href="<?=Url::to(['/tasks']);?>"><button class="button  button__oauth">Вход через ВКонтакте</button></a>
-
         <?php ActiveForm::end(); ?>
+
+        <a href="<?=Url::to('https://oauth.vk.com/authorize?client_id=7702913&redirect_uri=http://taskforce.pc1/auth&scope=email&response_type=code');?>">
+            <button class="button  button__oauth">Вход через ВКонтакте</button>
+        </a>
 
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>

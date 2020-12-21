@@ -298,11 +298,9 @@ fieldset {
   padding: 0;
   margin: 0; }
   .account__pop-up-list li {
-    padding-left: 30px;
-    padding-top: 12px;
-    padding-bottom: 12px;
     vertical-align: middle; }
     .account__pop-up-list li:hover {
+      text-shadow: 0 0 1px #77bbff, 0 0 1px #77bbff;
       background-color: #cee6ff;
       border-radius: 8px;
       cursor: pointer; }
@@ -317,6 +315,11 @@ fieldset {
     border-bottom: 12px solid #b8dbff;
     top: -24px;
     right: 12px; }
+
+.account__pop-up-btn {
+  padding-left: 30px;
+  padding-top: 12px;
+  padding-bottom: 12px; }
 
 .header__account {
   font-family: "Roboto", sans-serif;
@@ -2130,6 +2133,7 @@ fieldset {
   .header__account--index a {
     color: #ffffff; }
     .header__account--index a:hover {
+      text-shadow: 0 0 1px #ffffff, 0 0 1px #ffffff;
       text-decoration: none; }
 
 .landing-top {

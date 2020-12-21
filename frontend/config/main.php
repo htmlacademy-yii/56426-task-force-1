@@ -61,6 +61,7 @@ return [
             'enableStrictParsing' => false,
             'rules' => [
                 '/' => 'landing/index',
+                '/auth' => 'landing/auth',
                 '/login' => 'landing/login',
                 '/logout' => 'logout/index',
                 '/signup' => 'signup/index',

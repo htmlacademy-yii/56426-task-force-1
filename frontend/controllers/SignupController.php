@@ -15,12 +15,15 @@ class SignupController extends UnsecuredController
     {
         $model = new UserSignupForm();
 
-        $cities = City::find()->orderBy(['name' => SORT_ASC])->all();
-
-        $items = ['none' => ''];
-        foreach ($cities as $city) {
-            $items[$city->id] = $city->name;
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['email'])) {
+                $model->email = $data['email'];
+            }
         }
+
+        $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $cities = ['none' => ''] + array_column($rows, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
@@ -31,6 +34,6 @@ class SignupController extends UnsecuredController
             }
         }
 
-        return $this->render('index', ['model' => $model, 'items' => $items]);
+        return $this->render('index', ['model' => $model, 'cities' => $cities]);
     }
 }
