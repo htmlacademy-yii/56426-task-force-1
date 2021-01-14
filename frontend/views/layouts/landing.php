@@ -6,6 +6,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\authclient\widgets\AuthChoice;
 use frontend\assets\AppAsset;
 
 AppAsset::register($this);
@@ -141,9 +142,11 @@ AppAsset::register($this);
 
         <?php ActiveForm::end(); ?>
 
-        <a href="<?=Url::to('https://oauth.vk.com/authorize?client_id=7702913&redirect_uri=http://taskforce.pc1/auth&scope=email&response_type=code');?>">
-            <button class="button  button__oauth">Вход через ВКонтакте</button>
-        </a>
+        <?php $authAuthChoice = AuthChoice::begin(['baseAuthUrl' => ['landing/auth'], 'popupMode' => false]); ?>
+        <?php foreach ($authAuthChoice->getClients() as $client): ?>
+            <?= $authAuthChoice->clientLink($client, '<button class="button  button__oauth">Вход через ВКонтакте</button>') ?>
+        <?php endforeach; ?>
+        <?php AuthChoice::end(); ?>
 
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>

@@ -23,10 +23,11 @@ return [
             'clients' => [
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
-                    'clientId' => '7702913',
-                    'clientSecret' => 'SEjrzWmaK5Akm40iuXUj',
-                ],
-            ],
+                    'clientId' => '7726053 ',
+                    'clientSecret' => 'N9djZ4nGsF7XwelcJTT8',
+                    'scope' => ['email']
+                ]
+            ]
         ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
