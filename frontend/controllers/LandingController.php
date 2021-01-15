@@ -48,16 +48,17 @@ class LandingController extends UnsecuredController
         $this->model = new UserLoginForm();
         $attributes = $client->getUserAttributes();
 
-        if (Yii::$app->user->isGuest) {
-            if (isset($attributes['email'])) {
-                $this->model->email = $attributes['email'];
-                if ($user = $this->model->getUser()) {
-                    Yii::$app->user->login($user);
-                    return $this->redirect('/tasks');
-                } else {
-                    return $this->redirect('/signup?email='.$attributes['email']);
-                }
-            }
+        if ( !Yii::$app->user->isGuest || !isset($attributes['email']) ) {
+            return $this->goHome();
+        }
+
+        $this->model->email = $attributes['email'];
+
+        if ($user = $this->model->getUser()) {
+            Yii::$app->user->login($user);
+            return $this->redirect('/tasks');
+        } else {
+            return $this->redirect('/signup?email='.$attributes['email']);
         }
 
         return $this->goHome();

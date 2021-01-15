@@ -23,8 +23,6 @@ return [
             'clients' => [
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
-                    'clientId' => '7726053 ',
-                    'clientSecret' => 'N9djZ4nGsF7XwelcJTT8',
                     'scope' => ['email']
                 ]
             ]
