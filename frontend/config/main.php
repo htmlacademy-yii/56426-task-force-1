@@ -18,6 +18,15 @@ return [
         ]
     ],
     'components' => [
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'vkontakte' => [
+                    'class' => 'yii\authclient\clients\VKontakte',
+                    'scope' => ['email']
+                ]
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'parsers' => [
@@ -51,6 +60,7 @@ return [
             'enableStrictParsing' => false,
             'rules' => [
                 '/' => 'landing/index',
+                '/auth' => 'landing/auth',
                 '/login' => 'landing/login',
                 '/logout' => 'logout/index',
                 '/signup' => 'signup/index',

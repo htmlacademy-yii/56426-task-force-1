@@ -94,9 +94,9 @@ AppAsset::register($this);
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">
-                    <li><a href="<?=Url::to(['/list']);?>">Мои задания</a></li>
-                    <li><a href="<?=Url::to(['/account']);?>">Настройки</a></li>
-                    <li><a href="<?=Url::to(['/logout']);?>">Выход</a></li>
+                    <li><a href="<?=Url::to(['/list']);?>"><div class="account__pop-up-btn">Мои задания</div></a></li>
+                    <li><a href="<?=Url::to(['/account']);?>"><div class="account__pop-up-btn">Настройки</div></a></li>
+                    <li><a href="<?=Url::to(['/logout']);?>"><div class="account__pop-up-btn">Выход</div></a></li>
                 </ul>
             </div>
             <?php endif; ?>

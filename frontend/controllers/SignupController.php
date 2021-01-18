@@ -7,30 +7,43 @@ use yii\web\Controller;
 use frontend\models\City;
 use frontend\models\User;
 use frontend\models\Profile;
+use frontend\models\UserLoginForm;
 use frontend\models\UserSignupForm;
 
 class SignupController extends UnsecuredController
 {
     public function actionIndex()
     {
-        $model = new UserSignupForm();
+        $modelLogin = new UserLoginForm();
+        $modelSignup = new UserSignupForm();
 
-        $cities = City::find()->orderBy(['name' => SORT_ASC])->all();
-
-        $items = ['none' => ''];
-        foreach ($cities as $city) {
-            $items[$city->id] = $city->name;
-        }
-
-        if (Yii::$app->request->getIsPost()) {
-            $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                if ($model->signup()) {
-                    return $this->redirect('/tasks');
-                }
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['email'])) {
+                $modelSignup->email = $data['email'];
             }
         }
 
-        return $this->render('index', ['model' => $model, 'items' => $items]);
+        $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $cities = ['none' => ''] + array_column($rows, 'name', 'id');
+
+        if (!Yii::$app->request->getIsPost()) {
+            return $this->render('index', ['model' => $modelSignup, 'cities' => $cities]);
+        }
+
+        $formData = Yii::$app->request->post();
+
+        if ($modelSignup->load($formData) && $modelSignup->validate()) {
+            if (!$modelSignup->signup()) {
+                return $this->render('index', ['model' => $modelSignup, 'cities' => $cities]);
+            }
+            $modelLogin->email = $modelSignup->email;
+            if ($user = $modelLogin->getUser()) {
+                Yii::$app->user->login($user);
+                return $this->redirect('/tasks');
+            }
+        }
+
+        return $this->render('index', ['model' => $modelSignup, 'cities' => $cities]);
     }
 }

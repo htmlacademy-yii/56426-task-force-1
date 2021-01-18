@@ -11,6 +11,16 @@ class LandingController extends UnsecuredController
     public $layout = 'landing';
     public $model;
 
+    public function actions()
+    {
+        return [
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess']
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         $this->model = new UserLoginForm();
@@ -28,6 +38,27 @@ class LandingController extends UnsecuredController
                 Yii::$app->user->login($this->model->getUser());
                 return $this->redirect('/tasks');
             }
+        }
+
+        return $this->goHome();
+    }
+
+    public function onAuthSuccess($client)
+    {
+        $this->model = new UserLoginForm();
+        $attributes = $client->getUserAttributes();
+
+        if ( !Yii::$app->user->isGuest || !isset($attributes['email']) ) {
+            return $this->goHome();
+        }
+
+        $this->model->email = $attributes['email'];
+
+        if ($user = $this->model->getUser()) {
+            Yii::$app->user->login($user);
+            return $this->redirect('/tasks');
+        } else {
+            return $this->redirect('/signup?email='.$attributes['email']);
         }
 
         return $this->goHome();

@@ -52,7 +52,7 @@ $this->title = 'Регистрация аккаунта - TaskForce';
                 'id' => 'city',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(false); ?>
+            <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($cities, $options)->label(false); ?>
             <span>Укажите город, чтобы находить подходящие задачи</span>
 
             <label class="input-danger" for="password"><?=$model->attributeLabels()['password'];?></label>
