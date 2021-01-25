@@ -61,7 +61,7 @@ class TaskCreateForm extends Model
         $value_long = Yii::$app->redis->get($key_long);
         $value_lat = Yii::$app->redis->get($key_lat);
 
-        if ($value_long && $value_lat) {
+        if (!is_null($value_long) && !is_null($value_lat)) {
 
             $task->long = $value_long;
             $task->lat = $value_lat;
