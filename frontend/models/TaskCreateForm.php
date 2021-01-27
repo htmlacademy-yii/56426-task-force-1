@@ -42,31 +42,6 @@ class TaskCreateForm extends Model
 
     public function save()
     {
-        $client = new Client([
-            'base_uri' => 'https://geocode-maps.yandex.ru/',
-        ]);
-
-        $query = [
-            'apikey' => Yii::$app->params['apiKey'],
-            'geocode' => $this->address,
-            'format' => 'json',
-            'results' => 1
-        ];
-
-        $response = $client->request('GET', '1.x', ['query' => $query]);
-
-        $content = $response->getBody()->getContents();
-
-        $response_data = json_decode($content, true);
-
-        if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['text'])) {
-            $this->address = $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['text'];
-        }
-
-        if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos'])) {
-            $position = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos']);
-        }
-
         $task = new Task();
 
         $task->customer_id = Yii::$app->user->getId();
@@ -79,9 +54,46 @@ class TaskCreateForm extends Model
         $task->budget = $this->budget;
         $task->expire = $this->expire;
 
-        if (isset($position[0]) && isset($position[1])) {
-            $task->long = $position[0];
-            $task->lat = $position[1];
+        $address_hash = md5($this->address);
+        $key_long = 'location:'.$address_hash.':long';
+        $key_lat = 'location:'.$address_hash.':lat';
+
+        $value_long = Yii::$app->redis->get($key_long);
+        $value_lat = Yii::$app->redis->get($key_lat);
+
+        if (!is_null($value_long) && !is_null($value_lat)) {
+
+            $task->long = $value_long;
+            $task->lat = $value_lat;
+
+        } else {
+
+            $client = new Client([
+                'base_uri' => 'https://geocode-maps.yandex.ru/',
+            ]);
+
+            $query = [
+                'apikey' => Yii::$app->params['apiKey'],
+                'geocode' => $this->address,
+                'format' => 'json',
+                'results' => 1
+            ];
+
+            $response = $client->request('GET', '1.x', ['query' => $query]);
+            $content = $response->getBody()->getContents();
+            $response_data = json_decode($content, true);
+
+            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos'])) {
+                $position = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos']);
+            }
+
+            if (isset($position[0]) && isset($position[1])) {
+                $task->long = $position[0];
+                $task->lat = $position[1];
+
+                Yii::$app->redis->executeCommand('set', [$key_long, $task->long, 'ex', '86400']);
+                Yii::$app->redis->executeCommand('set', [$key_lat, $task->lat, 'ex', '86400']);
+            }
         }
 
         return $task->save();

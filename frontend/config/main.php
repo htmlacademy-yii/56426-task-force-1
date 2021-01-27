@@ -18,6 +18,9 @@ return [
         ]
     ],
     'components' => [
+        'redis' => [
+            'class' => 'yii\redis\Connection'
+        ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
