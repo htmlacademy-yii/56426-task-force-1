@@ -19,13 +19,18 @@ return [
     ],
     'components' => [
         'redis' => [
-            'class' => 'yii\redis\Connection'
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => '',
+                    'clientSecret' => '',
                     'scope' => ['email']
                 ]
             ]
