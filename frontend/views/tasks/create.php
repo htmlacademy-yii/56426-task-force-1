@@ -52,7 +52,7 @@ $this->title = 'Создать задание - TaskForce';
                 'id' => 'category',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(null, ['for' => 'category']);?>
+            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($categories, $options)->label(null, ['for' => 'category']);?>
             <span>Выберите категорию</span>
 
             <label>Файлы</label>

@@ -51,9 +51,13 @@ $this->title = 'Задание - TaskForce';
                         </a>
                     </div>
                     <div class="content-view__address">
+                    <?php if (empty($task->address)): ?>
+                        <span>Удаленная работа</span>
+                    <?php else: ?>
                         <span class="address__town"><?=explode(', ', $task->address)[0];?></span><br>
                         <span><?=implode(', ', array_slice(explode(', ', $task->address), 1));?></span>
                         <p></p>
+                    <?php endif; ?>
                     </div>
                 </div>
             </div>

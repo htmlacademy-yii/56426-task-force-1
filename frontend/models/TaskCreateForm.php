@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\Exception;
 use GuzzleHttp\Client;
 use HtmlAcademy\Models\TaskStatus;
 
@@ -53,20 +54,25 @@ class TaskCreateForm extends Model
         $task->address = $this->address;
         $task->budget = $this->budget;
         $task->expire = $this->expire;
+        $task->long = null;
+        $task->lat = null;
 
-        $address_hash = md5($this->address);
-        $key_long = 'location:'.$address_hash.':long';
-        $key_lat = 'location:'.$address_hash.':lat';
+        $key_long = null;
+        $key_lat = null;
 
-        $value_long = Yii::$app->redis->get($key_long);
-        $value_lat = Yii::$app->redis->get($key_lat);
+        if (!empty($this->address)) {
+            $address_hash = md5($this->address);
+            $key_long = 'location:'.$address_hash.':long';
+            $key_lat = 'location:'.$address_hash.':lat';
+            try {
+                $task->long = Yii::$app->redis->get($key_long);
+                $task->lat = Yii::$app->redis->get($key_lat);
+            } catch (Exception $e) {
+                Yii::warning("Redis не работает");
+            }
+        }
 
-        if (!is_null($value_long) && !is_null($value_lat)) {
-
-            $task->long = $value_long;
-            $task->lat = $value_lat;
-
-        } else {
+        if (!empty($this->address) && (is_null($task->long) || is_null($task->lat))) {
 
             $client = new Client([
                 'base_uri' => 'https://geocode-maps.yandex.ru/',
@@ -90,9 +96,12 @@ class TaskCreateForm extends Model
             if (isset($position[0]) && isset($position[1])) {
                 $task->long = $position[0];
                 $task->lat = $position[1];
-
-                Yii::$app->redis->executeCommand('set', [$key_long, $task->long, 'ex', '86400']);
-                Yii::$app->redis->executeCommand('set', [$key_lat, $task->lat, 'ex', '86400']);
+                try {
+                    Yii::$app->redis->executeCommand('set', [$key_long, $task->long, 'ex', '86400']);
+                    Yii::$app->redis->executeCommand('set', [$key_lat, $task->lat, 'ex', '86400']);
+                } catch (Exception $e) {
+                    Yii::warning("Redis не работает");
+                }
             }
         }
 

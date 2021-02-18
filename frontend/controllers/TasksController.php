@@ -113,12 +113,8 @@ class TasksController extends SecuredController
 
         $model = new TaskCreateForm();
 
-        $categories = Category::find()->orderBy(['id' => SORT_ASC])->all();
-
-        $items = ['none' => ''];
-        foreach ($categories as $category) {
-            $items[$category->id] = $category->name;
-        }
+        $rows = Category::find()->orderBy(['id' => SORT_ASC])->all();
+        $categories = ['none' => ''] + array_column($rows, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
@@ -129,7 +125,7 @@ class TasksController extends SecuredController
             }
         }
 
-        return $this->render('create', ['model' => $model, 'items' => $items]);
+        return $this->render('create', ['model' => $model, 'categories' => $categories]);
     }
 
     public function actionReply($id)

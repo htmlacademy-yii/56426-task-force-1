@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
+
 $this->title = 'Главная - TaskForce';
 
 ?>
@@ -9,7 +11,7 @@ $this->title = 'Главная - TaskForce';
 <div class="landing-top">
     <h1>Работа для всех.<br>Найди исполнителя на любую задачу.</h1>
     <p>Сломался кран на кухне? Надо отправить документы? Нет времени самому гулять с собакой? У нас вы быстро найдёте исполнителя для любой жизненной ситуации?<br>Быстро, безопасно и с гарантией. Просто, как раз, два, три.</p>
-    <a href="/signup"><button class="button">Создать аккаунт</button></a>
+    <a href="<?=Url::to(['/signup']);?>"><button class="button">Создать аккаунт</button></a>
 </div>
 
 <div class="landing-center">
