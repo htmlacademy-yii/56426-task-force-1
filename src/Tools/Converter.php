@@ -30,7 +30,7 @@ class Converter {
         $file->rewind();
         $header = $file->fgetcsv() or exit("Ошибка чтения CSV-заголовка в файле " . $this->source);
         $header = array_merge($header, array_keys($extraFields));
-        $this->fields = "`" . implode("`,`", $header) . "`";
+        $this->fields = "`" . implode("`, `", $header) . "`";
         while (!$file->eof()) {
             if ($line = $file->fgetcsv()) {
                 foreach ($extraFields as $fieldName => $maxValue) {
@@ -47,12 +47,12 @@ class Converter {
 
     private function export(): void {
         $file = new \SplFileObject($this->target, "w");
-        $insertCommand = "insert into `" . $this->table . "` (" . $this->fields . ") values ";
+        $insertCommand = "INSERT INTO `" . $this->table . "` (" . $this->fields . ") VALUES\n";
         $lineNumber = 1;
         foreach ($this->data as $line) {
-            $insertCommand .= "('" . implode("','", $line) . "')";
+            $insertCommand .= "('" . implode("', '", $line) . "')";
             if ($lineNumber < count($this->data)) {
-                $insertCommand .= ", ";
+                $insertCommand .= ",\n";
             }
             $lineNumber++;
         }

@@ -481,7 +481,7 @@ fieldset {
   background-size: 35px;
   margin-top: 33px; }
 
-.new-task__icon--translation {
+.new-task__icon--translate {
   background-image: url("../img/translate.png");
   background-color: #5f5f5f; }
 
@@ -493,11 +493,11 @@ fieldset {
   background-image: url("../img/cargo.png");
   background-color: #ff7f50; }
 
-.new-task__icon--neo {
+.new-task__icon--computer {
   background-image: url("../img/computer.png");
   background-color: #373cff; }
 
-.new-task__icon--flat {
+.new-task__icon--roller {
   background-image: url("../img/roller.png");
   background-color: #ff2f4d; }
 
@@ -505,11 +505,11 @@ fieldset {
   background-image: url("../img/repair.png");
   background-color: #232323; }
 
-.new-task__icon--beauty {
+.new-task__icon--hairdryer {
   background-image: url("../img/hairdryer.png");
   background-color: #ff4dd1; }
 
-.new-task__icon--photo {
+.new-task__icon--camera {
   background-image: url("../img/camera.png");
   background-color: #ff9245; }
 

@@ -12,9 +12,9 @@ create table `city` (
 
 create table `user` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`name` varchar(64) not null comment 'Имя пользователя',
 	`email` varchar(64) not null unique comment 'E-mail',
 	`password` varchar(64) not null comment 'Пароль',
-	`name` varchar(64) not null comment 'Имя пользователя',
 	`dt_add` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 

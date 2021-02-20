@@ -1,1 +1,9 @@
-insert into `category` (`name`,`icon`) values ('Курьерские услуги','translation'), ('Уборка','clean'), ('Переезды','cargo'), ('Компьютерная помощь','neo'), ('Ремонт квартирный','flat'), ('Ремонт техники','repair'), ('Красота','beauty'), ('Фото','photo');
+INSERT INTO `category` (`id`, `name`, `icon`) VALUES
+(1, 'Перевод текстов', 'translate'),
+(2, 'Уборка', 'clean'),
+(3, 'Переезды', 'cargo'),
+(4, 'Компьютерная помощь', 'computer'),
+(5, 'Ремонт квартирный', 'roller'),
+(6, 'Ремонт техники', 'repair'),
+(7, 'Красота', 'hairdryer'),
+(8, 'Фото', 'camera');

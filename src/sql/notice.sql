@@ -1,4 +1,4 @@
-INSERT INTO `notice`(`id`, `secrecy`, `name`) VALUES
+INSERT INTO `notice` (`id`, `secrecy`, `name`) VALUES
 (1, 0, 'Новое сообщение'),
 (2, 0, 'Действия по заданию'),
 (3, 0, 'Новый отзыв'),
