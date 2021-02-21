@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use frontend\models\City;
 use frontend\models\User;
 use frontend\models\UserFilterForm;
 use frontend\models\Feedback;
@@ -13,6 +14,14 @@ use HtmlAcademy\Models\TaskStatus;
 
 class UsersController extends SecuredController
 {
+    public $towns;
+
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+    }
+
     public function actionIndex()
     {
         $query = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');

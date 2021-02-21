@@ -71,15 +71,18 @@ AppAsset::register($this);
                 </ul>
             </div>
             <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
+
             <div class="header__town">
                 <select class="multiple-select input town-select" size="1" name="town[]">
-                    <option value="Moscow">Москва</option>
-                    <option selected value="SPB">Санкт-Петербург</option>
-                    <option value="Krasnodar">Краснодар</option>
-                    <option value="Irkutsk">Иркутск</option>
-                    <option value="Vladivostok">Владивосток</option>
+                    <option value="all">Все города</option>
+                    <?php if (isset($this->context->towns) && is_array($this->context->towns)): ?>
+                    <?php foreach ($this->context->towns as $town): ?>
+                        <option <?=(Yii::$app->user->getIdentity()->profile->city->id === $town->id) ? "selected" : "";?> value="<?=$town->id;?>"><?=$town->name;?></option>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
+
             <div class="header__lightbulb"></div>
             <div class="lightbulb__pop-up">
                 <div class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>

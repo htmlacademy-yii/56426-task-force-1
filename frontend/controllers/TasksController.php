@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
 use frontend\models\Reply;
@@ -19,12 +20,19 @@ use HtmlAcademy\Models\UserRole;
 
 class TasksController extends SecuredController
 {
+    public $towns;
     public $taskId;
     public $taskLat;
     public $taskLong;
     public $replyForm;
     public $completeForm;
     public $autoComplete;
+
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+    }
 
     public function actionIndex()
     {

@@ -9,7 +9,14 @@ use frontend\models\UserAccountForm;
 
 class AccountController extends SecuredController
 {
+    public $towns;
     public $dropzone;
+
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+    }
 
     public function actionIndex()
     {
@@ -17,8 +24,7 @@ class AccountController extends SecuredController
 
         $model = new UserAccountForm();
 
-        $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
-        $cities = ['none' => ''] + array_column($rows, 'name', 'id');
+        $cities = ['none' => ''] + array_column($this->towns, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
             $model->clearSettings();

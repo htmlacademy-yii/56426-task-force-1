@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
 use HtmlAcademy\Models\TaskStatus;
@@ -10,6 +11,14 @@ use HtmlAcademy\Models\UserRole;
 
 class ListController extends SecuredController
 {
+    public $towns;
+
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+    }
+
     public function actionIndex()
     {
         $query = Task::find()->joinWith('category'); //->where(['task.status' => TaskStatus::NEW_TASK]);
