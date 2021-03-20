@@ -7,49 +7,64 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
+use yii\widgets\LinkPager;
 
 $this->title = 'Список исполнителей - TaskForce';
 
+if ($pages->totalCount == 0) {
+    $pages_text = "Список пустой";
+} else {
+    $startPosition = $pages->offset + 1;
+    $endPosition = $pages->offset + $pages->pageSize;
+    $endPosition = ($endPosition > $pages->totalCount) ? $pages->totalCount : $endPosition;
+    $pages_text = "Записи ".$startPosition." - ".$endPosition." из ".$pages->totalCount;
+}
+
 ?>
 
-<section class="user__search">
-    <div class="user__search-link">
-        <p>Сортировать по:</p>
-        <ul class="user__search-list">
-            <li class="user__search-item user__search-item--current">
-                <a href="#" class="link-regular">Рейтингу</a>
-            </li>
-            <li class="user__search-item">
-                <a href="#" class="link-regular">Числу заказов</a>
-            </li>
-            <li class="user__search-item">
-                <a href="#" class="link-regular">Популярности</a>
-            </li>
-        </ul>
-    </div>
-    <?php foreach($users as $user): ?>
-        <div class="content-view__feedback-card user__search-wrapper">
-            <div class="feedback-card__top">
-                <div class="user__search-icon">
-                    <a href="#"><img src="/img/man-blond.jpg" width="65" height="65"></a>
-                    <span><?=$user->taskCount();?> заданий</span>
-                    <span><?=$user->feedbackCount();?> отзывов</span>
-                </div>
-                <div class="feedback-card__top--name user__search-card">
-                    <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=$user->name;?></a></p>
-                    <?=$user->stars();?>
-                    <b><?=sprintf("%0.2f", $user->rating());?></b>
-                    <p class="user__search-content"><?=$user->profile->about;?></p>
-                </div>
-                <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
-            </div>
-            <div class="link-specialization user__search-link--bottom">
-            <?php foreach($user->skills as $skill): ?>
-                <a href="#" class="link-regular"><?=$skill->name;?></a>
-            <?php endforeach; ?>
-            </div>
+<section class="new-task">
+    <div class="new-task__wrapper">
+        <div>
+            <h1>Исполнители</h1>
+            <div class="new-task__pages-text"><?=$pages_text;?></div>
         </div>
-    <?php endforeach; ?>
+        <div class="new-task__clear"></div>
+        <?php foreach($users as $user): ?>
+            <div class="content-view__feedback-card user__search-wrapper">
+                <div class="feedback-card__top">
+                    <div class="user__search-icon">
+                        <a href="#"><img src="/img/man-blond.jpg" width="65" height="65"></a>
+                        <span><?=$user->taskCount();?> заданий</span>
+                        <span><?=$user->feedbackCount();?> отзывов</span>
+                    </div>
+                    <div class="feedback-card__top--name user__search-card">
+                        <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=$user->name;?></a></p>
+                        <?=$user->stars();?>
+                        <b><?=sprintf("%0.2f", $user->rating());?></b>
+                        <p class="user__search-content"><?=$user->profile->about;?></p>
+                    </div>
+                    <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
+                </div>
+                <div class="link-specialization user__search-link--bottom">
+                <?php foreach($user->skills as $skill): ?>
+                    <a href="#" class="link-regular"><?=$skill->name;?></a>
+                <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="new-task__pagination">
+        <?=LinkPager::widget([
+            'pagination' => $pages,
+            'pageCssClass' => 'pagination__item',
+            'prevPageLabel' => '',
+            'prevPageCssClass' => 'pagination__item',
+            'nextPageLabel' => '',
+            'nextPageCssClass' => 'pagination__item',
+            'options' => ['class' => 'new-task__pagination-list'],
+            'activePageCssClass' => 'pagination__item--current'
+        ]);?>
+    </div>
 </section>
 
 <section  class="search-task">

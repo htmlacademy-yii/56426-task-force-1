@@ -442,11 +442,20 @@ fieldset {
   padding: 15px 20px 0 20px; }
 
 .new-task__wrapper h1 {
+  float: left;
   font-family: "PT Sans", sans-serif;
   font-weight: 700;
   font-size: 32px;
   margin-top: 0;
   margin-bottom: 5px; }
+  
+.new-task__pages-text {
+  float: right;
+  padding-top: 16px;
+  font-style: italic; }
+
+.new-task__clear {
+  clear: both; }
 
 .new-task__card {
   font-family: "Myriad Pro", sans-serif;
@@ -1971,8 +1980,7 @@ fieldset {
   margin-bottom: 10px; }
 
 .user__search-wrapper {
-  border-top: none;
-  border-bottom: 2px solid #d4d4d4;
+  border-top: 1px solid #ececec;
   padding-bottom: 10px;
   margin-bottom: 0; }
 

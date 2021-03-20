@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\Pagination;
 use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
@@ -81,9 +82,20 @@ class TasksController extends SecuredController
             }
         }
 
-        $tasks = $query->orderBy(['dt_add' => SORT_DESC])->all();
+        $query->orderBy(['dt_add' => SORT_DESC]);
 
-        return $this->render('index', ['tasks' => $tasks, 'model' => $model]);
+        $countQuery = clone $query;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 5,
+            'defaultPageSize' => 5,
+            'pageSizeLimit' => [1, 5],
+            'forcePageParam' => false
+        ]);
+
+        $tasks = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('index', ['tasks' => $tasks, 'model' => $model, 'pages' => $pages]);
     }
 
     public function actionView($id)

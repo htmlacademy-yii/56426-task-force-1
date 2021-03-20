@@ -7,14 +7,28 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
 use yii\widgets\ActiveForm;
+use yii\widgets\LinkPager;
 
 $this->title = 'Список заданий - TaskForce';
+
+if ($pages->totalCount == 0) {
+    $pages_text = "Список пустой";
+} else {
+    $startPosition = $pages->offset + 1;
+    $endPosition = $pages->offset + $pages->pageSize;
+    $endPosition = ($endPosition > $pages->totalCount) ? $pages->totalCount : $endPosition;
+    $pages_text = "Записи ".$startPosition." - ".$endPosition." из ".$pages->totalCount;
+}
 
 ?>
 
 <section class="new-task">
     <div class="new-task__wrapper">
-        <h1>Новые задания</h1>
+        <div>
+            <h1>Новые задания</h1>
+            <div class="new-task__pages-text"><?=$pages_text;?></div>
+        </div>
+        <div class="new-task__clear"></div>
         <?php foreach ($tasks as $task): ?>
             <div class="new-task__card">
                 <div class="new-task__title">
@@ -30,13 +44,16 @@ $this->title = 'Список заданий - TaskForce';
         <?php endforeach; ?>
     </div>
     <div class="new-task__pagination">
-        <ul class="new-task__pagination-list">
-            <li class="pagination__item"><a href="#"></a></li>
-            <li class="pagination__item pagination__item--current"><a>1</a></li>
-            <li class="pagination__item"><a href="#">2</a></li>
-            <li class="pagination__item"><a href="#">3</a></li>
-            <li class="pagination__item"><a href="#"></a></li>
-        </ul>
+        <?=LinkPager::widget([
+            'pagination' => $pages,
+            'pageCssClass' => 'pagination__item',
+            'prevPageLabel' => '',
+            'prevPageCssClass' => 'pagination__item',
+            'nextPageLabel' => '',
+            'nextPageCssClass' => 'pagination__item',
+            'options' => ['class' => 'new-task__pagination-list'],
+            'activePageCssClass' => 'pagination__item--current'
+        ]);?>
     </div>
 </section>
 

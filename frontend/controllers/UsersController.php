@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\Pagination;
 use frontend\models\City;
 use frontend\models\User;
 use frontend\models\UserFilterForm;
@@ -67,9 +68,20 @@ class UsersController extends SecuredController
             }
         }
 
-        $users = $query->orderBy(['user.dt_add' => SORT_DESC])->all();
+        $query->groupBy(['user.id'])->orderBy(['user.dt_add' => SORT_DESC]);
 
-        return $this->render('index', ['users' => $users, 'model' => $model]);
+        $countQuery = clone $query;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 5,
+            'defaultPageSize' => 5,
+            'pageSizeLimit' => [1, 5],
+            'forcePageParam' => false
+        ]);
+
+        $users = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('index', ['users' => $users, 'model' => $model, 'pages' => $pages]);
     }
 
     public function actionView($id)
