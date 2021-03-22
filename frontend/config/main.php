@@ -60,7 +60,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'landing/index',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -85,6 +85,7 @@ return [
                 '/task/<id:\d+>/complete' => 'tasks/complete',
                 '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
                 '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse',
+                '/list/<status:\w+>' => 'list/index',
                 '/location' => 'location/index',
                 '/event' => 'event/index',
                 '/event/clear' => 'event/clear',

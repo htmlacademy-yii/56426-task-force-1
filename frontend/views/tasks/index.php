@@ -36,7 +36,7 @@ if ($pages->totalCount == 0) {
                     <a class="new-task__type link-regular" href="#"><p><?= $task->category->name; ?></p></a>
                 </div>
                 <div class="new-task__icon new-task__icon--<?= $task->category->icon; ?>"></div>
-                <p class="new-task_description"><?= $task->description; ?></p>
+                <p class="new-task__description"><?= $task->description; ?></p>
                 <b class="new-task__price new-task__price--<?= $task->category->icon; ?>"><?= $task->budget; ?><b> ₽</b></b>
                 <p class="new-task__place"><?= ($task->address) ? $task->address : "Удаленная работа"; ?></p>
                 <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?></span>
