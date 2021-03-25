@@ -16,16 +16,29 @@ use HtmlAcademy\Models\TaskStatus;
 class UsersController extends SecuredController
 {
     public $towns;
+    public $sortingRules;
 
     public function init()
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->sortingRules = [
+            'rating' => 'Рейтингу',
+            'orders' => 'Числу заказов',
+            'feedbacks' => 'Популярности'
+        ];
     }
 
-    public function actionIndex()
+    public function actionIndex($sort = null)
     {
-        $query = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
+        $query = User::find()->select([
+            'user.*',
+            '(sum(feedback.rating) / count(feedback.id)) as rating',
+            'count(task.id) as orders',
+            'count(feedback.id) as feedbacks'
+        ]);
+
+        $query->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
 
         $model = new UserFilterForm();
 
@@ -68,7 +81,13 @@ class UsersController extends SecuredController
             }
         }
 
-        $query->groupBy(['user.id'])->orderBy(['user.dt_add' => SORT_DESC]);
+        $query->groupBy(['user.id']);
+
+        if (!is_null($sort) && array_key_exists($sort, $this->sortingRules)) {
+            $query->orderBy([$sort => SORT_ASC]);
+        } else {
+            $query->orderBy(['user.dt_add' => SORT_DESC]);
+        }
 
         $countQuery = clone $query;
         $pages = new Pagination([
@@ -81,7 +100,7 @@ class UsersController extends SecuredController
 
         $users = $query->offset($pages->offset)->limit($pages->limit)->all();
 
-        return $this->render('index', ['users' => $users, 'model' => $model, 'pages' => $pages]);
+        return $this->render('index', ['users' => $users, 'model' => $model, 'sort' => $sort, 'pages' => $pages]);
     }
 
     public function actionView($id)

@@ -12,12 +12,12 @@ use yii\widgets\LinkPager;
 $this->title = 'Список исполнителей - TaskForce';
 
 if ($pages->totalCount == 0) {
-    $pages_text = "Список пустой";
+    $pagesText = "Список пустой";
 } else {
     $startPosition = $pages->offset + 1;
     $endPosition = $pages->offset + $pages->pageSize;
     $endPosition = ($endPosition > $pages->totalCount) ? $pages->totalCount : $endPosition;
-    $pages_text = "Записи ".$startPosition." - ".$endPosition." из ".$pages->totalCount;
+    $pagesText = "Записи ".$startPosition." - ".$endPosition." из ".$pages->totalCount;
 }
 
 ?>
@@ -26,9 +26,21 @@ if ($pages->totalCount == 0) {
     <div class="new-task__wrapper">
         <div>
             <h1>Исполнители</h1>
-            <div class="new-task__pages-text"><?=$pages_text;?></div>
+            <div class="new-task__pages-text"><?=$pagesText;?></div>
         </div>
         <div class="new-task__clear"></div>
+
+        <div class="user__search-link">
+            <p>Сортировать по:</p>
+            <ul class="user__search-list">
+            <?php foreach($this->context->sortingRules as $sortId => $sortName): ?>
+                <li class="user__search-item<?=($sortId === $sort) ? '  user__search-item--current' : '';?>">
+                    <a href="<?=Url::to(['/users/sort/'.$sortId]);?>" class="link-regular"><?=$sortName;?></a>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+
         <?php foreach($users as $user): ?>
             <div class="content-view__feedback-card user__search-wrapper">
                 <div class="feedback-card__top">

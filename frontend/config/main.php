@@ -74,6 +74,8 @@ return [
                 '/signup' => 'signup/index',
                 '/tasks/page/<page:\d+>' => 'tasks/index',
                 '/tasks' => 'tasks/index',
+                '/users/sort/<sort:\w+>/page/<page:\d+>' => 'users/index',
+                '/users/sort/<sort:\w+>' => 'users/index',
                 '/users/page/<page:\d+>' => 'users/index',
                 '/users' => 'users/index',
                 '/task/<id:\d+>' => 'tasks/view',
