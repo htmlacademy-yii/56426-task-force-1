@@ -12,6 +12,13 @@ use HtmlAcademy\Models\TaskStatus;
 
 AppAsset::register($this);
 
+$mainMenu = [
+    'tasks/index' => ['url' => '/tasks', 'name' => 'Задания'],
+    'users/index' => ['url' => '/users', 'name' => 'Исполнители'],
+    'tasks/create' => ['url' => '/task/create', 'name' => 'Создать задание'],
+    'account/index' => ['url' => '/account', 'name' => 'Мой профиль']
+];
+
 ?>
 
 <?php $this->beginPage() ?>
@@ -64,10 +71,9 @@ AppAsset::register($this);
             </div>
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
-                    <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/task/create']);?>">Создать задание</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/account']);?>">Мой профиль</a></li>
+                    <?php foreach ($mainMenu as $route => $item): ?>
+                        <li class="site-list__item<?=($route === $this->context->route) ? '  site-list__item--active' : '';?>"><a href="<?=Url::to([$item['url']]);?>"><?=$item['name'];?></a></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
             <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>

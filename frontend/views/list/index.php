@@ -35,7 +35,7 @@ $this->title = 'Мои задания - TaskForce';
 <section class="my-list">
     <div class="my-list__wrapper">
 
-    <h1>Мои задания<?=($currentStatus !== null) ? ' - '.TaskStatus::getNamePlural($currentStatus) : '';?></h1>
+    <h1>Мои задания<?=($currentStatus !== null) ? ' - '.TaskStatus::getNamePlural($currentStatus) : '';?> (<?=count($tasks);?>)</h1>
 
         <?php foreach ($tasks as $task): ?>
             <div class="new-task__card">

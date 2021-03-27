@@ -925,8 +925,14 @@ fieldset {
   border-right: 1px solid #2436ab; }
 
 .pagination__item a {
+  display: block;
+  padding: 8px 15px;
   color: #ffffff;
   text-decoration: none; }
+
+.pagination__item:first-child a,
+.pagination__item:last-child a {
+  padding: 20px; }
 
 .new-task__pagination-list li:first-child,
 .new-task__pagination-list li:last-child {
