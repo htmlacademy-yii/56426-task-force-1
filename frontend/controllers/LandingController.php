@@ -52,6 +52,7 @@ class LandingController extends UnsecuredController
             $this->model->email = $attributes['email'];
             if ($user = $this->model->getUser()) {
                 Yii::$app->user->login($user);
+                Yii::$app->session->set('userCity', isset(Yii::$app->user->getIdentity()->profile->city) ? Yii::$app->user->getIdentity()->profile->city->id : null);
                 return $this->redirect('/tasks');
             } else {
                 return $this->redirect('/signup?email='.$attributes['email']);

@@ -12,6 +12,7 @@ use Yii;
  * @property string $name Мне нужно
  * @property string $description Подробности задания
  * @property int $category_id Категория задания
+ * @property int|null $city_id Город
  * @property string|null $address Адрес
  * @property float|null $lat Широта
  * @property float|null $long Долгота
@@ -56,6 +57,7 @@ class Task extends \yii\db\ActiveRecord
             [['address'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
         ];
     }
@@ -71,6 +73,7 @@ class Task extends \yii\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'category_id' => 'Category ID',
+            'city_id' => 'City ID',
             'address' => 'Address',
             'lat' => 'Lat',
             'long' => 'Long',

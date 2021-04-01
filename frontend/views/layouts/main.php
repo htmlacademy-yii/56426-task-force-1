@@ -83,7 +83,7 @@ $mainMenu = [
                     <option value="all">Все города</option>
                     <?php if (isset($this->context->towns) && is_array($this->context->towns)): ?>
                     <?php foreach ($this->context->towns as $town): ?>
-                        <option <?=(Yii::$app->user->getIdentity()->profile->city->id === $town->id) ? "selected" : "";?> value="<?=$town->id;?>"><?=$town->name;?></option>
+                        <option <?=(Yii::$app->session->get('userCity') === $town->id) ? "selected" : "";?> value="<?=$town->id;?>"><?=$town->name;?></option>
                     <?php endforeach; ?>
                     <?php endif; ?>
                 </select>

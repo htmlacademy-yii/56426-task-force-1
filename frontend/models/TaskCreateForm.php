@@ -13,7 +13,7 @@ class TaskCreateForm extends Model
     public $name;
     public $description;
     public $category;
-    public $address;
+    public $location;
     public $budget;
     public $expire;
 
@@ -23,7 +23,7 @@ class TaskCreateForm extends Model
             'name' => 'Мне нужно',
             'description' => 'Подробности задания',
             'category' => 'Категория',
-            'address' => 'Локация',
+            'location' => 'Локация',
             'budget' => 'Бюджет',
             'expire' => 'Срок исполнения'
         ];
@@ -32,9 +32,9 @@ class TaskCreateForm extends Model
     public function rules()
     {
         return [
-            [['name', 'description', 'category', 'address', 'budget', 'expire'], 'safe'],
+            [['name', 'description', 'category', 'location', 'budget', 'expire'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
-            [['name', 'description', 'address'], 'string'],
+            [['name', 'description', 'location'], 'string'],
             [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
             [['expire'], 'date', 'format' => 'php:Y-m-d']
@@ -51,20 +51,29 @@ class TaskCreateForm extends Model
         $task->name = $this->name;
         $task->description = $this->description;
         $task->category_id = $this->category;
-        $task->address = $this->address;
+        //$task->address = $this->location;
         $task->budget = $this->budget;
         $task->expire = $this->expire;
+
+        $task->city_id = null;
+        $task->address = null;
         $task->long = null;
         $task->lat = null;
 
+        $key_city = null;
+        $key_address = null;
         $key_long = null;
         $key_lat = null;
 
-        if (!empty($this->address)) {
-            $address_hash = md5($this->address);
+        if (!empty($this->location)) {
+            $address_hash = md5($this->location);
+            $key_city = 'location:'.$address_hash.':city';
+            $key_address = 'location:'.$address_hash.':address';
             $key_long = 'location:'.$address_hash.':long';
             $key_lat = 'location:'.$address_hash.':lat';
             try {
+                $task->city_id = Yii::$app->redis->get($key_city);
+                $task->address = Yii::$app->redis->get($key_address);
                 $task->long = Yii::$app->redis->get($key_long);
                 $task->lat = Yii::$app->redis->get($key_lat);
             } catch (Exception $e) {
@@ -72,7 +81,7 @@ class TaskCreateForm extends Model
             }
         }
 
-        if (!empty($this->address) && (is_null($task->long) || is_null($task->lat))) {
+        if (!empty($this->location) && (is_null($task->address) || is_null($task->long) || is_null($task->lat))) {
 
             $client = new Client([
                 'base_uri' => 'https://geocode-maps.yandex.ru/',
@@ -80,7 +89,7 @@ class TaskCreateForm extends Model
 
             $query = [
                 'apikey' => Yii::$app->params['apiKey'],
-                'geocode' => $this->address,
+                'geocode' => $this->location,
                 'format' => 'json',
                 'results' => 1
             ];
@@ -89,14 +98,40 @@ class TaskCreateForm extends Model
             $content = $response->getBody()->getContents();
             $response_data = json_decode($content, true);
 
-            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos'])) {
-                $position = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos']);
+            $task_city_name = null;
+            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['Componenets'])) {
+                $address_components = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['Componenets']);
+                foreach ($address_components as $address_item) {
+                    if ($address_item['kind'] === 'locality') {
+                        $task_city_name = $address_item['name'];
+                    }
+                }
             }
 
-            if (isset($position[0]) && isset($position[1])) {
-                $task->long = $position[0];
-                $task->lat = $position[1];
+            $task_city_id = null;
+            if (!is_null($task_city_name)) {
+                $task_city = City::findOne(['name' => $task_city_name]);
+                if (!is_null($task_city)) {
+                    $task_city_id = $task_city->id;
+                }
+            }
+
+            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted'])) {
+                $task_address = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted']);
+            }
+
+            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos'])) {
+                $task_position = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos']);
+            }
+
+            if (isset($task_city_id) && isset($task_address) && isset($task_position[0]) && isset($task_position[1])) {
+                $task->city_id = $task_city_id;
+                $task->address = $task_address;
+                $task->long = $task_position[0];
+                $task->lat = $task_position[1];
                 try {
+                    Yii::$app->redis->executeCommand('set', [$key_city, $task->city_id, 'ex', '86400']);
+                    Yii::$app->redis->executeCommand('set', [$key_address, $task->address, 'ex', '86400']);
                     Yii::$app->redis->executeCommand('set', [$key_long, $task->long, 'ex', '86400']);
                     Yii::$app->redis->executeCommand('set', [$key_lat, $task->lat, 'ex', '86400']);
                 } catch (Exception $e) {

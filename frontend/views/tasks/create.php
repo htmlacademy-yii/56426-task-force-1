@@ -64,10 +64,10 @@ $this->title = 'Создать задание - TaskForce';
 
             <?php $options = [
                 'class' => 'input-navigation input-middle input',
-                'id' => 'address',
+                'id' => 'location',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'address', ['template' => "{label}\n{input}"])->input('search', $options)->label(null, ['for' => 'address']);?>
+            <?=$form->field($model, 'location', ['template' => "{label}\n{input}"])->input('search', $options)->label(null, ['for' => 'location']);?>
             <span>Укажите адрес исполнения, если задание требует присутствия</span>
 
             <div class="create__price-time">

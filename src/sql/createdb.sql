@@ -76,6 +76,7 @@ create table `task` (
 	`name` varchar(64) not null comment 'Мне нужно',
 	`description` text not null comment 'Подробности задания',
 	`category_id` int not null comment 'Категория задания',
+	`city_id` int not null comment 'Город',
 	`address` varchar(255) default null comment 'Адрес',
 	`lat` decimal(10, 7) default null comment 'Широта',
 	`long` decimal(10, 7) default null comment 'Долгота',
@@ -86,6 +87,7 @@ create table `task` (
 	`dt_add` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`customer_id`) references `user`(`id`),
 	foreign key (`category_id`) references `category`(`id`),
+	foreign key (`city_id`) references `city`(`id`),
 	foreign key (`contractor_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
 
