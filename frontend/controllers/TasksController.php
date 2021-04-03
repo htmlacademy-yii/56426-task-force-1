@@ -33,11 +33,17 @@ class TasksController extends SecuredController
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+// Для тестирования
+Yii::$app->session->set('userCity', null);
     }
 
     public function actionIndex()
     {
         $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
+
+        if (!is_null(Yii::$app->session->get('userCity'))) {
+            $query->andWhere(['or', ['task.city_id' => null], ['task.city_id' => Yii::$app->session->get('userCity')]]);
+        }
 
         $model = new TaskFilterForm();
 
@@ -138,10 +144,8 @@ class TasksController extends SecuredController
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                if ($model->save()) {
-                    return $this->redirect('/tasks');
-                }
+            if ($model->load($formData) && $model->validate() && $task_id = $model->save()) {
+                return $this->redirect("/task/$task_id");
             }
         }
 
