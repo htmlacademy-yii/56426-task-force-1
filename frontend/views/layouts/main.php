@@ -79,7 +79,7 @@ $mainMenu = [
             <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
 
             <div class="header__town">
-                <select class="multiple-select input town-select" size="1" name="town[]">
+                <select class="multiple-select input town-select" size="1" name="town" id="town-select">
                     <option value="all">Все города</option>
                     <?php if (isset($this->context->towns) && is_array($this->context->towns)): ?>
                     <?php foreach ($this->context->towns as $town): ?>
@@ -350,6 +350,17 @@ $mainMenu = [
         );
     </script>
 <?php endif; ?>
+
+<script type="text/javascript">
+    document.getElementById("town-select").addEventListener("change", function(event) {
+        fetch("/tasks?city=" + event.target.selectedOptions[0].value, {method: 'GET', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then((response) => {
+                if (response.ok && document.location.pathname === '/tasks') {
+                    document.location.reload();
+                }
+            });
+    });
+</script>
 
 <?php $this->endBody() ?>
 </body>

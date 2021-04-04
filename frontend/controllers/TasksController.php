@@ -33,12 +33,18 @@ class TasksController extends SecuredController
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
-// Для тестирования
-Yii::$app->session->set('userCity', null);
     }
 
     public function actionIndex()
     {
+        if (Yii::$app->request->getIsAjax()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['city'])) {
+                Yii::$app->session->set('userCity', ((int)$data['city'] > 0) ? (int)$data['city'] : null);
+            }
+            return true;
+        }
+
         $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
 
         if (!is_null(Yii::$app->session->get('userCity'))) {
