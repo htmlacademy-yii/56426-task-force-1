@@ -192,14 +192,14 @@ fieldset {
   width: 30px;
   height: 30px; }
 
-.header__lightbulb:hover + .lightbulb__pop-up {
+.header__lightbulb:hover .lightbulb__pop-up {
   display: block; }
 
 .lightbulb__pop-up {
   display: none;
   position: absolute;
-  top: 70px;
-  right: 140px;
+  top: 60px;
+  right: -90px;
   z-index: 10;
   background-color: #ffffff;
   padding-left: 10px;
@@ -266,18 +266,28 @@ fieldset {
     width: 24px;
     height: 22px; }
 
-.lightbulb__new-task--message::before {
-  background-image: url("../img/chat-pop-up.png");
+.lightbulb__new-task--abandon::before {
+  background-image: url("../img/event-abandon.png");
   background-repeat: no-repeat;
   background-position: center; }
 
-.lightbulb__new-task--executor::before {
-  background-image: url("../img/executor-pop-up.png");
+.lightbulb__new-task--begin::before {
+  background-image: url("../img/event-begin.png");
   background-repeat: no-repeat;
   background-position: center; }
 
 .lightbulb__new-task--close::before {
-  background-image: url("../img/close-pop-up.png");
+  background-image: url("../img/event-close.png");
+  background-repeat: no-repeat;
+  background-position: center; }
+
+.lightbulb__new-task--message::before {
+  background-image: url("../img/event-message.png");
+  background-repeat: no-repeat;
+  background-position: center; }
+
+.lightbulb__new-task--reply::before {
+  background-image: url("../img/event-reply.png");
   background-repeat: no-repeat;
   background-position: center; }
 

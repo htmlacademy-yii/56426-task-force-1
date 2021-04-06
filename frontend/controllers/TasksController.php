@@ -10,6 +10,7 @@ use yii\data\Pagination;
 use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\models\Event;
 use frontend\models\Reply;
 use frontend\models\Category;
 use frontend\models\TaskFilterForm;
@@ -126,7 +127,7 @@ class TasksController extends SecuredController
 
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
 
-        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id]);
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id, 'reply.active' => true]);
         if ($task->customer_id !== Yii::$app->user->getId()) {
             $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
         }
@@ -158,22 +159,25 @@ class TasksController extends SecuredController
         return $this->render('create', ['model' => $model, 'categories' => $categories]);
     }
 
-    public function actionReply($id)
-    {
+    public function actionReply($id) {
         $model = new ReplyCreateForm();
 
         if (Yii::$app->request->getIsPost()) {
             $model->load(Yii::$app->request->post());
-            if ($model->validate()) {
-                $model->save($id);
+            if ($model->validate() && $model->save($id) && $task = Task::findOne($id)) {
+                $event = new Event();
+                $event->user_id = $task->customer_id;
+                $event->task_id = $task->id;
+                $event->type = "reply";
+                $event->text = "Новый отклик к заданию";
+                $event->save();
             }
         }
 
         return $this->redirect("/task/$id");
     }
 
-    public function actionComplete($id)
-    {
+    public function actionComplete($id) {
         $model = new TaskCompleteForm();
 
         if (Yii::$app->request->getIsPost()) {
@@ -189,7 +193,16 @@ class TasksController extends SecuredController
     public function actionReject($id) {
         $task = Task::findOne($id);
         $task->status = TaskStatus::FAILED;
-        $task->save();
+
+        if ($task->save()) {
+            $event = new Event();
+            $event->user_id = $task->customer_id;
+            $event->task_id = $task->id;
+            $event->type = "abandon";
+            $event->text = "Исполнитель отказался от задания";
+            $event->save();
+        }
+
         return $this->redirect("/tasks");
     }
 
@@ -197,21 +210,32 @@ class TasksController extends SecuredController
         $task = Task::findOne($id);
         $task->status = TaskStatus::CANCELED;
         $task->save();
+
         return $this->redirect("/tasks");
     }
 
-    public function actionApply($task, $user) {
-        $task = Task::findOne($task);
+    public function actionApply($task_id, $user_id) {
+        $task = Task::findOne($task_id);
         $task->status = TaskStatus::IN_PROGRESS;
-        $task->contractor_id = $user;
-        $task->save();
-        return $this->redirect("/tasks");
+        $task->contractor_id = $user_id;
+
+        if ($task->save()) {
+            $event = new Event();
+            $event->user_id = $user_id;
+            $event->task_id = $task_id;
+            $event->type = "begin";
+            $event->text = "Выбран исполнитель для задания";
+            $event->save();
+        }
+
+        return $this->redirect("/task/$task_id");
     }
 
-    public function actionRefuse($task, $reply) {
-        $reply = Reply::findOne($reply);
+    public function actionRefuse($task_id, $reply_id) {
+        $reply = Reply::findOne($reply_id);
         $reply->active = (integer)false;
         $reply->save();
-        return $this->redirect("/task/$task");
+
+        return $this->redirect("/task/$task_id");
     }
 }

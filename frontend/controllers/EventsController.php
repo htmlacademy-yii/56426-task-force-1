@@ -14,7 +14,7 @@ class EventsController extends SecuredController
         foreach ($events as $event) {
             $data[] = [
                 'task_id' => $event->task->id,
-                'task_name' => $event->task->name,
+                'task_name' => "«".$event->task->name."»",
                 'event_type' => $event->type,
                 'event_text' => $event->text
             ];

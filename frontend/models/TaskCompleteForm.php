@@ -12,6 +12,17 @@ class TaskCompleteForm extends Model
     public $comment;
     public $rating;
 
+    private $eventData = [
+        TaskStatus::COMPLETED => [
+            'type' => '',
+            'text' => ''
+        ],
+        TaskStatus::FAILED => [
+            'type' => 'abandon',
+            'text' => ''
+        ]
+    ];
+
     public function attributeLabels()
     {
         return [
@@ -30,6 +41,29 @@ class TaskCompleteForm extends Model
         ];
     }
 
+    public function eventData($taskStatus)
+    {
+        switch ($taskStatus) {
+            case TaskStatus::COMPLETED:
+                return [
+                    'type' => 'close',
+                    'text' => 'Завершено задание'
+                ];
+                break;
+            case TaskStatus::FAILED:
+                return [
+                    'type' => 'abandon',
+                    'text' => 'Провалено задание'
+                ];
+                break;
+            default:
+                return [
+                    'type' => '',
+                    'text' => ''
+                ];
+        }
+    }
+
     public function save($taskId)
     {
         $task = Task::findOne($taskId);
@@ -41,8 +75,14 @@ class TaskCompleteForm extends Model
         $feedback->rating = $this->rating;
         $feedback->description = $this->comment;
 
+        $event = new Event();
+        $event->user_id = $task->contractor_id;
+        $event->task_id = $task->id;
+        $event->type = $this->eventData($this->status)['type'];
+        $event->text = $this->eventData($this->status)['text'];
+
         $transaction = Yii::$app->db->beginTransaction();
-        if ($task->save() && $feedback->save()) {
+        if ($task->save() && $feedback->save() && $event->save()) {
             $transaction->commit();
             return true;
         } else {

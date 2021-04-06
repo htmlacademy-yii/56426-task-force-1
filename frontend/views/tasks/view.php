@@ -100,8 +100,8 @@ $this->title = 'Задание - TaskForce';
                     </div>
                     <?php if ($reply->active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
                     <div class="feedback-card__actions">
-                        <a href="<?=Url::to(['tasks/apply', 'task' => $task->id, 'user' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
-                        <a href="<?=Url::to(['tasks/refuse', 'task' => $task->id, 'reply' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
+                        <a href="<?=Url::to(['tasks/apply', 'task_id' => $task->id, 'user_id' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
+                        <a href="<?=Url::to(['tasks/refuse', 'task_id' => $task->id, 'reply_id' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
                     </div>
                     <?php endif; ?>
                 </div>

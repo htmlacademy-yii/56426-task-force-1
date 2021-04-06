@@ -89,11 +89,12 @@ $mainMenu = [
                 </select>
             </div>
 
-            <div class="header__lightbulb"></div>
-            <div class="lightbulb__pop-up">
-                <div class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
-                <h3>Новые события</h3>
-                <div class="lightbulb__content"></div>
+            <div class="header__lightbulb">
+                <div class="lightbulb__pop-up">
+                    <div class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
+                    <h3>Новые события</h3>
+                    <div class="lightbulb__content"></div>
+                </div>
             </div>
             <div class="header__account">
                 <a class="header__account-photo">
