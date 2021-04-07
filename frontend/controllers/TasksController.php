@@ -111,6 +111,7 @@ class TasksController extends SecuredController
         return $this->render('index', ['tasks' => $tasks, 'model' => $model, 'pages' => $pages]);
     }
 
+    // Просмотр задания
     public function actionView($id)
     {
         $this->taskId = $id;
@@ -127,7 +128,7 @@ class TasksController extends SecuredController
 
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
 
-        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id, 'reply.active' => true]);
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->andWhere(['reply.active' => true]);
         if ($task->customer_id !== Yii::$app->user->getId()) {
             $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
         }
@@ -136,6 +137,7 @@ class TasksController extends SecuredController
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 
+    // Создание задания
     public function actionCreate()
     {
         $this->autoComplete = true;
@@ -159,24 +161,20 @@ class TasksController extends SecuredController
         return $this->render('create', ['model' => $model, 'categories' => $categories]);
     }
 
+    // Новый отклик на задание
     public function actionReply($id) {
         $model = new ReplyCreateForm();
 
         if (Yii::$app->request->getIsPost()) {
             $model->load(Yii::$app->request->post());
-            if ($model->validate() && $model->save($id) && $task = Task::findOne($id)) {
-                $event = new Event();
-                $event->user_id = $task->customer_id;
-                $event->task_id = $task->id;
-                $event->type = "reply";
-                $event->text = "Новый отклик к заданию";
-                $event->save();
-            }
+            $model->validate();
+            $model->save($id);
         }
 
         return $this->redirect("/task/$id");
     }
 
+    // Завершение задания
     public function actionComplete($id) {
         $model = new TaskCompleteForm();
 
@@ -190,22 +188,28 @@ class TasksController extends SecuredController
         return $this->redirect("/task/$id");
     }
 
+    // Отказ от исполнения задания
     public function actionReject($id) {
         $task = Task::findOne($id);
         $task->status = TaskStatus::FAILED;
 
-        if ($task->save()) {
-            $event = new Event();
-            $event->user_id = $task->customer_id;
-            $event->task_id = $task->id;
-            $event->type = "abandon";
-            $event->text = "Исполнитель отказался от задания";
-            $event->save();
+        $event = new Event();
+        $event->user_id = $task->customer_id;
+        $event->task_id = $task->id;
+        $event->type = "abandon";
+        $event->text = "Исполнитель отказался от задания";
+
+        $transaction = Yii::$app->db->beginTransaction();
+        if ($task->save() && $event->save()) {
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
         }
 
         return $this->redirect("/tasks");
     }
 
+    // Отмена задания заказчиком
     public function actionCancel($id) {
         $task = Task::findOne($id);
         $task->status = TaskStatus::CANCELED;
@@ -214,23 +218,30 @@ class TasksController extends SecuredController
         return $this->redirect("/tasks");
     }
 
+    // Выбор исполнителя задания
     public function actionApply($task_id, $user_id) {
         $task = Task::findOne($task_id);
         $task->status = TaskStatus::IN_PROGRESS;
         $task->contractor_id = $user_id;
 
-        if ($task->save()) {
-            $event = new Event();
-            $event->user_id = $user_id;
-            $event->task_id = $task_id;
-            $event->type = "begin";
-            $event->text = "Выбран исполнитель для задания";
-            $event->save();
+        $event = new Event();
+        $event->user_id = $user_id;
+        $event->task_id = $task_id;
+        $event->type = "begin";
+        $event->text = "Выбран исполнитель для задания";
+
+        $transaction = Yii::$app->db->beginTransaction();
+        if ($task->save() && $event->save()) {
+            Reply::updateAll(['active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
         }
 
         return $this->redirect("/task/$task_id");
     }
 
+    // Отклонение отклика
     public function actionRefuse($task_id, $reply_id) {
         $reply = Reply::findOne($reply_id);
         $reply->active = (integer)false;

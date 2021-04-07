@@ -18,6 +18,11 @@ return [
         ]
     ],
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'GMT+5',
+            'timeZone' => 'GMT+5'
+        ],
         'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => 'localhost',

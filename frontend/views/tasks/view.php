@@ -20,11 +20,14 @@ $this->title = 'Задание - TaskForce';
         <div class="content-view__card-wrapper">
             <div class="content-view__header">
                 <div class="content-view__headline">
-                    <h1><?=$task->name;?></h1>
+                    <div>
+                        <h1><?=$task->name;?></h1>
+                        <div class="task-status  task-status__<?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
+                    </div>
                     <span>
                         Размещено в категории
                         <a href="#" class="link-regular"><?=$task->category->name;?></a>
-                        <?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?>
+                        <?=Yii::$app->formatter->asRelativeTime($task->dt_add);?>
                     </span>
                 </div>
                 <b class="new-task__price new-task__price--<?=$task->category->icon;?> content-view-price"><?=$task->budget;?><b> ₽</b></b>
@@ -51,11 +54,16 @@ $this->title = 'Задание - TaskForce';
                         </a>
                     </div>
                     <div class="content-view__address">
-                    <?php if (empty($task->address)): ?>
+                    <?php if (is_null($task->city) && empty($task->address)): ?>
+                        <span class="address__town"></span>
                         <span>Удаленная работа</span>
-                    <?php else: ?>
+                    <?php elseif (is_null($task->city)): ?>
                         <span class="address__town"><?=explode(', ', $task->address)[0];?></span><br>
                         <span><?=implode(', ', array_slice(explode(', ', $task->address), 1));?></span>
+                        <p></p>
+                    <?php else: ?>
+                        <span class="address__town"><?=$task->city->name;?></span><br>
+                        <span><?=$task->address;?></span>
                         <p></p>
                     <?php endif; ?>
                     </div>
@@ -81,7 +89,11 @@ $this->title = 'Задание - TaskForce';
     </div>
     <div class="content-view__feedback">
         <?php if ($replies): ?>
-            <h2>Отклики <span>(<?=count($replies);?>)</span></h2>
+            <?php if ($task->contractor_id): ?>
+                <h2>Исполнитель</h2>
+            <?php else: ?>
+                <h2>Отклики <span>(<?=count($replies);?>)</span></h2>
+            <?php endif; ?>
             <div class="content-view__feedback-wrapper">
                 <?php foreach ($replies as $reply): ?>
                 <div class="content-view__feedback-card">
@@ -92,7 +104,7 @@ $this->title = 'Задание - TaskForce';
                             <?=$reply->contractor->stars();?>
                             <b><?=sprintf("%0.2f", $reply->contractor->rating());?></b>
                         </div>
-                        <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($reply->dt_add); ?></span>
+                        <span class="new-task__time"><?=Yii::$app->formatter->asRelativeTime($reply->dt_add);?></span>
                     </div>
                     <div class="feedback-card__content">
                         <p><?=$reply->comment;?></p>

@@ -156,6 +156,16 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[City]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    /**
      * Gets query for [[Contractor]].
      *
      * @return \yii\db\ActiveQuery

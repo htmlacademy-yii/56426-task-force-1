@@ -1080,10 +1080,13 @@ fieldset {
   margin-right: 20px; }
 
 .content-view__address {
-  color: #454242; }
+  color: #454242;
+  margin-top: -8px; }
 
 .address__town {
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 40px; }
 
 .content-view__address p {
   font-size: 14px;
