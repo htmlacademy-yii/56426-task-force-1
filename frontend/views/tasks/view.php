@@ -20,10 +20,11 @@ $this->title = 'Задание - TaskForce';
         <div class="content-view__card-wrapper">
             <div class="content-view__header">
                 <div class="content-view__headline">
-                    <div>
+                    <div class="content-view__title">
                         <h1><?=$task->name;?></h1>
                         <div class="task-status  task-status__<?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
                     </div>
+                    <div class="content-view__clear"></div>
                     <span>
                         Размещено в категории
                         <a href="#" class="link-regular"><?=$task->category->name;?></a>

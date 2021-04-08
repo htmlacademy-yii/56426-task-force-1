@@ -9,13 +9,14 @@ use Yii;
  *
  * @property int $id Идентификатор
  * @property int $task_id Задание
- * @property int $contractor_id Исполнитель
- * @property int $is_mine Сообщение заказчика
+ * @property int $sender_id Отправитель
+ * @property int $recipient_id Получатель
  * @property string $message Текст сообщения
  * @property string $dt_add Время создания записи
  *
  * @property Task $task
- * @property User $contractor
+ * @property User $sender
+ * @property User $recipient
  */
 class Chat extends \yii\db\ActiveRecord
 {
@@ -33,12 +34,13 @@ class Chat extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'contractor_id', 'is_mine', 'message'], 'required'],
-            [['task_id', 'contractor_id', 'is_mine'], 'integer'],
+            [['task_id', 'sender_id', 'recipient_id', 'message'], 'required'],
+            [['task_id', 'sender_id', 'recipient_id'], 'integer'],
             [['dt_add'], 'safe'],
             [['message'], 'string', 'max' => 255],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['sender_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['sender_id' => 'id']],
+            [['recipient_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['recipient_id' => 'id']],
         ];
     }
 
@@ -50,8 +52,8 @@ class Chat extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'task_id' => 'Task ID',
-            'contractor_id' => 'Contractor ID',
-            'is_mine' => 'Is Mine',
+            'sender_id' => 'Sender ID',
+            'recipient_id' => 'Recipient ID',
             'message' => 'Message',
             'dt_add' => 'Dt Add',
         ];
@@ -68,12 +70,22 @@ class Chat extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Contractor]].
+     * Gets query for [[Sender]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getContractor()
+    public function getSender()
     {
-        return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+        return $this->hasOne(User::className(), ['id' => 'sender_id']);
+    }
+
+    /**
+     * Gets query for [[Recipient]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecipient()
+    {
+        return $this->hasOne(User::className(), ['id' => 'recipient_id']);
     }
 }

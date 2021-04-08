@@ -1,17 +1,16 @@
 Vue.component('chat', {
   props: ['task'],
-  template: `<div><h3>Переписка</h3>
-             <div class="chat__overflow">
-               <div class="chat__message" v-for="item in messages" :class="{'chat__message--out': item.is_mine == 1}">
-                <p class="chat__message-time">{{ item.dt_add }}</p>
-                <p class="chat__message-text">{{ item.message }}</p>
-               </div>
+  template:  `<div><h3>Переписка</h3>
+              <div class="chat__overflow">
+                <div class="chat__message" v-for="item in messages" :class="{'chat__message--out': item.out == 1}">
+                  <p class="chat__message-time">{{ item.sender.name }} / {{ item.dt_add }}</p>
+                  <p class="chat__message-text">{{ item.message }}</p>
+                </div>
               </div>
               <p class="chat__your-message">Ваше сообщение</p>
               <form class="chat__form">
-                  <textarea class="input textarea textarea-chat" rows="2" name="message-text"
-                  v-model="message" placeholder="Текст сообщения">{{this.message}}</textarea>
-                  <button class="button chat__button" v-on:click="sendMessage" type="button">Отправить</button>
+                <textarea class="input textarea textarea-chat" rows="2" name="message-text" v-model="message" placeholder="Текст сообщения">{{this.message}}</textarea>
+                <button class="button chat__button" v-on:click="sendMessage" type="button">Отправить</button>
               </form></div>`,
   mounted: function() {
     if (typeof this.task === "undefined") {
@@ -29,15 +28,14 @@ Vue.component('chat', {
         body: JSON.stringify({message: this.message})
       })
       .then(result => {
-        if (result.status !== 201) {
+        if (result.status !== 200) {
           return Promise.reject(new Error('Запрошенный ресурс не существует'));
         }
-
         return result.json();
       })
       .then(msg => {
         this.messages.push(msg);
-        this.message = null;
+        this.message = '';
       })
       .catch(err => {
         console.error('Не удалось отправить сообщение', err);
@@ -49,7 +47,6 @@ Vue.component('chat', {
         if (result.status !== 200) {
           return Promise.reject(new Error('Запрошенный ресурс не существует'));
         }
-
         return result.json();
       })
       .then(messages => {

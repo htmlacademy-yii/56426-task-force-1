@@ -28,24 +28,39 @@ class MessagesController extends ActiveController
 
     public function actionView($id)
     {
-        return Chat::find()->joinWith('task')->where(['chat.task_id' => $id])->andWhere(['or', ['=', 'task.customer_id', Yii::$app->user->getId()], ['=', 'chat.contractor_id', Yii::$app->user->getId()]])->orderBy(['dt_add' => SORT_ASC])->asArray()->all();
+        $chat = Chat::find()->joinWith('sender')->where(['chat.task_id' => $id])->andWhere(['or', ['=', 'chat.sender_id', Yii::$app->user->getId()], ['=', 'chat.recipient_id', Yii::$app->user->getId()]])->orderBy(['dt_add' => SORT_ASC])->asArray()->all();
+
+        return array_map(function($message) {
+            return array_merge($message, [
+                'out' => ((int)$message['recipient_id'] === Yii::$app->user->getId()) ? 1 : 0
+            ]);
+        }, $chat);
     }
 
     public function actionUpdate($id)
     {
+        $task = Task::findOne($id);
+
+        if (!$task) {
+            return;
+        }
+
+        if (($task->customer_id !== Yii::$app->user->getId()) && is_null($task->contractor_id)) {
+            return;
+        }
+
         $data = json_decode(Yii::$app->getRequest()->getRawBody());
 
         if (strlen($data->message)) {
-            $task = Task::findOne($id);
 
             $chat = new Chat();
             $chat->task_id = $task->id;
-            $chat->contractor_id = Yii::$app->user->getId();
-            $chat->is_mine = ($task->customer_id === Yii::$app->user->getId()) ? 1 : 0;
+            $chat->sender_id = Yii::$app->user->getId();
+            $chat->recipient_id = ($task->customer_id === Yii::$app->user->getId()) ? $task->contractor_id : $task->customer_id;
             $chat->message = $data->message;
 
             $event = new Event();
-            $event->user_id = ($task->customer_id === Yii::$app->user->getId()) ? $task->contractor_id : $task->customer_id;
+            $event->user_id = $chat->recipient_id;
             $event->task_id = $task->id;
             $event->type = "message";
             $event->text = "Новое сообщение в чате";
@@ -58,6 +73,6 @@ class MessagesController extends ActiveController
             }
         }
 
-        return;
+        return $data->message;
     }
 }
