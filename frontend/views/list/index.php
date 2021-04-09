@@ -51,7 +51,12 @@ $this->title = 'Мои задания - TaskForce';
                     <a href="<?=Url::to(['/user/'.$user->id]);?>"><img src="../img/man-glasses.jpg" width="36" height="36"></a>
                     <div class="feedback-card__top--name my-list__bottom">
                         <p class="link-name"><a <?=($role === UserRole::CUSTOMER) ? 'href="'.Url::to(['/user/'.$user->id]).'"' : '' ;?> class="link-regular"><?=$user->name;?></a></p>
-                        <a href="#" class="my-list__bottom-chat  my-list__bottom-chat--new"><b>3</b></a>
+                        <?php $new_messages_count = $task->newMessagesCount(); ?>
+                        <?php if ($new_messages_count > 0): ?>
+                            <a href="#" class="my-list__bottom-chat  my-list__bottom-chat--new"><b><?=$new_messages_count;?></b></a>
+                        <?php else: ?>
+                            <a href="#" class="my-list__bottom-chat"><b></b></a>
+                        <?php endif; ?>
                         <?=$user->stars();?>
                         <b><?=sprintf("%0.2f", $user->rating());?></b>
                     </div>

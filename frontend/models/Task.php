@@ -30,10 +30,21 @@ use Yii;
  * @property User $customer
  * @property Category $category
  * @property User $contractor
+ * @property Event[] $events
  * @property File[] $files
  */
 class Task extends \yii\db\ActiveRecord
 {
+    public function newMessagesCount()
+    {
+        return Event::find()->where([
+            'user_id' => Yii::$app->user->getId(),
+            'task_id' => $this->id,
+            'is_viewed' => false,
+            'type' => 'message'
+        ])->count();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -173,6 +184,16 @@ class Task extends \yii\db\ActiveRecord
     public function getContractor()
     {
         return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+    }
+
+    /**
+     * Gets query for [[Events]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEvents()
+    {
+        return $this->hasMany(Event::className(), ['task_id' => 'id']);
     }
 
     /**

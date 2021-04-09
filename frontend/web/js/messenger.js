@@ -34,8 +34,11 @@ Vue.component('chat', {
         return result.json();
       })
       .then(msg => {
-        this.messages.push(msg);
-        this.message = '';
+        if (msg.length > 0) {
+          this.messages.push(msg);
+          this.message = "";
+          this.getMessages();
+        }
       })
       .catch(err => {
         console.error('Не удалось отправить сообщение', err);

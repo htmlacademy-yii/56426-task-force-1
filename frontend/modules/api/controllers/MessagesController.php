@@ -32,7 +32,7 @@ class MessagesController extends ActiveController
 
         return array_map(function($message) {
             return array_merge($message, [
-                'out' => ((int)$message['recipient_id'] === Yii::$app->user->getId()) ? 1 : 0
+                'out' => ((int)$message['sender_id'] === Yii::$app->user->getId()) ? 1 : 0
             ]);
         }, $chat);
     }
@@ -41,12 +41,8 @@ class MessagesController extends ActiveController
     {
         $task = Task::findOne($id);
 
-        if (!$task) {
-            return;
-        }
-
-        if (($task->customer_id !== Yii::$app->user->getId()) && is_null($task->contractor_id)) {
-            return;
+        if (is_null($task) || is_null($task->contractor_id)) {
+            return "";
         }
 
         $data = json_decode(Yii::$app->getRequest()->getRawBody());
@@ -64,7 +60,7 @@ class MessagesController extends ActiveController
             $event->task_id = $task->id;
             $event->type = "message";
             $event->text = "Новое сообщение в чате";
-    
+
             $transaction = Yii::$app->db->beginTransaction();
             if ($chat->save() && $event->save()) {
                 $transaction->commit();
