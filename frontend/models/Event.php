@@ -20,6 +20,14 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
+    public static function newEventsCount()
+    {
+        return Event::find()->where([
+            'user_id' => Yii::$app->user->getId(),
+            'is_viewed' => false
+        ])->count();
+    }
+
     /**
      * {@inheritdoc}
      */

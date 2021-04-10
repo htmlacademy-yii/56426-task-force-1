@@ -1,6 +1,7 @@
-var lightbulb = document.getElementsByClassName('header__lightbulb')[0];
-var lightbulbContent = document.getElementsByClassName('lightbulb__content')[0];
-var lightbulbViewedButton = document.getElementsByClassName('lightbulb__viewed')[0];
+var lightbulb = document.getElementById("header__lightbulb");
+var lightbulbContent = document.getElementById("lightbulb__content");
+var lightbulbViewedButton = document.getElementById("lightbulb__viewed");
+var lightbulbEventsCounter = document.getElementById("new-events-count");
 
 function loadEvents() {
     fetch('/events')
@@ -16,6 +17,8 @@ function loadEvents() {
                 p1.textContent = "Нет новых событий";
                 lightbulbContent.appendChild(p1);
             } else {
+                lightbulbEventsCounter.innerHTML = data.length;
+                lightbulb.classList.add("lightbulb__new-events");
                 lightbulbViewedButton.classList.remove("lightbulb__viewed--hidden");
                 data.forEach(element => {
                     var taskId = element['task_id'];
@@ -48,6 +51,13 @@ lightbulbViewedButton.addEventListener('click', function () {
         .then((response) => {
             if (response.ok) {
                 loadEvents();
+            }
+            return response.json();
+        })
+        .then((count) => {
+            if (count == 0) {
+                lightbulb.classList.remove("lightbulb__new-events");
+                lightbulbEventsCounter.innerHTML = "";
             }
         });
 });

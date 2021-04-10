@@ -36,6 +36,7 @@ class LandingController extends UnsecuredController
             $this->model->load(Yii::$app->request->post());
             if ($this->model->validate()) {
                 Yii::$app->user->login($this->model->getUser());
+                Yii::$app->session->set('userCity', isset(Yii::$app->user->getIdentity()->profile->city) ? Yii::$app->user->getIdentity()->profile->city->id : null);
                 return $this->redirect('/tasks');
             }
         }

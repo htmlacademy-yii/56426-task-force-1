@@ -6,17 +6,20 @@ use Yii;
 use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\models\Event;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
 class ListController extends SecuredController
 {
     public $towns;
+    public $eventsCount;
 
     public function init()
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
     }
 
     public function actionIndex()

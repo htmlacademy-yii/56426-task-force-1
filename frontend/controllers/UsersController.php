@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\data\Pagination;
 use frontend\models\City;
 use frontend\models\User;
+use frontend\models\Event;
 use frontend\models\UserFilterForm;
 use frontend\models\Feedback;
 use HtmlAcademy\Models\TaskStatus;
@@ -16,12 +17,14 @@ use HtmlAcademy\Models\TaskStatus;
 class UsersController extends SecuredController
 {
     public $towns;
+    public $eventsCount;
     public $sortingRules;
 
     public function init()
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
         $this->sortingRules = [
             'rating' => 'Рейтингу',
             'orders' => 'Числу заказов',

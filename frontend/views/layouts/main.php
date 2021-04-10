@@ -89,11 +89,12 @@ $mainMenu = [
                 </select>
             </div>
 
-            <div class="header__lightbulb">
+            <div id="header__lightbulb" class="header__lightbulb<?=($this->context->eventsCount > 0) ? "  lightbulb__new-events" : "";?>">
+                <div id="new-events-count" class="new-events-count"><?=($this->context->eventsCount > 0) ? $this->context->eventsCount : "";?></div>
                 <div class="lightbulb__pop-up">
-                    <div class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
+                    <div id="lightbulb__viewed" class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
                     <h3>Новые события</h3>
-                    <div class="lightbulb__content"></div>
+                    <div id="lightbulb__content" class="lightbulb__content"></div>
                 </div>
             </div>
             <div class="header__account">

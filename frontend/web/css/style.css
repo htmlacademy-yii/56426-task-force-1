@@ -192,6 +192,29 @@ fieldset {
   width: 30px;
   height: 30px; }
 
+.new-events-count {
+  display: none; }
+
+.lightbulb__new-events {
+  background-image: url("../img/lightbulb-white.png"); }
+
+.lightbulb__new-events .new-events-count {
+  display: block;
+  position: absolute;
+  padding-top: 2px;
+  padding-right: 6px;
+  padding-left: 5px;
+  left: 14px;
+  bottom: -7px;
+  font-family: "Myriad Pro", sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  min-width: 8px;
+  height: 17px;
+  border-radius: 9px;
+  background-color: #ff6b81;
+  color: #ffffff; }
+
 .header__lightbulb:hover .lightbulb__pop-up {
   display: block; }
 

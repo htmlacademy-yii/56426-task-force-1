@@ -27,6 +27,7 @@ class TasksController extends SecuredController
     public $taskLat;
     public $taskLong;
     public $replyForm;
+    public $eventsCount;
     public $completeForm;
     public $autoComplete;
 
@@ -34,6 +35,7 @@ class TasksController extends SecuredController
     {
         parent::init();
         $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
     }
 
     public function actionIndex()
