@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use frontend\models\User;
 use frontend\models\Skill;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -45,7 +46,7 @@ if ($pages->totalCount == 0) {
             <div class="content-view__feedback-card user__search-wrapper">
                 <div class="feedback-card__top">
                     <div class="user__search-icon">
-                        <a href="#"><img src="/img/man-blond.jpg" width="65" height="65"></a>
+                        <a href="<?=Url::to(['view', 'id' => $user->id]);?>"><img src="<?=User::getAvatar($user->id);?>" width="65" height="65"></a>
                         <span><?=$user->taskCount();?> заданий</span>
                         <span><?=$user->feedbackCount();?> отзывов</span>
                     </div>

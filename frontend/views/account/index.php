@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\models\User;
 use frontend\models\Skill;
 
 $this->title = 'Настройки аккаунта - TaskForce';
@@ -32,7 +33,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="img/man-glasses.jpg" width="156" height="156">
+                    <img src="<?=User::getAvatar();?>" width="140" height="140">
                     <input type="file" name="avatar" id="upload-avatar">
                     <label for="upload-avatar" class="link-regular">Сменить аватар</label>
                 </div>

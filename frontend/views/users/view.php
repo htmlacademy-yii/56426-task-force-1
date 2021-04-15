@@ -4,12 +4,15 @@
 
 $this->title = 'Исполнитель - TaskForce';
 
+use yii\helpers\Url;
+use frontend\models\User;
+
 ?>
 
 <section class="content-view">
     <div class="user__card-wrapper">
         <div class="user__card">
-            <img src="/img/man-blond.jpg" width="120" height="120" alt="Аватар пользователя">
+            <img src="<?=User::getAvatar($user->id);?>" width="120" height="120" alt="Аватар пользователя">
                 <div class="content-view__headline">
                     <h1><?=$user->name;?></h1>
                     <p>Россия, <?=$user->profile->city->name;?>, <?=date_diff(date_create(), date_create($user->profile->birthday))->format("%y лет");?></p>
@@ -57,11 +60,11 @@ $this->title = 'Исполнитель - TaskForce';
         <div class="content-view__feedback-wrapper reviews-wrapper">
         <?php foreach($feedbacks as $feedback): ?>
             <div class="feedback-card__reviews">
-                <p class="link-task link">Задание <a href="#" class="link-regular">«<?=$feedback->task->name;?>»</a></p>
+                <p class="link-task link">Задание <a href="<?=Url::to(['/task/'.$feedback->task->id]);?>" class="link-regular">«<?=$feedback->task->name;?>»</a></p>
                 <div class="card__review">
-                    <a href="#"><img src="/img/man-glasses.jpg" width="55" height="54"></a>
+                    <img src="<?=User::getAvatar($feedback->task->customer->id);?>" width="55" height="54">
                     <div class="feedback-card__reviews-content">
-                        <p class="link-name link"><a href="#" class="link-regular"><?=$feedback->task->customer->name;?></a></p>
+                        <p class="link-name link"><?=$feedback->task->customer->name;?></p>
                         <p class="review-text"><?=$feedback->description;?></p>
                     </div>
                     <div class="card__review-rate">

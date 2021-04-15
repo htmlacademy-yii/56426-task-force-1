@@ -365,9 +365,13 @@ fieldset {
   padding-bottom: 17px; }
 
 .header__account-photo {
-  width: 43px;
+  width: 44px;
   height: 44px;
   cursor: pointer; }
+  .header__account-photo img {
+    width: 44px;
+    height: 44px;
+    border-radius: 2px; }
 
 .header__account-name {
   position: relative;
@@ -1720,7 +1724,8 @@ fieldset {
 
 .link-name {
   font-size: 18px;
-  margin-bottom: 3px; }
+  margin-bottom: 3px;
+  color: #333438; }
 
 .card__review-rate p {
   font-weight: 700;
@@ -2082,6 +2087,8 @@ fieldset {
   width: 1000px; }
 
 .account__redaction-avatar {
+  padding-top: 6px;
+  padding-right: 13px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2090,8 +2097,10 @@ fieldset {
       -ms-flex-direction: column;
           flex-direction: column; }
   .account__redaction-avatar img {
-    margin-left: -8px;
-    margin-right: 5px; }
+    margin-bottom: 5px;
+    border-radius: 5px; }
+  .account__redaction-avatar label {
+    text-align: center; }
 
 #upload-avatar {
   display: none;

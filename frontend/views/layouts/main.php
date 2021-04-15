@@ -7,6 +7,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\models\User;
 use frontend\assets\AppAsset;
 use HtmlAcademy\Models\TaskStatus;
 
@@ -99,7 +100,7 @@ $mainMenu = [
             </div>
             <div class="header__account">
                 <a class="header__account-photo">
-                    <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
+                    <img src="<?=User::getAvatar();?>" width="44" height="44" alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name"><?=Yii::$app->user->getIdentity()->name;?></span>
             </div>

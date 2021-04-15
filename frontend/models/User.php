@@ -31,6 +31,18 @@ use HtmlAcademy\Models\UserRole;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public static function getAvatar($user_id = null)
+    {
+        if (is_null($user_id)) {
+            $user_id = Yii::$app->user->getId();
+        }
+
+        $user_avatar = "files/$user_id/avatar.jpg";
+        $default_avatar = "/img/default-avatar.jpg";
+
+        return file_exists($user_avatar) ? "/".$user_avatar : $default_avatar;
+    }
+
     public static function getRole()
     {
         if (UserSkill::find()->where(['user_id' => Yii::$app->user->getId()])->count()) {

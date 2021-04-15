@@ -4,6 +4,7 @@
 
 use Yii;
 use yii\helpers\Url;
+use frontend\models\User;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\ActionAccept;
 use HtmlAcademy\Models\ActionReject;
@@ -129,7 +130,7 @@ $this->title = 'Задание - TaskForce';
         <div class="profile-mini__wrapper">
             <h3>Заказчик</h3>
             <div class="profile-mini__top">
-                <img src="/img/man-brune.jpg" width="62" height="62" alt="Аватар заказчика">
+                <img src="<?=User::getAvatar($customer->id);?>" width="62" height="62" alt="Аватар заказчика">
                 <div class="profile-mini__name five-stars__rate">
                     <p><?=$customer->name;?></p>
                 </div>
