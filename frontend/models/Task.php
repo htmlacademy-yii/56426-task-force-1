@@ -24,14 +24,12 @@ use Yii;
  *
  * @property Attachment[] $attachments
  * @property Chat[] $chats
- * @property Job[] $jobs
  * @property Reply[] $replies
  * @property Feedback[] $feedbacks
  * @property User $customer
  * @property Category $category
  * @property User $contractor
  * @property Event[] $events
- * @property File[] $files
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -117,16 +115,6 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Jobs]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getJobs()
-    {
-        return $this->hasMany(Job::className(), ['task_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[Replies]].
      *
      * @return \yii\db\ActiveQuery
@@ -194,15 +182,5 @@ class Task extends \yii\db\ActiveRecord
     public function getEvents()
     {
         return $this->hasMany(Event::className(), ['task_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Files]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFiles()
-    {
-        return $this->hasMany(File::className(), ['id' => 'file_id'])->viaTable('attachment', ['task_id' => 'id']);
     }
 }

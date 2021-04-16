@@ -120,7 +120,7 @@ class TasksController extends SecuredController
         $this->replyForm = new ReplyCreateForm();
         $this->completeForm = new TaskCompleteForm();
 
-        $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
+        $task = Task::find()->joinWith('category')->joinWith('attachments')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }

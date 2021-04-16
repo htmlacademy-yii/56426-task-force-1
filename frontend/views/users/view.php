@@ -47,10 +47,12 @@ use frontend\models\User;
                 </div>
             </div>
             <div class="user__card-photo">
-                <h3 class="content-view__h3">Фото работ</h3>
-                <a href="#"><img src="/img/rome-photo.jpg" width="85" height="86" alt="Фото работы"></a>
-                <a href="#"><img src="/img/smartphone-photo.png" width="85" height="86" alt="Фото работы"></a>
-                <a href="#"><img src="/img/dotonbori-photo.png" width="85" height="86" alt="Фото работы"></a>
+                <?php if ($user->photos): ?>
+                    <h3 class="content-view__h3">Фото работ</h3>
+                    <?php foreach ($user->photos as $photo): ?>
+                        <a href="<?=Url::to([$photo->file]);?>"><img src="<?=Url::to([$photo->file]);?>" width="86" height="86" alt="<?=$photo->name;?>"></a>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

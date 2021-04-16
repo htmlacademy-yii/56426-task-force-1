@@ -145,12 +145,19 @@ create table `file` (
 	`dt_add` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
-create table `attachment` (
+create table `attachment_old` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`task_id` int not null comment 'Задание',
 	`file_id` int not null comment 'Файл',
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`file_id`) references `file`(`id`)
+) engine `innodb` character set `utf8`;
+
+create table `attachment` (
+	`id` int not null auto_increment primary key comment 'Идентификатор',
+	`task_id` int not null comment 'Задание',
+	`file` varchar(255) not null unique comment 'Файл',
+	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
 
 create table `photo` (

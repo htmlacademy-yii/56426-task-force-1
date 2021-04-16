@@ -114,6 +114,7 @@ class UserAccountForm extends Model
             $photo = new Photo();
             $photo->user_id = Yii::$app->user->getId();
             $photo->file = $file;
+            $photo->name = $file->baseName;
             $photo->save();
         }
 
@@ -129,7 +130,7 @@ class UserAccountForm extends Model
 
     public function upload()
     {
-        $path = 'files/'.Yii::$app->user->getId().'/'.date('Ymd');
+        $path = 'files/user/'.Yii::$app->user->getId();
 
         if (!file_exists($path)) {
             if (!mkdir($path, 0755, true)) {

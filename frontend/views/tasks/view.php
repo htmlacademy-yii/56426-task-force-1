@@ -40,10 +40,10 @@ $this->title = 'Задание - TaskForce';
                 <p><?=$task->description;?></p>
             </div>
             <div class="content-view__attach">
-                <?php if ($task->files): ?>
+                <?php if ($task->attachments): ?>
                     <h3 class="content-view__h3">Вложения</h3>
-                    <?php foreach ($task->files as $file): ?>
-                        <a href="#"><?=$file->original_name;?></a>
+                    <?php foreach ($task->attachments as $attachment): ?>
+                        <a href="<?=Url::to([$attachment->file]);?>"><?=$attachment->name;?></a>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>

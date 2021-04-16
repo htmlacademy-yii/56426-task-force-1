@@ -108,7 +108,7 @@ class UsersController extends SecuredController
 
     public function actionView($id)
     {
-        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->where(['user.id' => $id])->one();
+        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('photos')->where(['user.id' => $id])->one();
         if (!$user) {
             throw new NotFoundHttpException("Исполнитель с ID $id не найден");
         }

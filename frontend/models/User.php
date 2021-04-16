@@ -17,16 +17,15 @@ use HtmlAcademy\Models\UserRole;
  * @property string $dt_add Время создания записи
  *
  * @property Chat[] $chats
- * @property Favorite[] $favorite
  * @property Feedback[] $feedbacks
- * @property Job[] $jobs
+ * @property Notice[] $notices
+ * @property Photo[] $photos
  * @property Profile $profile
  * @property Reply[] $replies
  * @property Settings $settings
+ * @property Skill[] $skills
  * @property Task[] $customerTasks
  * @property Task[] $contractorTasks
- * @property Skill[] $skills
- * @property Notice[] $notices
  */
 
 class User extends ActiveRecord implements IdentityInterface
@@ -161,16 +160,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[Favorite]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFavorite()
-    {
-        return $this->hasMany(Favorite::className(), ['user_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[Feedbacks]].
      *
      * @return \yii\db\ActiveQuery
@@ -181,13 +170,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[Jobs]].
+     * Gets query for [[Notices]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getJobs()
+    public function getNotices()
     {
-        return $this->hasMany(Job::className(), ['contractor_id' => 'id']);
+        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Photos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhotos()
+    {
+        return $this->hasMany(Photo::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -221,6 +220,16 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Gets query for [[Skills]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkills()
+    {
+        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
+    }
+
+    /**
      * Gets query for [[CustomerTasks]].
      *
      * @return \yii\db\ActiveQuery
@@ -238,25 +247,5 @@ class User extends ActiveRecord implements IdentityInterface
     public function getContractorTasks()
     {
         return $this->hasMany(Task::className(), ['contractor_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Skills]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSkills()
-    {
-        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Notices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNotices()
-    {
-        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
     }
 }

@@ -9,10 +9,9 @@ use Yii;
  *
  * @property int $id Идентификатор
  * @property int $task_id Задание
- * @property int $file_id Файл
+ * @property string $file Файл
  *
  * @property Task $task
- * @property File $file
  */
 class Attachment extends \yii\db\ActiveRecord
 {
@@ -30,10 +29,11 @@ class Attachment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'file_id'], 'required'],
-            [['task_id', 'file_id'], 'integer'],
+            [['task_id', 'file'], 'required'],
+            [['task_id'], 'integer'],
+            [['file'], 'string', 'max' => 255],
+            [['file'], 'unique'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
         ];
     }
 
@@ -45,23 +45,17 @@ class Attachment extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'task_id' => 'Task ID',
-            'file_id' => 'File ID',
+            'file' => 'File',
         ];
     }
 
     /**
+     * Gets query for [[Task]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getTask()
     {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFile()
-    {
-        return $this->hasOne(File::className(), ['id' => 'file_id']);
     }
 }
