@@ -38,6 +38,15 @@ class TasksController extends SecuredController
         $this->eventsCount = Event::newEventsCount();
     }
 
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         if (Yii::$app->request->getIsAjax()) {
@@ -164,7 +173,8 @@ class TasksController extends SecuredController
     }
 
     // Новый отклик на задание
-    public function actionReply($id) {
+    public function actionReply($id)
+    {
         $model = new ReplyCreateForm();
 
         if (Yii::$app->request->getIsPost()) {
@@ -177,7 +187,8 @@ class TasksController extends SecuredController
     }
 
     // Завершение задания
-    public function actionComplete($id) {
+    public function actionComplete($id)
+    {
         $model = new TaskCompleteForm();
 
         if (Yii::$app->request->getIsPost()) {
@@ -191,7 +202,8 @@ class TasksController extends SecuredController
     }
 
     // Отказ от исполнения задания
-    public function actionReject($id) {
+    public function actionReject($id)
+    {
         $task = Task::findOne($id);
         $task->status = TaskStatus::FAILED;
 
@@ -212,7 +224,8 @@ class TasksController extends SecuredController
     }
 
     // Отмена задания заказчиком
-    public function actionCancel($id) {
+    public function actionCancel($id)
+    {
         $task = Task::findOne($id);
         $task->status = TaskStatus::CANCELED;
         $task->save();
@@ -221,7 +234,8 @@ class TasksController extends SecuredController
     }
 
     // Выбор исполнителя задания
-    public function actionApply($task_id, $user_id) {
+    public function actionApply($task_id, $user_id)
+    {
         $task = Task::findOne($task_id);
         $task->status = TaskStatus::IN_PROGRESS;
         $task->contractor_id = $user_id;
@@ -244,7 +258,8 @@ class TasksController extends SecuredController
     }
 
     // Отклонение отклика
-    public function actionRefuse($task_id, $reply_id) {
+    public function actionRefuse($task_id, $reply_id)
+    {
         $reply = Reply::findOne($reply_id);
         $reply->active = (integer)false;
         $reply->save();

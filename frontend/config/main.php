@@ -65,7 +65,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'landing/index',
+            'errorAction' => 'tasks/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -77,6 +77,7 @@ return [
                 '/login' => 'landing/login',
                 '/logout' => 'logout/index',
                 '/signup' => 'signup/index',
+                '/account' => 'account/index',
                 '/tasks/page/<page:\d+>' => 'tasks/index',
                 '/tasks' => 'tasks/index',
                 '/users/sort/<sort:\w+>/page/<page:\d+>' => 'users/index',

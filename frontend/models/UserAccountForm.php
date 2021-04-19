@@ -51,6 +51,7 @@ class UserAccountForm extends Model
             'about' => 'Информация о себе',
             'password' => 'Новый пароль',
             'password_retype' => 'Повтор пароля',
+            'image_files' => 'Выбрать фотографии',
             'phone' => 'Телефон',
             'skype' => 'Skype',
             'messenger' => 'Telegram',
@@ -66,6 +67,7 @@ class UserAccountForm extends Model
     {
         return [
             [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile', 'image_files'], 'safe'],
+            [['birthday', 'about', 'phone', 'skype', 'messenger'], 'default'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
@@ -74,7 +76,7 @@ class UserAccountForm extends Model
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
             [['password'], 'compare', 'compareAttribute' => 'password_retype'],
-            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 6],
+            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6],
         ];
     }
 
@@ -85,7 +87,7 @@ class UserAccountForm extends Model
         if (!empty($this->password)) {
             $this->user->password = Yii::$app->security->generatePasswordHash($this->password);
         }
-        
+
         $this->profile->city_id = $this->city;
         $this->profile->birthday = $this->birthday;
         $this->profile->about = $this->about;
@@ -110,11 +112,11 @@ class UserAccountForm extends Model
         }
 
         $files = is_array($this->saved_files) ? $this->saved_files : [];
-        foreach ($files as $file) {
+        foreach ($files as $image) {
             $photo = new Photo();
             $photo->user_id = Yii::$app->user->getId();
-            $photo->file = $file;
-            $photo->name = $file->baseName;
+            $photo->file = $image['file'];
+            $photo->name = $image['name'];
             $photo->save();
         }
 
@@ -142,7 +144,7 @@ class UserAccountForm extends Model
         foreach ($this->image_files as $file) {
             $fileName = $path.'/'.$file->baseName.'.'.$file->extension;
             if ($file->saveAs($fileName)) {
-                $this->saved_files[] = $fileName;
+                $this->saved_files[] = ['file' => $fileName, 'name' => $file->baseName];
             }
         }
 

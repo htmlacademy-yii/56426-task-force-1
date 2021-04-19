@@ -2712,29 +2712,30 @@ fieldset {
 .dz-message span,
 .dz-success-mark,
 .dz-error-mark {
-  display: none !important;
-}
+  display: none !important; }
 
 .dz-clickable {
-  cursor: pointer;
-}
+  cursor: pointer; }
 
 .dz-message{
-  margin-bottom: 10px;
-}
+  margin-bottom: 10px; }
 
 .dz-image-preview {
-  margin-right: 10px;
-}
+  margin-right: 10px; }
 
 /*# sourceMappingURL=style.css.map */
 
 .search-task__filter > .control-label {
   padding-bottom: 0;
   padding-left: 0;
-  padding-top: 0;
-}
+  padding-top: 0; }
 
 .search-task__account > .control-label {
-  margin-right: 26px;
-}
+  margin-right: 26px; }
+
+.error-summary {
+  padding: 10px;
+  color: #ff0000;
+  background-color: #ffcccc;
+  border: 1px solid #ff0000;
+  border-radius: 5px; }

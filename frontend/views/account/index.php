@@ -27,6 +27,8 @@ $this->title = 'Настройки аккаунта - TaskForce';
         ]
     ]); ?>
 
+        <?=$form->errorSummary($model);?>
+
         <div class="account__redaction-section">
 
             <h3 class="div-line">Настройки аккаунта</h3>
@@ -113,28 +115,32 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                        <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'password',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'password',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
                 </div>
                 <div class="account__input">
-                <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'password_retype',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'password_retype',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
                 </div>
             </div>
 
             <h3 class="div-line">Фото работ</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
-                <?=$form->field($model, 'image_files[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-                <span class="dropzone">Выбрать фотографии</span>
+                <?php $options = [
+                    'id' => 'image_files',
+                    'multiple' => true,
+                    'accept' => 'image/jpeg, image/png'
+                ]; ?>
+                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])->fileInput($options) ?>
             </div>
 
             <h3 class="div-line">Контакты</h3>
