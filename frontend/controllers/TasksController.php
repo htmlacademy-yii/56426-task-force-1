@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\data\Pagination;
 use frontend\models\City;
@@ -163,8 +164,10 @@ class TasksController extends SecuredController
         $categories = ['none' => ''] + array_column($rows, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
-            $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate() && $task_id = $model->save()) {
+            $model->load(Yii::$app->request->post());
+            $model->task_files = UploadedFile::getInstances($model, 'task_files');
+            if ($model->validate() && $task_id = $model->save()) {
+                $model->upload($task_id);
                 return $this->redirect("/task/$task_id");
             }
         }

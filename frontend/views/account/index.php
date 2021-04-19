@@ -140,7 +140,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     'multiple' => true,
                     'accept' => 'image/jpeg, image/png'
                 ]; ?>
-                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])->fileInput($options) ?>
+                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])->fileInput($options);?>
             </div>
 
             <h3 class="div-line">Контакты</h3>

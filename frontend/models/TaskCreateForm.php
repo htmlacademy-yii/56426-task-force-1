@@ -17,12 +17,17 @@ class TaskCreateForm extends Model
     public $budget;
     public $expire;
 
+    public $task_files;
+
+    private $saved_files;
+
     public function attributeLabels()
     {
         return [
             'name' => 'Мне нужно',
             'description' => 'Подробности задания',
             'category' => 'Категория',
+            'task_files' => 'Файлы',
             'location' => 'Локация',
             'budget' => 'Бюджет',
             'expire' => 'Срок исполнения'
@@ -32,12 +37,13 @@ class TaskCreateForm extends Model
     public function rules()
     {
         return [
-            [['name', 'description', 'category', 'location', 'budget', 'expire'], 'safe'],
+            [['name', 'description', 'category', 'location', 'budget', 'expire', 'task_files'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
             [['name', 'description', 'location'], 'string'],
             [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
-            [['expire'], 'date', 'format' => 'php:Y-m-d']
+            [['expire'], 'date', 'format' => 'php:Y-m-d'],
+            [['task_files'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 6]
         ];
     }
 
@@ -99,5 +105,34 @@ class TaskCreateForm extends Model
         }
 
         return false;
+    }
+
+    public function upload($task_id)
+    {
+        $path = 'files/task/'.$task_id;
+
+        if (!file_exists($path)) {
+            if (!mkdir($path, 0755, true)) {
+                return false;
+            }
+        }
+
+        $this->saved_files = [];
+        foreach ($this->task_files as $file) {
+            $fileName = $path.'/'.$file->baseName.'.'.$file->extension;
+            if ($file->saveAs($fileName)) {
+                $this->saved_files[] = ['file' => $fileName, 'name' => $file->baseName];
+            }
+        }
+
+        foreach ($this->saved_files as $file) {
+            $attachment = new Attachment();
+            $attachment->task_id = $task_id;
+            $attachment->file = $file['file'];
+            $attachment->name = $file['name'];
+            $attachment->save();
+        }
+
+        return true;
     }
 }

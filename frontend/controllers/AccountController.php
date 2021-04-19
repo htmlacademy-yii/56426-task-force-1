@@ -11,7 +11,6 @@ use frontend\models\UserAccountForm;
 class AccountController extends SecuredController
 {
     public $towns;
-    public $dropzone;
     public $eventsCount;
 
     public function init()
@@ -23,8 +22,6 @@ class AccountController extends SecuredController
 
     public function actionIndex()
     {
-        $this->dropzone = true;
-
         $model = new UserAccountForm();
 
         $cities = ['none' => ''] + array_column($this->towns, 'name', 'id');

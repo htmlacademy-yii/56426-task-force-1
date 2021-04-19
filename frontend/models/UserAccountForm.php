@@ -4,7 +4,6 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 
 class UserAccountForm extends Model
