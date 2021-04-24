@@ -30,6 +30,7 @@ class AccountController extends SecuredController
             $model->clearSettings();
             $model->load(Yii::$app->request->post());
             $model->convertSettings();
+            $model->avatar = UploadedFile::getInstance($model, 'avatar');
             $model->image_files = UploadedFile::getInstances($model, 'image_files');
             if ($model->validate()) {
                 $model->upload();

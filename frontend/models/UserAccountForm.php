@@ -27,6 +27,7 @@ class UserAccountForm extends Model
     public $show_contacts;
     public $hide_profile;
 
+    public $avatar;
     public $image_files;
 
     private $user;
@@ -43,6 +44,7 @@ class UserAccountForm extends Model
     public function attributeLabels()
     {
         return [
+            'avatar' => 'Сменить аватар',
             'name' => 'Ваше имя',
             'email' => 'Email',
             'city' => 'Город',
@@ -65,7 +67,7 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile', 'image_files'], 'safe'],
+            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile'], 'safe'],
             [['birthday', 'about', 'phone', 'skype', 'messenger'], 'default'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
@@ -75,7 +77,8 @@ class UserAccountForm extends Model
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
             [['password'], 'compare', 'compareAttribute' => 'password_retype'],
-            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6],
+            [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 1],
+            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6]
         ];
     }
 
@@ -137,6 +140,10 @@ class UserAccountForm extends Model
             if (!mkdir($path, 0755, true)) {
                 return false;
             }
+        }
+
+        if (!is_null($this->avatar) && $this->avatar->extension === 'jpg') {
+            $this->avatar->saveAs($path.'/avatar.jpg');
         }
 
         $this->saved_files = [];

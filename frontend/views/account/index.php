@@ -36,8 +36,12 @@ $this->title = 'Настройки аккаунта - TaskForce';
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
                     <img src="<?=User::getAvatar();?>" width="140" height="140">
-                    <input type="file" name="avatar" id="upload-avatar">
-                    <label for="upload-avatar" class="link-regular">Сменить аватар</label>
+                    <?php $options = [
+                        'id' => 'upload-avatar',
+                        'multiple' => false,
+                        'accept' => 'image/jpeg'
+                    ]; ?>
+                    <?=$form->field($model, 'avatar', ['template' => "{label}\n{input}"])->fileInput($options)->label(null, ['for' => 'upload-avatar', 'class' => 'link-regular']);?>
                 </div>
                 <div class="account__redaction">
                     <div class="account__input account__input--name">
