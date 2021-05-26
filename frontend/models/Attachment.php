@@ -10,6 +10,7 @@ use Yii;
  * @property int $id Идентификатор
  * @property int $task_id Задание
  * @property string $file Файл
+ * @property string $name Имя файла
  *
  * @property Task $task
  */
@@ -29,11 +30,12 @@ class Attachment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'file'], 'required'],
+            [['task_id', 'file', 'name'], 'required'],
             [['task_id'], 'integer'],
             [['file'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 64],
             [['file'], 'unique'],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']]
         ];
     }
 
@@ -43,9 +45,10 @@ class Attachment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'task_id' => 'Task ID',
-            'file' => 'File',
+            'id' => 'Идентификатор',
+            'task_id' => 'Задание',
+            'file' => 'Файл',
+            'name' => 'Имя файла'
         ];
     }
 

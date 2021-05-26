@@ -89,7 +89,7 @@ class UsersController extends SecuredController
         if (!is_null($sort) && array_key_exists($sort, $this->sortingRules)) {
             $query->orderBy([$sort => SORT_ASC]);
         } else {
-            $query->orderBy(['user.dt_add' => SORT_DESC]);
+            $query->orderBy(['user.created_at' => SORT_DESC]);
         }
 
         $countQuery = clone $query;

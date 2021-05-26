@@ -6,8 +6,13 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'GMT+5',
+            'timeZone' => 'GMT+5'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-    ],
+        ]
+    ]
 ];

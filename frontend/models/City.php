@@ -11,7 +11,7 @@ use Yii;
  * @property string $name Название города
  * @property float|null $lat Широта
  * @property float|null $long Долгота
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Profile[] $profiles
  */
@@ -33,8 +33,8 @@ class City extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['lat', 'long'], 'number'],
-            [['dt_add'], 'safe'],
-            [['name'], 'string', 'max' => 64],
+            [['created_at'], 'safe'],
+            [['name'], 'string', 'max' => 64]
         ];
     }
 
@@ -44,11 +44,11 @@ class City extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'lat' => 'Lat',
-            'long' => 'Long',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'name' => 'Название города',
+            'lat' => 'Широта',
+            'long' => 'Долгота',
+            'created_at' => 'Время создания записи'
         ];
     }
 

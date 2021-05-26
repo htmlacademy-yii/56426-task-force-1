@@ -22,7 +22,7 @@ class m210525_151038_create_reply_table extends Migration
             'contractor_id' => $this->integer()->notNull()->comment('Исполнитель'),
             'price' => $this->integer()->defaultValue(null)->comment('Цена'),
             'comment' => $this->text()->comment('Комментарий'),
-            'active' => $this->boolean()->notNull()->defaultValue(true)->comment('Признак активности'),
+            'is_active' => $this->boolean()->notNull()->defaultValue(true)->comment('Признак активности'),
             'created_at' => $this->timestamp()->notNull()->defaultExpression('current_timestamp')->comment('Время создания записи')
         ], "engine innodb character set utf8 comment 'Отклики на задания'");
 

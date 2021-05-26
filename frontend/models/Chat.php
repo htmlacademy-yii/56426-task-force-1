@@ -12,7 +12,7 @@ use Yii;
  * @property int $sender_id Отправитель
  * @property int $recipient_id Получатель
  * @property string $message Текст сообщения
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Task $task
  * @property User $sender
@@ -36,11 +36,11 @@ class Chat extends \yii\db\ActiveRecord
         return [
             [['task_id', 'sender_id', 'recipient_id', 'message'], 'required'],
             [['task_id', 'sender_id', 'recipient_id'], 'integer'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['message'], 'string', 'max' => 255],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
             [['sender_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['sender_id' => 'id']],
-            [['recipient_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['recipient_id' => 'id']],
+            [['recipient_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['recipient_id' => 'id']]
         ];
     }
 
@@ -50,12 +50,12 @@ class Chat extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'task_id' => 'Task ID',
-            'sender_id' => 'Sender ID',
-            'recipient_id' => 'Recipient ID',
-            'message' => 'Message',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'task_id' => 'Задание',
+            'sender_id' => 'Отправитель',
+            'recipient_id' => 'Получатель',
+            'message' => 'Текст сообщения',
+            'created_at' => 'Время создания записи'
         ];
     }
 

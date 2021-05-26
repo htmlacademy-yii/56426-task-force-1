@@ -42,7 +42,7 @@ class ListController extends SecuredController
             }
         }
 
-        $tasks = $query->orderBy(['dt_add' => SORT_DESC])->all();
+        $tasks = $query->orderBy(['created_at' => SORT_DESC])->all();
 
         return $this->render('index', ['tasks' => $tasks, 'role' => User::getRole(), 'currentStatus' => $currentStatus]);
     }

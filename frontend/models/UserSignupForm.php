@@ -39,15 +39,29 @@ class UserSignupForm extends Model
     public function signup()
     {
         $user = new User();
-        $user->email = $this->email;
         $user->name = $this->name;
+        $user->email = $this->email;
         $user->password = Yii::$app->security->generatePasswordHash($this->password);
-        if ($user->save()) {
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        $user_is_saved = (boolean)$user->save();
+
+        if ($user_is_saved) {
             $profile = new Profile();
             $profile->user_id = $user->id;
             $profile->city_id = $this->city;
-            return $profile->save();
+
+            $settings = new Settings();
+            $settings->user_id = $user->id;
         }
-        return false;
+
+        if ($user_is_saved && $profile->save() && $settings->save()) {
+            $transaction->commit();
+            return true;
+        } else {
+            $transaction->rollback();
+            return false;
+        }
     }
 }

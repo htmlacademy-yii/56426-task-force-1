@@ -33,7 +33,7 @@ class UserSkill extends \yii\db\ActiveRecord
             [['user_id', 'skill_id'], 'required'],
             [['user_id', 'skill_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['skill_id'], 'exist', 'skipOnError' => true, 'targetClass' => Skill::className(), 'targetAttribute' => ['skill_id' => 'id']],
+            [['skill_id'], 'exist', 'skipOnError' => true, 'targetClass' => Skill::className(), 'targetAttribute' => ['skill_id' => 'id']]
         ];
     }
 
@@ -43,9 +43,9 @@ class UserSkill extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'skill_id' => 'Skill ID',
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'skill_id' => 'Специализация'
         ];
     }
 

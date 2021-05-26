@@ -17,7 +17,7 @@ class UserAccountForm extends Model
     public $password_retype;
     public $phone;
     public $skype;
-    public $messenger;
+    public $telegram;
 
     public $skills;
 
@@ -55,7 +55,7 @@ class UserAccountForm extends Model
             'image_files' => 'Выбрать фотографии',
             'phone' => 'Телефон',
             'skype' => 'Skype',
-            'messenger' => 'Telegram',
+            'telegram' => 'Telegram',
             'task_actions' => 'Действия по заданию',
             'new_message' => 'Новое сообщение',
             'new_feedback' => 'Новый отзыв',
@@ -67,8 +67,8 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile'], 'safe'],
-            [['birthday', 'about', 'phone', 'skype', 'messenger'], 'default'],
+            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'telegram', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile'], 'safe'],
+            [['birthday', 'about', 'phone', 'skype', 'telegram'], 'default'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
@@ -95,7 +95,7 @@ class UserAccountForm extends Model
         $this->profile->about = $this->about;
         $this->profile->phone = $this->phone;
         $this->profile->skype = $this->skype;
-        $this->profile->messenger = $this->messenger;
+        $this->profile->telegram = $this->telegram;
 
         $this->settings->task_actions = (int)$this->task_actions;
         $this->settings->new_message = (int)$this->new_message;
@@ -182,7 +182,7 @@ class UserAccountForm extends Model
         $this->about = $this->profile->about;
         $this->phone = $this->profile->phone;
         $this->skype = $this->profile->skype;
-        $this->messenger = $this->profile->messenger;
+        $this->telegram = $this->profile->telegram;
 
         // Загрузка данных из settings
         $this->settings = Settings::find()->where(['user_id' => $userId])->one();

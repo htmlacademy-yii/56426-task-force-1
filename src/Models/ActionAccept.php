@@ -16,7 +16,7 @@ class ActionAccept extends Actions {
     }
 
     public static function isAvailable($task, $userRole, $userId) {
-        $repliesExist = Reply::find()->where(['task_id' => $task->id, 'contractor_id' => $userId, 'active' => true])->exists();
+        $repliesExist = Reply::find()->where(['task_id' => $task->id, 'contractor_id' => $userId, 'is_active' => true])->exists();
         return $task->status === TaskStatus::NEW_TASK &&
                $userRole === UserRole::CONTRACTOR &&
                $task->customer_id !== $userId &&

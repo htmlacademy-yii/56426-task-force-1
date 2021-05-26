@@ -39,7 +39,7 @@ if ($pages->totalCount == 0) {
                 <p class="new-task__description"><?= $task->description; ?></p>
                 <b class="new-task__price new-task__price--<?= $task->category->icon; ?>"><?= $task->budget; ?><b> ₽</b></b>
                 <p class="new-task__place"><?= ($task->address) ? $task->address : "Удаленная работа"; ?></p>
-                <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->dt_add); ?></span>
+                <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->created_at); ?></span>
             </div>
         <?php endforeach; ?>
     </div>

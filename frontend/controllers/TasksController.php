@@ -94,11 +94,11 @@ class TasksController extends SecuredController
                 }
                 // Условие выборки по периоду времени
                 if ($model->period === 'day') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
                 } elseif ($model->period === 'week') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
                 } elseif ($model->period === 'month') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
                 }
                 // Условие выборки по совпадению в названии
                 if (!empty($model->search)) {
@@ -107,7 +107,7 @@ class TasksController extends SecuredController
             }
         }
 
-        $query->orderBy(['dt_add' => SORT_DESC]);
+        $query->orderBy(['created_at' => SORT_DESC]);
 
         $countQuery = clone $query;
         $pages = new Pagination([
@@ -140,7 +140,7 @@ class TasksController extends SecuredController
 
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
 
-        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->andWhere(['reply.active' => true]);
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->andWhere(['reply.is_active' => true]);
         if ($task->customer_id !== Yii::$app->user->getId()) {
             $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
         }
@@ -251,7 +251,7 @@ class TasksController extends SecuredController
 
         $transaction = Yii::$app->db->beginTransaction();
         if ($task->save() && $event->save()) {
-            Reply::updateAll(['active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
+            Reply::updateAll(['is_active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
             $transaction->commit();
         } else {
             $transaction->rollback();
@@ -264,7 +264,7 @@ class TasksController extends SecuredController
     public function actionRefuse($task_id, $reply_id)
     {
         $reply = Reply::findOne($reply_id);
-        $reply->active = (integer)false;
+        $reply->is_active = (integer)false;
         $reply->save();
 
         return $this->redirect("/task/$task_id");

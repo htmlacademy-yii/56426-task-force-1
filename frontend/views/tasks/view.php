@@ -29,7 +29,7 @@ $this->title = 'Задание - TaskForce';
                     <span>
                         Размещено в категории
                         <a href="#" class="link-regular"><?=$task->category->name;?></a>
-                        <?=Yii::$app->formatter->asRelativeTime($task->dt_add);?>
+                        <?=Yii::$app->formatter->asRelativeTime($task->created_at);?>
                     </span>
                 </div>
                 <b class="new-task__price new-task__price--<?=$task->category->icon;?> content-view-price"><?=$task->budget;?><b> ₽</b></b>
@@ -106,13 +106,13 @@ $this->title = 'Задание - TaskForce';
                             <?=$reply->contractor->stars();?>
                             <b><?=sprintf("%0.2f", $reply->contractor->rating());?></b>
                         </div>
-                        <span class="new-task__time"><?=Yii::$app->formatter->asRelativeTime($reply->dt_add);?></span>
+                        <span class="new-task__time"><?=Yii::$app->formatter->asRelativeTime($reply->created_at);?></span>
                     </div>
                     <div class="feedback-card__content">
                         <p><?=$reply->comment;?></p>
                         <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
-                    <?php if ($reply->active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
+                    <?php if ($reply->is_active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
                     <div class="feedback-card__actions">
                         <a href="<?=Url::to(['tasks/apply', 'task_id' => $task->id, 'user_id' => $reply->contractor->id]);?>" class="button__small-color request-button button" type="button">Подтвердить</a>
                         <a href="<?=Url::to(['tasks/refuse', 'task_id' => $task->id, 'reply_id' => $reply->id]);?>" class="button__small-color refusal-button button" type="button">Отказать</a>
@@ -137,7 +137,7 @@ $this->title = 'Задание - TaskForce';
             </div>
             <p class="info-customer">
                 <span><?=count($customer->customerTasks);?> заданий</span>
-                <span class="last-"><?=date_diff(date_create($customer->dt_add), date_create())->format("%y лет");?> на сайте</span>
+                <span class="last-"><?=date_diff(date_create($customer->created_at), date_create())->format("%y лет");?> на сайте</span>
             </p>
             <a href="#" class="link-regular">Смотреть профиль</a>
         </div>

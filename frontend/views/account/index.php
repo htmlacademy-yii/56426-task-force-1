@@ -169,10 +169,10 @@ $this->title = 'Настройки аккаунта - TaskForce';
                 <div class="account__input">
                     <?php $options = [
                         'class' => 'input textarea',
-                        'id' => 'messenger',
+                        'id' => 'telegram',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'messenger', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'messenger']);?>
+                    <?=$form->field($model, 'telegram', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'telegram']);?>
                 </div>
             </div>
 

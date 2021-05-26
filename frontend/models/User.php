@@ -11,10 +11,10 @@ use HtmlAcademy\Models\UserRole;
  * This is the model class for table "user".
  *
  * @property int $id Идентификатор
+ * @property string $name Имя пользователя
  * @property string $email E-mail
  * @property string $password Пароль
- * @property string $name Имя пользователя
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Chat[] $chats
  * @property Feedback[] $feedbacks
@@ -128,10 +128,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password', 'name'], 'required'],
-            [['dt_add'], 'safe'],
-            [['email', 'password', 'name'], 'string', 'max' => 64],
-            [['email'], 'unique'],
+            [['name', 'email', 'password'], 'required'],
+            [['created_at'], 'safe'],
+            [['name', 'email', 'password'], 'string', 'max' => 64],
+            [['email'], 'unique']
         ];
     }
 
@@ -141,11 +141,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'email' => 'Email',
-            'password' => 'Password',
-            'name' => 'Name',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'name' => 'Имя пользователя',
+            'email' => 'E-mail',
+            'password' => 'Пароль',
+            'created_at' => 'Время создания записи'
         ];
     }
 

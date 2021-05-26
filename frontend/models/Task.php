@@ -20,7 +20,7 @@ use Yii;
  * @property int $status Статус задания
  * @property int|null $contractor_id Исполнитель
  * @property string|null $expire Срок завершения работы
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Attachment[] $attachments
  * @property Chat[] $chats
@@ -61,13 +61,13 @@ class Task extends \yii\db\ActiveRecord
             [['customer_id', 'category_id', 'city_id', 'budget', 'status', 'contractor_id'], 'integer'],
             [['description'], 'string'],
             [['lat', 'long'], 'number'],
-            [['expire', 'dt_add'], 'safe'],
+            [['expire', 'created_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['address'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']]
         ];
     }
 
@@ -77,20 +77,20 @@ class Task extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'customer_id' => 'Customer ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'category_id' => 'Category ID',
-            'city_id' => 'City ID',
-            'address' => 'Address',
-            'lat' => 'Lat',
-            'long' => 'Long',
-            'budget' => 'Budget',
-            'status' => 'Status',
-            'contractor_id' => 'Contractor ID',
-            'expire' => 'Expire',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'customer_id' => 'Заказчик',
+            'name' => 'Мне нужно',
+            'description' => 'Подробности задания',
+            'category_id' => 'Категория задания',
+            'city_id' => 'Город',
+            'address' => 'Адрес',
+            'lat' => 'Широта',
+            'long' => 'Долгота',
+            'budget' => 'Бюджет',
+            'status' => 'Статус задания',
+            'contractor_id' => 'Исполнитель',
+            'expire' => 'Срок завершения работы',
+            'created_at' => 'Время создания записи'
         ];
     }
 

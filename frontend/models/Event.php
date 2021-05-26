@@ -13,7 +13,7 @@ use Yii;
  * @property int $is_viewed Признак просмотра
  * @property string $type Тип события
  * @property string $text Текст события
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property User $user
  * @property Task $task
@@ -45,10 +45,10 @@ class Event extends \yii\db\ActiveRecord
             [['user_id', 'task_id', 'type', 'text'], 'required'],
             [['user_id', 'task_id', 'is_viewed'], 'integer'],
             [['type'], 'string'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['text'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']]
         ];
     }
 
@@ -58,13 +58,13 @@ class Event extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'task_id' => 'Task ID',
-            'is_viewed' => 'Is Viewed',
-            'type' => 'Type',
-            'text' => 'Text',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'task_id' => 'Задание',
+            'is_viewed' => 'Признак просмотра',
+            'type' => 'Тип события',
+            'text' => 'Текст события',
+            'created_at' => 'Время создания записи'
         ];
     }
 

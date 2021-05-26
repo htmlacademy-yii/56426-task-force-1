@@ -36,7 +36,7 @@ class Settings extends \yii\db\ActiveRecord
             [['user_id'], 'required'],
             [['user_id', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile'], 'integer'],
             [['user_id'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']]
         ];
     }
 
@@ -46,13 +46,13 @@ class Settings extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'task_actions' => 'Task Actions',
-            'new_message' => 'New Message',
-            'new_feedback' => 'New Feedback',
-            'show_contacts' => 'Show Contacts',
-            'hide_profile' => 'Hide Profile',
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'task_actions' => 'Действия по заданию',
+            'new_message' => 'Новое сообщение',
+            'new_feedback' => 'Новый отзыв',
+            'show_contacts' => 'Показывать мои контакты только заказчику',
+            'hide_profile' => 'Не показывать мой профиль'
         ];
     }
 
