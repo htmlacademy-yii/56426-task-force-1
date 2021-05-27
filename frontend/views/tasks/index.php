@@ -20,12 +20,17 @@ if ($pages->totalCount == 0) {
     $pages_text = "Записи ".$startPosition." - ".$endPosition." из ".$pages->totalCount;
 }
 
+$cityFilterText = '';
+if (!is_null($this->context->cityFilter)) {
+    $cityFilterText = ' (в городе '.$this->context->cityFilter->name.')';
+}
+
 ?>
 
 <section class="new-task">
     <div class="new-task__wrapper">
         <div>
-            <h1>Новые задания</h1>
+            <h1>Новые задания <span class="new-task__city-filter"><?=$cityFilterText;?></span></h1>
             <div class="new-task__pages-text"><?=$pages_text;?></div>
         </div>
         <div class="new-task__clear"></div>

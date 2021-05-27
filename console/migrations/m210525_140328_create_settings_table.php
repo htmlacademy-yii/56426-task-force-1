@@ -21,8 +21,8 @@ class m210525_140328_create_settings_table extends Migration
             'task_actions' => $this->boolean()->notNull()->defaultValue(true)->comment('Действия по заданию'),
             'new_message' => $this->boolean()->notNull()->defaultValue(true)->comment('Новое сообщение'),
             'new_feedback' => $this->boolean()->notNull()->defaultValue(true)->comment('Новый отзыв'),
-            'show_contacts' => $this->boolean()->notNull()->defaultValue(false)->comment('Показывать мои контакты только заказчику'),
-            'hide_profile' => $this->boolean()->notNull()->defaultValue(true)->comment('Не показывать мой профиль')
+            'hide_contacts' => $this->boolean()->notNull()->defaultValue(false)->comment('Показывать мои контакты только заказчику'),
+            'hide_profile' => $this->boolean()->notNull()->defaultValue(false)->comment('Не показывать мой профиль')
         ], "engine innodb character set utf8 comment 'Настройки пользователей'");
 
         // creates index for column `user_id`

@@ -229,16 +229,16 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
-                            'id' => 'show_contacts',
+                            'id' => 'hide_contacts',
                             'value' => true,
                             'tag' => false
                         ];
-                        if ($model->show_contacts) {
+                        if ($model->hide_contacts) {
                             $options['checked'] = '';
                         }
                     ?>
-                    <?=$form->field($model, 'show_contacts', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'show_contacts']);?>
-    
+                    <?=$form->field($model, 'hide_contacts', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'hide_contacts']);?>
+
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',

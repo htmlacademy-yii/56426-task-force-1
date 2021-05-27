@@ -28,6 +28,7 @@ class TasksController extends SecuredController
     public $taskLat;
     public $taskLong;
     public $replyForm;
+    public $cityFilter;
     public $eventsCount;
     public $completeForm;
     public $autoComplete;
@@ -62,6 +63,9 @@ class TasksController extends SecuredController
 
         if (!is_null(Yii::$app->session->get('userCity'))) {
             $query->andWhere(['or', ['task.city_id' => null], ['task.city_id' => Yii::$app->session->get('userCity')]]);
+            $this->cityFilter = City::findOne(Yii::$app->session->get('userCity'));
+        } else {
+            $this->cityFilter = null;
         }
 
         $model = new TaskFilterForm();

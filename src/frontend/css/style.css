@@ -485,7 +485,13 @@ fieldset {
   font-size: 32px;
   margin-top: 0;
   margin-bottom: 5px; }
-  
+
+.new-task__city-filter {
+  font-size: 16px;
+  font-style: italic;
+  font-weight: normal;
+  color: #333438; }
+
 .new-task__pages-text {
   float: right;
   padding-top: 16px;
@@ -1605,18 +1611,23 @@ fieldset {
     width: 19px;
     height: 19px; }
 
-.user__card-link--tel {
-  background-image: url("../img/phone.png");
+.user__card-link--email {
+  background-image: url("../img/email-icon.png");
   background-position: left;
   background-repeat: no-repeat; }
 
-.user__card-link--email {
-  background-image: url("../img/email.png");
+.user__card-link--phone {
+  background-image: url("../img/phone-icon.png");
   background-position: left;
   background-repeat: no-repeat; }
 
 .user__card-link--skype {
-  background-image: url("../img/skype-logo.png");
+  background-image: url("../img/skype-icon.png");
+  background-position: left;
+  background-repeat: no-repeat; }
+
+.user__card-link--telegram {
+  background-image: url("../img/telegram-icon.png");
   background-position: left;
   background-repeat: no-repeat; }
 
