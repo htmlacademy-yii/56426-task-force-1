@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use HtmlAcademy\Models\UserRole;
+use HtmlAcademy\Models\TaskStatus;
 
 /**
  * This is the model class for table "user".
@@ -115,7 +116,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function taskCount()
     {
-        return count($this->contractorTasks);
+        return count($this->contractorTasksCompleted);
     }
 
     public function feedbackCount()
@@ -305,5 +306,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function getContractorTasks()
     {
         return $this->hasMany(Task::className(), ['contractor_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ContractorTasksCompleted]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContractorTasksCompleted()
+    {
+        return $this->hasMany(Task::className(), ['contractor_id' => 'id'])->andWhere(['task.status' => TaskStatus::COMPLETED]);
     }
 }

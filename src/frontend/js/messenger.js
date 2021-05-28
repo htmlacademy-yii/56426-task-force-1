@@ -3,7 +3,7 @@ Vue.component('chat', {
   template:  `<div><h3>Переписка</h3>
               <div class="chat__overflow">
                 <div class="chat__message" v-for="item in messages" :class="{'chat__message--out': item.out == 1}">
-                  <p class="chat__message-time">{{ item.sender.name }} / {{ item.dt_add }}</p>
+                  <p class="chat__message-time">{{ item.sender.name }} / {{ item.created_at }}</p>
                   <p class="chat__message-text">{{ item.message }}</p>
                 </div>
               </div>

@@ -7,7 +7,7 @@ create table `city` (
 	`name` varchar(64) not null comment 'Название города',
 	`lat` decimal(10, 7) default null comment 'Широта',
 	`long` decimal(10, 7) default null comment 'Долгота',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
+	`created_at` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
 create table `user` (
@@ -15,7 +15,7 @@ create table `user` (
 	`name` varchar(64) not null comment 'Имя пользователя',
 	`email` varchar(64) not null unique comment 'E-mail',
 	`password` varchar(64) not null comment 'Пароль',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
+	`created_at` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
 create table `profile` (
@@ -38,7 +38,7 @@ create table `settings` (
 	`user_id` int not null unique comment 'Пользователь',
 	`task_actions` boolean not null default true comment 'Действия по заданию',
 	`new_message` boolean not null default true comment 'Новое сообщение',
-	`new_feedback` boolean not null default true comment 'Новый отзыв',
+	`new_reply` boolean not null default true comment 'Новый отклик',
 	`show_contacts` boolean not null default false comment 'Показывать мои контакты только заказчику',
 	`hide_profile` boolean not null default true comment 'Не показывать мой профиль',
 	foreign key (`user_id`) references `user`(`id`)
@@ -52,7 +52,7 @@ create table `favorite` (
 create table `skill` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`name` varchar(64) not null unique comment 'Название специализации',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
+	`created_at` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
 create table `user_skill` (
@@ -67,7 +67,7 @@ create table `category` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`name` varchar(64) not null unique comment 'Название категории задания',
 	`icon` varchar(64) default null comment 'Значок категории',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
+	`created_at` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
 create table `task` (
@@ -84,7 +84,7 @@ create table `task` (
 	`status` int not null comment 'Статус задания',
 	`contractor_id` int default null comment 'Исполнитель',
 	`expire` datetime default null comment 'Срок завершения работы',
-	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	`created_at` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`customer_id`) references `user`(`id`),
 	foreign key (`category_id`) references `category`(`id`),
 	foreign key (`city_id`) references `city`(`id`),
@@ -98,7 +98,7 @@ create table `reply` (
 	`price` int default null comment 'Цена',
 	`comment` text default null comment 'Комментарий',
 	`active` boolean not null default true comment 'Признак активности',
-	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	`created_at` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`contractor_id`) references `user`(`id`)
 ) engine `innodb` character set `utf8`;
@@ -109,7 +109,7 @@ create table `chat` (
 	`sender_id` int not null comment 'Отправитель',
 	`recipient_id` int not null comment 'Получатель',
 	`message` varchar(255) not null comment 'Текст сообщения',
-	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	`created_at` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`task_id`) references `task`(`id`),
 	foreign key (`sender_id`) references `user`(`id`),
 	foreign key (`recipient_id`) references `user`(`id`)
@@ -121,7 +121,7 @@ create table `feedback` (
 	`task_id` int not null comment 'Задание',
 	`rating` enum('1', '2', '3', '4', '5') not null comment 'Оценка',
 	`description` text not null comment 'Текст отзыва',
-	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	`created_at` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`contractor_id`) references `user`(`id`),
 	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
@@ -133,7 +133,7 @@ create table `event` (
 	`is_viewed` boolean not null default false comment 'Признак просмотра',
 	`type` enum('close', 'executor', 'message') not null comment 'Тип события',
 	`text` varchar(255) not null comment 'Текст события',
-	`dt_add` timestamp not null default now() comment 'Время создания записи',
+	`created_at` timestamp not null default now() comment 'Время создания записи',
 	foreign key (`user_id`) references `user`(`id`),
 	foreign key (`task_id`) references `task`(`id`)
 ) engine `innodb` character set `utf8`;
@@ -142,7 +142,7 @@ create table `file` (
 	`id` int not null auto_increment primary key comment 'Идентификатор',
 	`path` varchar(255) not null unique comment 'Путь к файлу',
 	`original_name` varchar(255) not null unique comment 'Оригинальное имя файла',
-	`dt_add` timestamp not null default now() comment 'Время создания записи'
+	`created_at` timestamp not null default now() comment 'Время создания записи'
 ) engine `innodb` character set `utf8`;
 
 create table `attachment_old` (

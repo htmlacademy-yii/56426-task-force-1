@@ -211,17 +211,24 @@ class TasksController extends SecuredController
     // Отказ от исполнения задания
     public function actionReject($id)
     {
+        $transaction = Yii::$app->db->beginTransaction();
+
         $task = Task::findOne($id);
         $task->status = TaskStatus::FAILED;
+        $taskSaveResult = $task->save();
 
         $event = new Event();
         $event->user_id = $task->customer_id;
         $event->task_id = $task->id;
         $event->type = "abandon";
         $event->text = "Исполнитель отказался от задания";
+        if ($event->isActivated()) {
+            $eventSaveResult = $event->save();
+        } else {
+            $eventSaveResult = true;
+        }
 
-        $transaction = Yii::$app->db->beginTransaction();
-        if ($task->save() && $event->save()) {
+        if ($taskSaveResult && $eventSaveResult) {
             $transaction->commit();
         } else {
             $transaction->rollback();
@@ -243,18 +250,25 @@ class TasksController extends SecuredController
     // Выбор исполнителя задания
     public function actionApply($task_id, $user_id)
     {
+        $transaction = Yii::$app->db->beginTransaction();
+
         $task = Task::findOne($task_id);
         $task->status = TaskStatus::IN_PROGRESS;
         $task->contractor_id = $user_id;
+        $taskSaveResult = $task->save();
 
         $event = new Event();
         $event->user_id = $user_id;
         $event->task_id = $task_id;
         $event->type = "begin";
         $event->text = "Выбран исполнитель для задания";
+        if ($event->isActivated()) {
+            $eventSaveResult = $event->save();
+        } else {
+            $eventSaveResult = true;
+        }
 
-        $transaction = Yii::$app->db->beginTransaction();
-        if ($task->save() && $event->save()) {
+        if ($taskSaveResult && $eventSaveResult) {
             Reply::updateAll(['is_active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
             $transaction->commit();
         } else {

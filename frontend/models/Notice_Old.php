@@ -10,7 +10,7 @@ use Yii;
  * @property int $id Идентификатор
  * @property int $secrecy Признак скрытности
  * @property string $name Название уведомления
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property UserNotice[] $userNotices
  */
@@ -32,7 +32,7 @@ class Notice extends \yii\db\ActiveRecord
         return [
             [['secrecy', 'name'], 'required'],
             [['secrecy'], 'integer'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['name'], 'unique'],
         ];
@@ -47,7 +47,7 @@ class Notice extends \yii\db\ActiveRecord
             'id' => 'ID',
             'secrecy' => 'Secrecy',
             'name' => 'Name',
-            'dt_add' => 'Dt Add',
+            'created_at' => 'Dt Add',
         ];
     }
 

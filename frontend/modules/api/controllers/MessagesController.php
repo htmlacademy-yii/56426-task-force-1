@@ -28,7 +28,7 @@ class MessagesController extends ActiveController
 
     public function actionView($id)
     {
-        $chat = Chat::find()->joinWith('sender')->where(['chat.task_id' => $id])->andWhere(['or', ['=', 'chat.sender_id', Yii::$app->user->getId()], ['=', 'chat.recipient_id', Yii::$app->user->getId()]])->orderBy(['dt_add' => SORT_ASC])->asArray()->all();
+        $chat = Chat::find()->joinWith('sender')->where(['chat.task_id' => $id])->andWhere(['or', ['=', 'chat.sender_id', Yii::$app->user->getId()], ['=', 'chat.recipient_id', Yii::$app->user->getId()]])->orderBy(['created_at' => SORT_ASC])->asArray()->all();
 
         return array_map(function($message) {
             return array_merge($message, [
@@ -49,20 +49,27 @@ class MessagesController extends ActiveController
 
         if (strlen($data->message)) {
 
+            $transaction = Yii::$app->db->beginTransaction();
+
             $chat = new Chat();
             $chat->task_id = $task->id;
             $chat->sender_id = Yii::$app->user->getId();
             $chat->recipient_id = ($task->customer_id === Yii::$app->user->getId()) ? $task->contractor_id : $task->customer_id;
             $chat->message = $data->message;
+            $chatSaveResult = $chat->save();
 
             $event = new Event();
             $event->user_id = $chat->recipient_id;
             $event->task_id = $task->id;
             $event->type = "message";
             $event->text = "Новое сообщение в чате";
-
-            $transaction = Yii::$app->db->beginTransaction();
-            if ($chat->save() && $event->save()) {
+            if ($event->isActivated()) {
+                $eventSaveResult = $event->save();
+            } else {
+                $eventSaveResult = true;
+            }
+    
+            if ($chatSaveResult && $eventSaveResult) {
                 $transaction->commit();
             } else {
                 $transaction->rollback();

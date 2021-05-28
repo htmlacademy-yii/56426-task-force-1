@@ -23,7 +23,7 @@ class UserAccountForm extends Model
 
     public $task_actions;
     public $new_message;
-    public $new_feedback;
+    public $new_reply;
     public $hide_contacts;
     public $hide_profile;
 
@@ -58,7 +58,7 @@ class UserAccountForm extends Model
             'telegram' => 'Telegram',
             'task_actions' => 'Действия по заданию',
             'new_message' => 'Новое сообщение',
-            'new_feedback' => 'Новый отзыв',
+            'new_reply' => 'Новый отклик',
             'hide_contacts' => 'Показывать мои контакты только заказчику',
             'hide_profile' => 'Не показывать мой профиль'
         ];
@@ -67,7 +67,7 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'telegram', 'skills', 'task_actions', 'new_message', 'new_feedback', 'hide_contacts', 'hide_profile'], 'safe'],
+            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'telegram', 'skills', 'task_actions', 'new_message', 'new_reply', 'hide_contacts', 'hide_profile'], 'safe'],
             [['birthday', 'about', 'phone', 'skype', 'telegram'], 'default'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
@@ -99,7 +99,7 @@ class UserAccountForm extends Model
 
         $this->settings->task_actions = (int)$this->task_actions;
         $this->settings->new_message = (int)$this->new_message;
-        $this->settings->new_feedback = (int)$this->new_feedback;
+        $this->settings->new_reply = (int)$this->new_reply;
         $this->settings->hide_contacts = (int)$this->hide_contacts;
         $this->settings->hide_profile = (int)$this->hide_profile;
 
@@ -193,7 +193,7 @@ class UserAccountForm extends Model
         
         $this->task_actions = (bool)$this->settings->task_actions;
         $this->new_message = (bool)$this->settings->new_message;
-        $this->new_feedback = (bool)$this->settings->new_feedback;
+        $this->new_reply = (bool)$this->settings->new_reply;
         $this->hide_contacts = (bool)$this->settings->hide_contacts;
         $this->hide_profile = (bool)$this->settings->hide_profile;
 
@@ -218,7 +218,7 @@ class UserAccountForm extends Model
     {
         $this->task_actions = false;
         $this->new_message = false;
-        $this->new_feedback = false;
+        $this->new_reply = false;
         $this->hide_contacts = false;
         $this->hide_profile = false;
     }
@@ -227,7 +227,7 @@ class UserAccountForm extends Model
     {
         $this->task_actions = (bool)$this->task_actions;
         $this->new_message = (bool)$this->new_message;
-        $this->new_feedback = (bool)$this->new_feedback;
+        $this->new_reply = (bool)$this->new_reply;
         $this->hide_contacts = (bool)$this->hide_contacts;
         $this->hide_profile = (bool)$this->hide_profile;
     }

@@ -1,4 +1,4 @@
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `dt_add`) VALUES
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `created_at`) VALUES
 (1, 'Karrie Buttress', 'kbuttress0@1und1.de', '$2y$10$pQHOiAvwulDEuzhwu/kP4uUOONjuaqCDYZiABX4rZi/vkEeNkOHp6', '2019-08-09 19:00:00'),
 (2, 'Bob Aymer', 'baymer1@hp.com', '$2y$10$fWt1IgbHW3ECfUbsRIQHAO1IyjQlmvsKDwjOdwWj8P4YfZnMXVzKC', '2018-12-20 19:00:00'),
 (3, 'Zilvia Boulding', 'zboulding2@macromedia.com', '$2y$10$r1XW2YsfNZX2XivlvTW7Ue9ysmi1Tbpu4ro7cMaRwmS6lyrf3JFse', '2019-07-24 19:00:00'),

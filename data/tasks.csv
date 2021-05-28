@@ -1,4 +1,4 @@
-id,customer_id,name,description,category_id,address,lat,long,budget,status,contractor_id,expire,dt_add
+id,customer_id,name,description,category_id,address,lat,long,budget,status,contractor_id,expire,created_at
 1,10,enable impactful technologies,Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.,2,1 Eagan Crossing,6.9641667,158.2083333,6587,0,NULL,2019-01-26 00:00:00,2020-01-26 00:00:00
 2,4,exploit revolutionary portals,Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.
 

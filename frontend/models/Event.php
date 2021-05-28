@@ -44,7 +44,7 @@ class Event extends \yii\db\ActiveRecord
         return [
             [['user_id', 'task_id', 'type', 'text'], 'required'],
             [['user_id', 'task_id', 'is_viewed'], 'integer'],
-            [['type'], 'string'],
+            [['type'], 'in', 'range' => ['abandon', 'begin', 'close', 'message', 'reply']],
             [['created_at'], 'safe'],
             [['text'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -66,6 +66,34 @@ class Event extends \yii\db\ActiveRecord
             'text' => 'Текст события',
             'created_at' => 'Время создания записи'
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isActivated()
+    {
+        if ($this->type === 'abandon' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'begin' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'close' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'message' && (boolean)$this->user->settings->new_message) {
+            return true;
+        }
+
+        if ($this->type === 'reply' && (boolean)$this->user->settings->new_reply) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

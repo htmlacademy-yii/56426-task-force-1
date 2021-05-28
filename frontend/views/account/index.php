@@ -212,15 +212,15 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
-                            'id' => 'new_feedback',
+                            'id' => 'new_reply',
                             'value' => true,
                             'tag' => false
                         ];
-                        if ($model->new_feedback) {
+                        if ($model->new_reply) {
                             $options['checked'] = '';
                         }
                     ?>
-                    <?=$form->field($model, 'new_feedback', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_feedback']);?>
+                    <?=$form->field($model, 'new_reply', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_reply']);?>
 
                 </div>
 

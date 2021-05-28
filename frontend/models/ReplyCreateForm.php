@@ -32,20 +32,27 @@ class ReplyCreateForm extends Model
     {
         $task = Task::findOne($taskId);
 
+        $transaction = Yii::$app->db->beginTransaction();
+
         $reply = new Reply();
         $reply->task_id = $task->id;
         $reply->contractor_id = Yii::$app->user->getId();
         $reply->price = $this->price;
         $reply->comment = $this->comment;
+        $replySaveResult = $reply->save();
 
         $event = new Event();
         $event->user_id = $task->customer_id;
         $event->task_id = $task->id;
         $event->type = "reply";
         $event->text = "Новый отклик к заданию";
+        if ($event->isActivated()) {
+            $eventSaveResult = $event->save();
+        } else {
+            $eventSaveResult = true;
+        }
 
-        $transaction = Yii::$app->db->beginTransaction();
-        if ($reply->save() && $event->save()) {
+        if ($replySaveResult && $eventSaveResult) {
             $transaction->commit();
             return true;
         } else {
