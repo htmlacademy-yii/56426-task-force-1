@@ -4,8 +4,10 @@
 
 $this->title = 'Исполнитель - TaskForce';
 
+use Yii;
 use yii\helpers\Url;
 use frontend\models\User;
+use HtmlAcademy\Tools\Grammar;
 use HtmlAcademy\Models\UserRole;
 
 $taskCount = $user->taskCount();
@@ -19,13 +21,13 @@ $feedbackCount = $user->feedbackCount();
             <img src="<?=User::getAvatar($user->id);?>" width="120" height="120" alt="Аватар пользователя">
                 <div class="content-view__headline">
                     <h1><?=$user->name;?></h1>
-                    <p>Россия, <?=$user->profile->city->name;?><?=$user->getAgesString(", ");?></p>
+                    <p>Россия, <?=$user->profile->city->name;?><?=Grammar::getYearsString($user->profile->birthday, ", ");?></p>
                     <div class="profile-mini__name five-stars__rate">
                         <?=$user->stars();?>
                         <b><?=sprintf("%0.2f", $user->rating());?></b>
                     </div>
-                    <b class="done-task">Выполнил <?=$taskCount;?> заказ<?=User::getSuffix($taskCount);?></b>
-                    <b class="done-review">Получил <?=$feedbackCount;?> отзыв<?=User::getSuffix($feedbackCount);?></b>
+                    <b class="done-task">Выполнил <?=$taskCount;?> заказ<?=Grammar::getSuffix($taskCount);?></b>
+                    <b class="done-review">Получил <?=$feedbackCount;?> отзыв<?=Grammar::getSuffix($feedbackCount);?></b>
                 </div>
             <div class="content-view__headline user__card-bookmark user__card-bookmark--current">
                 <span>Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>

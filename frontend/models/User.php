@@ -51,64 +51,6 @@ class User extends ActiveRecord implements IdentityInterface
         return UserRole::CUSTOMER;
     }
 
-    public static function getSuffix($number)
-    {
-        $suffix = [
-            '0' => 'ов',
-            '1' => '',
-            '2' => 'а',
-            '3' => 'а',
-            '4' => 'а',
-            '5' => 'ов',
-            '6' => 'ов',
-            '7' => 'ов',
-            '8' => 'ов',
-            '9' => 'ов'
-        ];
-
-        $numberString = strval($number);
-
-        $lastDigit = substr($numberString, -1, 1);
-        $secondLastDigit = (strlen($numberString) > 1) ? substr($numberString, -2, 1) : null;
-
-        if ($secondLastDigit === "1") {
-            return "ов";
-        }
-
-        return $suffix[$lastDigit];
-    }
-
-    public function getAgesString($prefix = "")
-    {
-        if (is_null($this->profile->birthday) || empty($this->profile->birthday)) {
-            return "";
-        }
-
-        $agesDeclination = [
-            '0' => 'лет',
-            '1' => 'год',
-            '2' => 'года',
-            '3' => 'года',
-            '4' => 'года',
-            '5' => 'лет',
-            '6' => 'лет',
-            '7' => 'лет',
-            '8' => 'лет',
-            '9' => 'лет'
-        ];
-
-        $ages = date_diff(date_create(), date_create($this->profile->birthday))->format("%y");
-
-        $lastDigit = substr($ages, -1, 1);
-        $secondLastDigit = (strlen($ages) > 1) ? substr($ages, -2, 1) : null;
-
-        if ($secondLastDigit === "1") {
-            return $prefix.$ages." лет";
-        }
-
-        return $prefix.$ages." ".$agesDeclination[$lastDigit];
-    }
-
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);

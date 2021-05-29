@@ -38,7 +38,13 @@ class ListController extends SecuredController
             $filter = Yii::$app->request->get();
             if (isset($filter['status']) && in_array($filter['status'], TaskStatus::getAllClasses())) {
                 $currentStatus = array_search($filter['status'], TaskStatus::getAllClasses());
-                $query->andWhere(['task.status' => $currentStatus]);
+                if ($currentStatus === TaskStatus::CANCELED) {
+                    $query->andWhere(['in', 'task.status', [TaskStatus::CANCELED, TaskStatus::FAILED]]);
+                } elseif ($currentStatus === TaskStatus::FAILED) {
+                    $query->andWhere(['task.status' => TaskStatus::IN_PROGRESS])->andWhere('task.created_at > task.expire');
+                } else {
+                    $query->andWhere(['task.status' => $currentStatus]);
+                }
             }
         }
 

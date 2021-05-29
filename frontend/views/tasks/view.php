@@ -5,6 +5,7 @@
 use Yii;
 use yii\helpers\Url;
 use frontend\models\User;
+use HtmlAcademy\Tools\Grammar;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\ActionAccept;
 use HtmlAcademy\Models\ActionReject;
@@ -13,6 +14,8 @@ use HtmlAcademy\Models\ActionComplete;
 use HtmlAcademy\Models\AvailableActions;
 
 $this->title = 'Задание - TaskForce';
+
+$customerTasksCount = count($customer->customerTasks);
 
 ?>
 
@@ -136,8 +139,8 @@ $this->title = 'Задание - TaskForce';
                 </div>
             </div>
             <p class="info-customer">
-                <span><?=count($customer->customerTasks);?> заданий</span>
-                <span class="last-"><?=date_diff(date_create($customer->created_at), date_create())->format("%y лет");?> на сайте</span>
+                <span><?=$customerTasksCount;?> задан<?=Grammar::getSuffix($customerTasksCount, '2');?></span>
+                <span class="last-"><?=Grammar::getYearsString($customer->created_at);?> на сайте</span>
             </p>
             <a href="#" class="link-regular">Смотреть профиль</a>
         </div>

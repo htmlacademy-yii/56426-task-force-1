@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use frontend\models\User;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
@@ -45,10 +46,10 @@ $this->title = 'Мои задания - TaskForce';
                 </div>
                 <div class="task-status  task-status__<?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
                 <p class="new-task__description"><?=$task->description;?></p>
-                <?php $user = ($role === UserRole::CUSTOMER) ? $task->customer : $task->contractor; ?>
+                <?php $user = ($role === UserRole::CUSTOMER) ? $task->contractor : $task->customer; ?>
                 <?php if (isset($user)): ?>
                 <div class="feedback-card__top ">
-                    <a href="<?=Url::to(['/user/'.$user->id]);?>"><img src="../img/man-glasses.jpg" width="36" height="36"></a>
+                    <a href="<?=Url::to(['/user/'.$user->id]);?>"><img src="<?=User::getAvatar($user->id);?>" width="36" height="36"></a>
                     <div class="feedback-card__top--name my-list__bottom">
                         <p class="link-name"><a <?=($role === UserRole::CUSTOMER) ? 'href="'.Url::to(['/user/'.$user->id]).'"' : '' ;?> class="link-regular"><?=$user->name;?></a></p>
                         <?php $new_messages_count = $task->newMessagesCount(); ?>
