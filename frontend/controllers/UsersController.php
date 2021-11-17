@@ -57,9 +57,9 @@ class UsersController extends SecuredController
                     // Условие выборки по списку навыков
                     if ($model->skills) {
                         $skills = ['or'];
-                        foreach ($model->skills as $skill) {
+                        foreach ($model->skills as $skill_id) {
                             $skills[] = [
-                                'skill.id' => $skill + 1
+                                'skill.id' => $skill_id
                             ];
                         }
                         $query->andWhere($skills);

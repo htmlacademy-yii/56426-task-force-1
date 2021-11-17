@@ -100,7 +100,7 @@ if ($pages->totalCount == 0) {
                 <legend>Категории</legend>
                 <?php
                 echo $form->field($model, 'skills')->checkboxList(
-                    Skill::find()->asArray()->all(),
+                    $model->skillsData,
                     [
                         'tag' => false,
                         'item' => function ($index, $label, $name, $checked, $value) {

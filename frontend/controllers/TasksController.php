@@ -85,9 +85,9 @@ class TasksController extends SecuredController
                 // Условие выборки по списку категорий
                 if ($model->categories) {
                     $categories = ['or'];
-                    foreach ($model->categories as $category) {
+                    foreach ($model->categories as $category_id) {
                         $categories[] = [
-                            'task.category_id' => $category + 1
+                            'task.category_id' => $category_id
                         ];
                     }
                     $query->andWhere($categories);

@@ -82,7 +82,7 @@ if (!is_null($this->context->cityFilter)) {
                 <legend>Категории</legend>
                 <?php
                 echo $form->field($model, 'categories')->checkboxList(
-                    Category::find()->asArray()->all(),
+                    $model->categoriesData,
                     [
                         'tag' => false,
                         'item' => function ($index, $label, $name, $checked, $value) {

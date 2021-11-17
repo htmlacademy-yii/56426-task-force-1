@@ -12,6 +12,15 @@ class UserFilterForm extends Model
     public $feedback;
     public $favorite;
     public $search;
+    public $skillsData;
+
+    public function __construct()
+    {
+        $skill = Skill::find()->orderBy(['id' => SORT_ASC])->all();
+        foreach ($skill as $item) {
+            $this->skillsData[$item->id] = ['id' => $item->id, 'name' => $item->name];
+        }
+    }
 
     public function attributeLabels()
     {
