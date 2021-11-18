@@ -4,7 +4,9 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use frontend\models\Task;
 use frontend\models\UserLoginForm;
+use HtmlAcademy\Models\TaskStatus;
 
 class LandingController extends UnsecuredController
 {
@@ -25,7 +27,9 @@ class LandingController extends UnsecuredController
     {
         $this->model = new UserLoginForm();
 
-        return $this->render('index');
+        $tasks = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK])->orderBy(['created_at' => SORT_DESC])->limit(4)->all();
+
+        return $this->render('index', ['tasks' => $tasks]);
     }
 
     public function actionLogin()
