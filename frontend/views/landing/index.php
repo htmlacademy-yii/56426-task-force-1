@@ -72,16 +72,17 @@ $this->title = 'Главная - TaskForce';
 </div>
 
 <div class="landing-bottom">
+    <?php if ($tasks): ?>
     <div class="landing-bottom-container">
         <h2>Последние задания на сайте</h2>
-
         <?php foreach ($tasks as $task): ?>
         <div class="landing-task">
             <div class="landing-task-top  task-<?= $task->category->icon; ?>"></div>
             <div class="landing-task-description">
-                <h3><a href="<?=Url::to(['view', 'id' => $task->id]);?>" class="link-regular"><?= $task->name; ?></a></h3>
+                <h3><a href="<?=Url::to(['/task/'.$task->id]);?>" class="link-regular"><?= $task->name; ?></a></h3>
                 <p><?= $task->description; ?></p>
-                <div class="landing-task-description-fading"></div>
+                <div class="landing-task-description-fading-right"></div>
+                <div class="landing-task-description-fading-bottom"></div>
             </div>
             <div class="landing-task-info">
                 <div class="task-info-left">
@@ -92,9 +93,14 @@ $this->title = 'Главная - TaskForce';
             </div>
         </div>
         <?php endforeach; ?>
-
     </div>
     <div class="landing-bottom-container">
-        <button type="button" class="button red-button">Смотреть все задания</button>
+        <a href="<?=Url::to(['/tasks']);?>" class="button red-button">Смотреть все задания</a>
     </div>
+    <?php else: ?>
+    <div class="landing-bottom-container  landing-bottom-container-no-tasks">
+        <h2>Последние задания на сайте</h2>
+        <h3>Новых заданий пока нет</h3>
+    </div>
+    <?php endif; ?>
 </div>
