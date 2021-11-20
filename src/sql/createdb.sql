@@ -1,168 +1,150 @@
-create database `56426-task-force-1` character set `utf8` collate `utf8_general_ci`;
+CREATE DATABASE `56426-task-force-1` CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
-use `56426-task-force-1`;
+USE `56426-task-force-1`;
 
-create table `city` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`name` varchar(64) not null comment 'Название города',
-	`lat` decimal(10, 7) default null comment 'Широта',
-	`long` decimal(10, 7) default null comment 'Долгота',
-	`created_at` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
+CREATE TABLE `city` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`name` varchar(64) NOT NULL COMMENT 'Название города',
+	`lat` decimal(10,7) DEFAULT NULL COMMENT 'Широта',
+	`long` decimal(10,7) DEFAULT NULL COMMENT 'Долгота',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Города';
 
-create table `user` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`name` varchar(64) not null comment 'Имя пользователя',
-	`email` varchar(64) not null unique comment 'E-mail',
-	`password` varchar(64) not null comment 'Пароль',
-	`created_at` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
+CREATE TABLE `skill` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`name` varchar(64) NOT NULL COMMENT 'Название специализации',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Специализации исполнителей';
 
-create table `profile` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null unique comment 'Пользователь',
-	`city_id` int default null comment 'Город',
-	`address` varchar(255) default null comment 'Адрес',
-	`birthday` date default null comment 'День рождения',
-	`about` text default null comment 'Информация о себе',
-	`phone` varchar(64) default null comment 'Номер телефона',
-	`skype` varchar(64) default null comment 'Скайп',
-	`messenger` varchar(64) comment 'Другой мессенджер',
-	`last_activity` timestamp not null default now() comment 'Время последней активности',
-	foreign key (`user_id`) references `user`(`id`),
-	foreign key (`city_id`) references `city`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `category` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`name` varchar(64) NOT NULL COMMENT 'Название категории задания',
+	`icon` varchar(64) DEFAULT NULL COMMENT 'Значок категории',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Категории заданий';
 
-create table `settings` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null unique comment 'Пользователь',
-	`task_actions` boolean not null default true comment 'Действия по заданию',
-	`new_message` boolean not null default true comment 'Новое сообщение',
-	`new_reply` boolean not null default true comment 'Новый отклик',
-	`show_contacts` boolean not null default false comment 'Показывать мои контакты только заказчику',
-	`hide_profile` boolean not null default true comment 'Не показывать мой профиль',
-	foreign key (`user_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `user` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`name` varchar(64) NOT NULL COMMENT 'Имя пользователя',
+	`email` varchar(64) NOT NULL COMMENT 'E-mail',
+	`password` varchar(64) NOT NULL COMMENT 'Пароль',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Пользователи';
 
-create table `favorite` (
-	`user_id` int not null unique comment 'Пользователь',
-	foreign key (`user_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `profile` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`user_id` int(11) NOT NULL COMMENT 'Пользователь',
+	`city_id` int(11) DEFAULT NULL COMMENT 'Город',
+	`address` varchar(255) DEFAULT NULL COMMENT 'Адрес',
+	`birthday` date DEFAULT NULL COMMENT 'День рождения',
+	`about` text COMMENT 'Информация о себе',
+	`phone` varchar(64) DEFAULT NULL COMMENT 'Номер телефона',
+	`skype` varchar(64) DEFAULT NULL COMMENT 'Скайп',
+	`telegram` varchar(64) DEFAULT NULL COMMENT 'Телеграм',
+	`last_activity` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время последней активности',
+	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`city_id`) REFERENCES `city` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Профили пользователей';
 
-create table `skill` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`name` varchar(64) not null unique comment 'Название специализации',
-	`created_at` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
+CREATE TABLE `settings` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`user_id` int(11) NOT NULL COMMENT 'Пользователь',
+	`task_actions` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Действия по заданию',
+	`new_message` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Новое сообщение',
+	`new_reply` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Новый отклик',
+	`hide_contacts` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Показывать мои контакты только заказчику',
+	`hide_profile` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Не показывать мой профиль',
+	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Настройки пользователей';
 
-create table `user_skill` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null comment 'Пользователь',
-	`skill_id` int not null comment 'Специализация',
-	foreign key (`user_id`) references `user`(`id`),
-	foreign key (`skill_id`) references `skill`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `user_skill` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`user_id` int(11) NOT NULL COMMENT 'Пользователь',
+	`skill_id` int(11) NOT NULL COMMENT 'Специализация',
+	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`skill_id`) REFERENCES `skill` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Установленные специализации';
 
-create table `category` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`name` varchar(64) not null unique comment 'Название категории задания',
-	`icon` varchar(64) default null comment 'Значок категории',
-	`created_at` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
+CREATE TABLE `task` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`customer_id` int(11) NOT NULL COMMENT 'Заказчик',
+	`name` varchar(64) NOT NULL COMMENT 'Мне нужно',
+	`description` text NOT NULL COMMENT 'Подробности задания',
+	`category_id` int(11) NOT NULL COMMENT 'Категория задания',
+	`city_id` int(11) DEFAULT NULL COMMENT 'Город',
+	`address` varchar(255) DEFAULT NULL COMMENT 'Адрес',
+	`lat` decimal(10,7) DEFAULT NULL COMMENT 'Широта',
+	`long` decimal(10,7) DEFAULT NULL COMMENT 'Долгота',
+	`budget` int(11) DEFAULT NULL COMMENT 'Бюджет',
+	`status` int(11) NOT NULL COMMENT 'Статус задания',
+	`contractor_id` int(11) DEFAULT NULL COMMENT 'Исполнитель',
+	`expire` datetime DEFAULT NULL COMMENT 'Срок завершения работы',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+	FOREIGN KEY (`customer_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+	FOREIGN KEY (`city_id`) REFERENCES `city` (`id`),
+	FOREIGN KEY (`contractor_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Задания';
 
-create table `task` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`customer_id` int not null comment 'Заказчик',
-	`name` varchar(64) not null comment 'Мне нужно',
-	`description` text not null comment 'Подробности задания',
-	`category_id` int not null comment 'Категория задания',
-	`city_id` int not null comment 'Город',
-	`address` varchar(255) default null comment 'Адрес',
-	`lat` decimal(10, 7) default null comment 'Широта',
-	`long` decimal(10, 7) default null comment 'Долгота',
-	`budget` int default null comment 'Бюджет',
-	`status` int not null comment 'Статус задания',
-	`contractor_id` int default null comment 'Исполнитель',
-	`expire` datetime default null comment 'Срок завершения работы',
-	`created_at` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`customer_id`) references `user`(`id`),
-	foreign key (`category_id`) references `category`(`id`),
-	foreign key (`city_id`) references `city`(`id`),
-	foreign key (`contractor_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `reply` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`task_id` int(11) NOT NULL COMMENT 'Задание',
+	`contractor_id` int(11) NOT NULL COMMENT 'Исполнитель',
+	`price` int(11) DEFAULT NULL COMMENT 'Цена',
+	`comment` text COMMENT 'Комментарий',
+	`is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Признак активности',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
+	FOREIGN KEY (`contractor_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Отклики на задания';
 
-create table `reply` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`task_id` int not null comment 'Задание',
-	`contractor_id` int not null comment 'Исполнитель',
-	`price` int default null comment 'Цена',
-	`comment` text default null comment 'Комментарий',
-	`active` boolean not null default true comment 'Признак активности',
-	`created_at` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`task_id`) references `task`(`id`),
-	foreign key (`contractor_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `attachment` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`task_id` int(11) NOT NULL COMMENT 'Задание',
+	`file` varchar(255) NOT NULL COMMENT 'Файл',
+	`name` varchar(64) NOT NULL COMMENT 'Имя файла',
+	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Вложения к заданиям';
 
-create table `chat` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`task_id` int not null comment 'Задание',
-	`sender_id` int not null comment 'Отправитель',
-	`recipient_id` int not null comment 'Получатель',
-	`message` varchar(255) not null comment 'Текст сообщения',
-	`created_at` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`task_id`) references `task`(`id`),
-	foreign key (`sender_id`) references `user`(`id`),
-	foreign key (`recipient_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `photo` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`user_id` int(11) NOT NULL COMMENT 'Пользователь',
+	`file` varchar(255) NOT NULL COMMENT 'Файл',
+	`name` varchar(64) NOT NULL COMMENT 'Имя файла',
+	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Фото работ исполнителей';
 
-create table `feedback` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`contractor_id` int not null comment 'Исполнитель',
-	`task_id` int not null comment 'Задание',
-	`rating` enum('1', '2', '3', '4', '5') not null comment 'Оценка',
-	`description` text not null comment 'Текст отзыва',
-	`created_at` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`contractor_id`) references `user`(`id`),
-	foreign key (`task_id`) references `task`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `chat` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`task_id` int(11) NOT NULL COMMENT 'Задание',
+	`sender_id` int(11) NOT NULL COMMENT 'Отправитель',
+	`recipient_id` int(11) NOT NULL COMMENT 'Получатель',
+	`message` varchar(255) NOT NULL COMMENT 'Текст сообщения',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
+	FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`recipient_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Внутренняя переписка';
 
-create table `event` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null comment 'Пользователь',
-	`task_id` int not null comment 'Задание',
-	`is_viewed` boolean not null default false comment 'Признак просмотра',
-	`type` enum('close', 'executor', 'message') not null comment 'Тип события',
-	`text` varchar(255) not null comment 'Текст события',
-	`created_at` timestamp not null default now() comment 'Время создания записи',
-	foreign key (`user_id`) references `user`(`id`),
-	foreign key (`task_id`) references `task`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `event` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`user_id` int(11) NOT NULL COMMENT 'Пользователь',
+	`task_id` int(11) NOT NULL COMMENT 'Задание',
+	`is_viewed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак просмотра',
+	`type` enum('abandon','begin','close','message','reply') NOT NULL COMMENT 'Тип события',
+	`text` varchar(255) NOT NULL COMMENT 'Текст события',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='События';
 
-create table `file` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`path` varchar(255) not null unique comment 'Путь к файлу',
-	`original_name` varchar(255) not null unique comment 'Оригинальное имя файла',
-	`created_at` timestamp not null default now() comment 'Время создания записи'
-) engine `innodb` character set `utf8`;
-
-create table `attachment_old` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`task_id` int not null comment 'Задание',
-	`file_id` int not null comment 'Файл',
-	foreign key (`task_id`) references `task`(`id`),
-	foreign key (`file_id`) references `file`(`id`)
-) engine `innodb` character set `utf8`;
-
-create table `attachment` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`task_id` int not null comment 'Задание',
-	`file` varchar(255) not null unique comment 'Файл',
-	foreign key (`task_id`) references `task`(`id`)
-) engine `innodb` character set `utf8`;
-
-create table `photo` (
-	`id` int not null auto_increment primary key comment 'Идентификатор',
-	`user_id` int not null comment 'Пользователь',
-	`file` varchar(255) not null unique comment 'Файл',
-	foreign key (`user_id`) references `user`(`id`)
-) engine `innodb` character set `utf8`;
+CREATE TABLE `feedback` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`contractor_id` int(11) NOT NULL COMMENT 'Исполнитель',
+	`task_id` int(11) NOT NULL COMMENT 'Задание',
+	`rating` enum('1','2','3','4','5') NOT NULL COMMENT 'Оценка',
+	`description` text NOT NULL COMMENT 'Текст отзыва',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+	FOREIGN KEY (`contractor_id`) REFERENCES `user` (`id`),
+	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Отзывы об исполнителях';
