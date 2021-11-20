@@ -103,7 +103,7 @@ $customerTasksCount = count($customer->customerTasks);
                 <?php foreach ($replies as $reply): ?>
                 <div class="content-view__feedback-card">
                     <div class="feedback-card__top">
-                        <a href="#"><img src="/img/man-blond.jpg" width="55" height="55"></a>
+                        <img src="<?=User::getAvatar($reply->contractor->id);?>" width="55" height="55">
                         <div class="feedback-card__top--name">
                             <p><a href="<?=Url::to(['users/view', 'id' => $reply->contractor->id]);?>" class="link-regular"><?=$reply->contractor->name;?></a></p>
                             <?=$reply->contractor->stars();?>
@@ -145,7 +145,13 @@ $customerTasksCount = count($customer->customerTasks);
             <a href="#" class="link-regular">Смотреть профиль</a>
         </div>
     </div>
-    <div id="chat-container">
-        <chat class="connect-desk__chat" task="<?=$task->id;?>"></chat>
-    </div>
+    <?php if (($task->customer_id === Yii::$app->user->getId() && !is_null($task->contractor_id)) || $task->contractor_id === Yii::$app->user->getId()): ?>
+        <div id="chat-container">
+            <chat class="connect-desk__chat" task="<?=$task->id;?>"></chat>
+        </div>
+    <?php elseif ($task->customer_id === Yii::$app->user->getId() && is_null($task->contractor_id)): ?>
+        <div class="chat-usage-hint">Для работы с чатом необходимо выбрать исполнителя</div>
+    <?php elseif ($task->customer_id !== Yii::$app->user->getId()): ?>
+        <div class="chat-usage-hint">Для переписки с заказчиком необходимо стать исполнителем</div>
+    <?php endif; ?>
 </section>

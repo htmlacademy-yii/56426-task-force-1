@@ -81,7 +81,7 @@ $feedbackCount = $user->feedbackCount();
             <div class="feedback-card__reviews">
                 <p class="link-task link">Задание <a href="<?=Url::to(['/task/'.$feedback->task->id]);?>" class="link-regular">«<?=$feedback->task->name;?>»</a></p>
                 <div class="card__review">
-                    <img src="<?=User::getAvatar($feedback->task->customer->id);?>" width="55" height="54">
+                    <img src="<?=User::getAvatar($feedback->task->customer->id);?>" width="55" height="55">
                     <div class="feedback-card__reviews-content">
                         <p class="link-name link"><?=$feedback->task->customer->name;?></p>
                         <p class="review-text"><?=$feedback->description;?></p>
