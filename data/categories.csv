@@ -1,9 +1,11 @@
-name,icon
-Курьерские услуги,translation
-Уборка,clean
-Переезды,cargo
-Компьютерная помощь,neo
-Ремонт квартирный,flat
-Ремонт техники,repair
-Красота,beauty
-Фото,photo
+id,name,icon
+1,Перевод текстов,translate
+2,Уборка,clean
+3,Курьерские услуги,courier
+4,Грузоперевозки,cargo
+5,Компьютерная помощь,computer
+6,Ремонт квартирный,flat
+7,Ремонт техники,repair
+8,Мероприятия,event
+9,Красота,beauty
+10,Фото,photo

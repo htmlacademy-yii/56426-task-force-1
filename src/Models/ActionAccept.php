@@ -2,6 +2,9 @@
 
 namespace HtmlAcademy\Models;
 
+use Yii;
+use frontend\models\Reply;
+
 class ActionAccept extends Actions {
 
     public static function getName() {
@@ -13,9 +16,10 @@ class ActionAccept extends Actions {
     }
 
     public static function isAvailable($task, $userRole, $userId) {
+        $repliesExist = Reply::find()->where(['task_id' => $task->id, 'contractor_id' => $userId, 'is_active' => true])->exists();
         return $task->status === TaskStatus::NEW_TASK &&
                $userRole === UserRole::CONTRACTOR &&
-               $task->customer_id !== $userId;
+               $task->customer_id !== $userId &&
+               !$repliesExist;
     }
-
 }

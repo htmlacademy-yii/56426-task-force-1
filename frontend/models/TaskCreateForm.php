@@ -4,7 +4,8 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use GuzzleHttp\Client;
+use yii\db\Exception;
+use HtmlAcademy\Tools\GeoCoder;
 use HtmlAcademy\Models\TaskStatus;
 
 class TaskCreateForm extends Model
@@ -12,9 +13,13 @@ class TaskCreateForm extends Model
     public $name;
     public $description;
     public $category;
-    public $address;
+    public $location;
     public $budget;
     public $expire;
+
+    public $task_files;
+
+    private $saved_files;
 
     public function attributeLabels()
     {
@@ -22,7 +27,8 @@ class TaskCreateForm extends Model
             'name' => 'Мне нужно',
             'description' => 'Подробности задания',
             'category' => 'Категория',
-            'address' => 'Локация',
+            'task_files' => 'Файлы',
+            'location' => 'Локация',
             'budget' => 'Бюджет',
             'expire' => 'Срок исполнения'
         ];
@@ -31,12 +37,13 @@ class TaskCreateForm extends Model
     public function rules()
     {
         return [
-            [['name', 'description', 'category', 'address', 'budget', 'expire'], 'safe'],
+            [['name', 'description', 'category', 'location', 'budget', 'expire', 'task_files'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
-            [['name', 'description', 'address'], 'string'],
+            [['name', 'description', 'location'], 'string'],
             [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
-            [['expire'], 'date', 'format' => 'php:Y-m-d']
+            [['expire'], 'date', 'format' => 'php:Y-m-d'],
+            [['task_files'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 6]
         ];
     }
 
@@ -50,52 +57,82 @@ class TaskCreateForm extends Model
         $task->name = $this->name;
         $task->description = $this->description;
         $task->category_id = $this->category;
-        $task->address = $this->address;
         $task->budget = $this->budget;
         $task->expire = $this->expire;
 
-        $address_hash = md5($this->address);
-        $key_long = 'location:'.$address_hash.':long';
-        $key_lat = 'location:'.$address_hash.':lat';
+        $task->city_id = null;
+        $task->address = null;
+        $task->long = null;
+        $task->lat = null;
 
-        $value_long = Yii::$app->redis->get($key_long);
-        $value_lat = Yii::$app->redis->get($key_lat);
+        if (!empty($this->location)) {
 
-        if (!is_null($value_long) && !is_null($value_lat)) {
+            // Запрос геоданных для указанной локации
+            $geocode = new GeoCoder($this->location);
 
-            $task->long = $value_long;
-            $task->lat = $value_lat;
+            // Извлечение строки с адресом
+            $task->address = $geocode->getAddress();
 
-        } else {
+            // Извлечение координат
+            $task_position = $geocode->getPosition();
+            $task->long = $task_position['long'];
+            $task->lat = $task_position['lat'];
 
-            $client = new Client([
-                'base_uri' => 'https://geocode-maps.yandex.ru/',
-            ]);
+            // Извлечение названия города
+            $task_city_name = $geocode->getCityName();
 
-            $query = [
-                'apikey' => Yii::$app->params['apiKey'],
-                'geocode' => $this->address,
-                'format' => 'json',
-                'results' => 1
-            ];
-
-            $response = $client->request('GET', '1.x', ['query' => $query]);
-            $content = $response->getBody()->getContents();
-            $response_data = json_decode($content, true);
-
-            if (isset($response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos'])) {
-                $position = explode(' ', $response_data['response']['GeoObjectCollection']['featureMember']['0']['GeoObject']['Point']['pos']);
+            // Поиск города в БД и создание при отсутствии
+            if (!is_null($task_city_name)) {
+                $task_city = City::findOne(['name' => $task_city_name]);
+                if (is_null($task_city)) {
+                    $task_city = new City();
+                    $task_city->name = $task_city_name;
+                    // Запрос геоданных для нового города
+                    $geocode->setLocation($task_city_name);
+                    $city_position = $geocode->getPosition();
+                    $task_city->long = $city_position['long'];
+                    $task_city->lat = $city_position['lat'];
+                    $task_city->save();
+                }
+                $task->city_id = $task_city->id;
             }
 
-            if (isset($position[0]) && isset($position[1])) {
-                $task->long = $position[0];
-                $task->lat = $position[1];
+        }
 
-                Yii::$app->redis->executeCommand('set', [$key_long, $task->long, 'ex', '86400']);
-                Yii::$app->redis->executeCommand('set', [$key_lat, $task->lat, 'ex', '86400']);
+        // Сохранение новой задачи
+        if ($task->save()) {
+            return $task->id;
+        }
+
+        return false;
+    }
+
+    public function upload($task_id)
+    {
+        $path = 'files/task/'.$task_id;
+
+        if (!file_exists($path)) {
+            if (!mkdir($path, 0755, true)) {
+                return false;
             }
         }
 
-        return $task->save();
+        $this->saved_files = [];
+        foreach ($this->task_files as $file) {
+            $fileName = $path.'/'.$file->baseName.'.'.$file->extension;
+            if ($file->saveAs($fileName)) {
+                $this->saved_files[] = ['file' => $fileName, 'name' => $file->baseName];
+            }
+        }
+
+        foreach ($this->saved_files as $file) {
+            $attachment = new Attachment();
+            $attachment->task_id = $task_id;
+            $attachment->file = $file['file'];
+            $attachment->name = $file['name'];
+            $attachment->save();
+        }
+
+        return true;
     }
 }

@@ -13,13 +13,21 @@ use Yii;
  * @property int $is_viewed Признак просмотра
  * @property string $type Тип события
  * @property string $text Текст события
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property User $user
  * @property Task $task
  */
 class Event extends \yii\db\ActiveRecord
 {
+    public static function newEventsCount()
+    {
+        return Event::find()->where([
+            'user_id' => Yii::$app->user->getId(),
+            'is_viewed' => false
+        ])->count();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,11 +44,11 @@ class Event extends \yii\db\ActiveRecord
         return [
             [['user_id', 'task_id', 'type', 'text'], 'required'],
             [['user_id', 'task_id', 'is_viewed'], 'integer'],
-            [['type'], 'string'],
-            [['dt_add'], 'safe'],
+            [['type'], 'in', 'range' => ['abandon', 'begin', 'close', 'message', 'reply']],
+            [['created_at'], 'safe'],
             [['text'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']]
         ];
     }
 
@@ -50,14 +58,42 @@ class Event extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'task_id' => 'Task ID',
-            'is_viewed' => 'Is Viewed',
-            'type' => 'Type',
-            'text' => 'Text',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'task_id' => 'Задание',
+            'is_viewed' => 'Признак просмотра',
+            'type' => 'Тип события',
+            'text' => 'Текст события',
+            'created_at' => 'Время создания записи'
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isActivated()
+    {
+        if ($this->type === 'abandon' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'begin' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'close' && (boolean)$this->user->settings->task_actions) {
+            return true;
+        }
+
+        if ($this->type === 'message' && (boolean)$this->user->settings->new_message) {
+            return true;
+        }
+
+        if ($this->type === 'reply' && (boolean)$this->user->settings->new_reply) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

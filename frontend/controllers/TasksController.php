@@ -5,9 +5,13 @@ namespace frontend\controllers;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
+use yii\data\Pagination;
+use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\models\Event;
 use frontend\models\Reply;
 use frontend\models\Category;
 use frontend\models\TaskFilterForm;
@@ -19,16 +23,50 @@ use HtmlAcademy\Models\UserRole;
 
 class TasksController extends SecuredController
 {
+    public $towns;
     public $taskId;
     public $taskLat;
     public $taskLong;
     public $replyForm;
+    public $cityFilter;
+    public $eventsCount;
     public $completeForm;
     public $autoComplete;
 
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
+    }
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
+        if (Yii::$app->request->getIsAjax()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['city'])) {
+                Yii::$app->session->set('userCity', ((int)$data['city'] > 0) ? (int)$data['city'] : null);
+            }
+            return true;
+        }
+
         $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
+
+        if (!is_null(Yii::$app->session->get('userCity'))) {
+            $query->andWhere(['or', ['task.city_id' => null], ['task.city_id' => Yii::$app->session->get('userCity')]]);
+            $this->cityFilter = City::findOne(Yii::$app->session->get('userCity'));
+        } else {
+            $this->cityFilter = null;
+        }
 
         $model = new TaskFilterForm();
 
@@ -47,9 +85,9 @@ class TasksController extends SecuredController
                 // Условие выборки по списку категорий
                 if ($model->categories) {
                     $categories = ['or'];
-                    foreach ($model->categories as $category) {
+                    foreach ($model->categories as $category_id) {
                         $categories[] = [
-                            'task.category_id' => $category + 1
+                            'task.category_id' => $category_id
                         ];
                     }
                     $query->andWhere($categories);
@@ -60,11 +98,11 @@ class TasksController extends SecuredController
                 }
                 // Условие выборки по периоду времени
                 if ($model->period === 'day') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
                 } elseif ($model->period === 'week') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
                 } elseif ($model->period === 'month') {
-                    $query->andWhere(['>', 'task.dt_add', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
+                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
                 }
                 // Условие выборки по совпадению в названии
                 if (!empty($model->search)) {
@@ -73,18 +111,30 @@ class TasksController extends SecuredController
             }
         }
 
-        $tasks = $query->orderBy(['dt_add' => SORT_DESC])->all();
+        $query->orderBy(['created_at' => SORT_DESC]);
 
-        return $this->render('index', ['tasks' => $tasks, 'model' => $model]);
+        $countQuery = clone $query;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 5,
+            'defaultPageSize' => 5,
+            'pageSizeLimit' => [1, 5],
+            'forcePageParam' => false
+        ]);
+
+        $tasks = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('index', ['tasks' => $tasks, 'model' => $model, 'pages' => $pages]);
     }
 
+    // Просмотр задания
     public function actionView($id)
     {
         $this->taskId = $id;
         $this->replyForm = new ReplyCreateForm();
         $this->completeForm = new TaskCompleteForm();
 
-        $task = Task::find()->joinWith('category')->joinWith('files')->where(['task.id' => $id])->one();
+        $task = Task::find()->joinWith('category')->joinWith('attachments')->where(['task.id' => $id])->one();
         if (!$task) {
             throw new NotFoundHttpException("Задание с ID $id не найдено");
         }
@@ -94,7 +144,7 @@ class TasksController extends SecuredController
 
         $customer = User::find()->joinWith('customerTasks')->where(['user.id' => $task->customer_id])->one();
 
-        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id]);
+        $query = Reply::find()->joinWith('task')->joinWith('contractor')->where(['reply.task_id' => $task->id])->andWhere(['reply.is_active' => true]);
         if ($task->customer_id !== Yii::$app->user->getId()) {
             $query->andWhere(['reply.contractor_id' => Yii::$app->user->getId()]);
         }
@@ -103,6 +153,7 @@ class TasksController extends SecuredController
         return $this->render('view', ['task' => $task, 'customer' => $customer, 'replies' => $replies]);
     }
 
+    // Создание задания
     public function actionCreate()
     {
         $this->autoComplete = true;
@@ -113,39 +164,36 @@ class TasksController extends SecuredController
 
         $model = new TaskCreateForm();
 
-        $categories = Category::find()->orderBy(['id' => SORT_ASC])->all();
-
-        $items = ['none' => ''];
-        foreach ($categories as $category) {
-            $items[$category->id] = $category->name;
-        }
+        $rows = Category::find()->orderBy(['id' => SORT_ASC])->all();
+        $categories = ['none' => ''] + array_column($rows, 'name', 'id');
 
         if (Yii::$app->request->getIsPost()) {
-            $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                if ($model->save()) {
-                    return $this->redirect('/tasks');
-                }
+            $model->load(Yii::$app->request->post());
+            $model->task_files = UploadedFile::getInstances($model, 'task_files');
+            if ($model->validate() && $task_id = $model->save()) {
+                $model->upload($task_id);
+                return $this->redirect("/task/$task_id");
             }
         }
 
-        return $this->render('create', ['model' => $model, 'items' => $items]);
+        return $this->render('create', ['model' => $model, 'categories' => $categories]);
     }
 
+    // Новый отклик на задание
     public function actionReply($id)
     {
         $model = new ReplyCreateForm();
 
         if (Yii::$app->request->getIsPost()) {
             $model->load(Yii::$app->request->post());
-            if ($model->validate()) {
-                $model->save($id);
-            }
+            $model->validate();
+            $model->save($id);
         }
 
         return $this->redirect("/task/$id");
     }
 
+    // Завершение задания
     public function actionComplete($id)
     {
         $model = new TaskCompleteForm();
@@ -160,32 +208,83 @@ class TasksController extends SecuredController
         return $this->redirect("/task/$id");
     }
 
-    public function actionReject($id) {
+    // Отказ от исполнения задания
+    public function actionReject($id)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
         $task = Task::findOne($id);
         $task->status = TaskStatus::FAILED;
-        $task->save();
+        $taskSaveResult = $task->save();
+
+        $event = new Event();
+        $event->user_id = $task->customer_id;
+        $event->task_id = $task->id;
+        $event->type = "abandon";
+        $event->text = "Исполнитель отказался от задания";
+        if ($event->isActivated()) {
+            $eventSaveResult = $event->save();
+        } else {
+            $eventSaveResult = true;
+        }
+
+        if ($taskSaveResult && $eventSaveResult) {
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+
         return $this->redirect("/tasks");
     }
 
-    public function actionCancel($id) {
+    // Отмена задания заказчиком
+    public function actionCancel($id)
+    {
         $task = Task::findOne($id);
         $task->status = TaskStatus::CANCELED;
         $task->save();
+
         return $this->redirect("/tasks");
     }
 
-    public function actionApply($task, $user) {
-        $task = Task::findOne($task);
+    // Выбор исполнителя задания
+    public function actionApply($task_id, $user_id)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        $task = Task::findOne($task_id);
         $task->status = TaskStatus::IN_PROGRESS;
-        $task->contractor_id = $user;
-        $task->save();
-        return $this->redirect("/tasks");
+        $task->contractor_id = $user_id;
+        $taskSaveResult = $task->save();
+
+        $event = new Event();
+        $event->user_id = $user_id;
+        $event->task_id = $task_id;
+        $event->type = "begin";
+        $event->text = "Выбран исполнитель для задания";
+        if ($event->isActivated()) {
+            $eventSaveResult = $event->save();
+        } else {
+            $eventSaveResult = true;
+        }
+
+        if ($taskSaveResult && $eventSaveResult) {
+            Reply::updateAll(['is_active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+
+        return $this->redirect("/task/$task_id");
     }
 
-    public function actionRefuse($task, $reply) {
-        $reply = Reply::findOne($reply);
-        $reply->active = (integer)false;
+    // Отклонение отклика
+    public function actionRefuse($task_id, $reply_id)
+    {
+        $reply = Reply::findOne($reply_id);
+        $reply->is_active = (integer)false;
         $reply->save();
-        return $this->redirect("/task/$task");
+
+        return $this->redirect("/task/$task_id");
     }
 }

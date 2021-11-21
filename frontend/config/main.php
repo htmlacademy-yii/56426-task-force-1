@@ -18,14 +18,24 @@ return [
         ]
     ],
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'GMT+5',
+            'timeZone' => 'GMT+5'
+        ],
         'redis' => [
-            'class' => 'yii\redis\Connection'
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => '',
+                    'clientSecret' => '',
                     'scope' => ['email']
                 ]
             ]
@@ -55,7 +65,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'tasks/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -67,7 +77,12 @@ return [
                 '/login' => 'landing/login',
                 '/logout' => 'logout/index',
                 '/signup' => 'signup/index',
+                '/account' => 'account/index',
+                '/tasks/page/<page:\d+>' => 'tasks/index',
                 '/tasks' => 'tasks/index',
+                '/users/sort/<sort:\w+>/page/<page:\d+>' => 'users/index',
+                '/users/sort/<sort:\w+>' => 'users/index',
+                '/users/page/<page:\d+>' => 'users/index',
                 '/users' => 'users/index',
                 '/task/<id:\d+>' => 'tasks/view',
                 '/user/<id:\d+>' => 'users/view',
@@ -76,11 +91,12 @@ return [
                 '/task/<id:\d+>/reject' => 'tasks/reject',
                 '/task/<id:\d+>/cancel' => 'tasks/cancel',
                 '/task/<id:\d+>/complete' => 'tasks/complete',
-                '/task/<task:\d+>/apply/<user:\d+>' => 'tasks/apply',
-                '/task/<task:\d+>/refuse/<user:\d+>' => 'tasks/refuse',
+                '/task/<task_id:\d+>/apply/<user_id:\d+>' => 'tasks/apply',
+                '/task/<task_id:\d+>/refuse/<reply_id:\d+>' => 'tasks/refuse',
+                '/list/<status:\w+>' => 'list/index',
                 '/location' => 'location/index',
-                '/event' => 'event/index',
-                '/event/clear' => 'event/clear',
+                '/events' => 'events/index',
+                '/events/clear' => 'events/clear',
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/messages']
             ],
         ],

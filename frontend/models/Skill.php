@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id Идентификатор
  * @property string $name Название специализации
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property User[] $user
  */
@@ -30,9 +30,9 @@ class Skill extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
-            [['name'], 'unique'],
+            [['name'], 'unique']
         ];
     }
 
@@ -42,9 +42,9 @@ class Skill extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'name' => 'Название специализации',
+            'created_at' => 'Время создания записи'
         ];
     }
 

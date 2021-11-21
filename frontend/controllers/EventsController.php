@@ -14,7 +14,7 @@ class EventsController extends SecuredController
         foreach ($events as $event) {
             $data[] = [
                 'task_id' => $event->task->id,
-                'task_name' => $event->task->name,
+                'task_name' => "«".$event->task->name."»",
                 'event_type' => $event->type,
                 'event_text' => $event->text
             ];
@@ -25,6 +25,8 @@ class EventsController extends SecuredController
 
     public function actionClear()
     {
-        return Event::updateAll(['is_viewed' => true], ['user_id' => Yii::$app->user->getId(), 'is_viewed' => false]);
+        Event::updateAll(['is_viewed' => true], ['user_id' => Yii::$app->user->getId(), 'is_viewed' => false]);
+
+        return Event::find()->where(['user_id' => Yii::$app->user->getId(), 'is_viewed' => false])->count();
     }
 }

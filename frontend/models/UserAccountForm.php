@@ -4,7 +4,6 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 
 class UserAccountForm extends Model
@@ -18,16 +17,17 @@ class UserAccountForm extends Model
     public $password_retype;
     public $phone;
     public $skype;
-    public $messenger;
+    public $telegram;
 
     public $skills;
 
     public $task_actions;
     public $new_message;
-    public $new_feedback;
-    public $show_contacts;
+    public $new_reply;
+    public $hide_contacts;
     public $hide_profile;
 
+    public $avatar;
     public $image_files;
 
     private $user;
@@ -44,6 +44,7 @@ class UserAccountForm extends Model
     public function attributeLabels()
     {
         return [
+            'avatar' => 'Сменить аватар',
             'name' => 'Ваше имя',
             'email' => 'Email',
             'city' => 'Город',
@@ -51,13 +52,14 @@ class UserAccountForm extends Model
             'about' => 'Информация о себе',
             'password' => 'Новый пароль',
             'password_retype' => 'Повтор пароля',
+            'image_files' => 'Выбрать фотографии',
             'phone' => 'Телефон',
             'skype' => 'Skype',
-            'messenger' => 'Telegram',
+            'telegram' => 'Telegram',
             'task_actions' => 'Действия по заданию',
             'new_message' => 'Новое сообщение',
-            'new_feedback' => 'Новый отзыв',
-            'show_contacts' => 'Показывать мои контакты только заказчику',
+            'new_reply' => 'Новый отклик',
+            'hide_contacts' => 'Показывать мои контакты только заказчику',
             'hide_profile' => 'Не показывать мой профиль'
         ];
     }
@@ -65,7 +67,8 @@ class UserAccountForm extends Model
     public function rules()
     {
         return [
-            [['name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'phone', 'skype', 'messenger', 'skills', 'task_actions', 'new_message', 'new_feedback', 'show_contacts', 'hide_profile', 'image_files'], 'safe'],
+            [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'telegram', 'skills', 'task_actions', 'new_message', 'new_reply', 'hide_contacts', 'hide_profile'], 'safe'],
+            [['birthday', 'about', 'phone', 'skype', 'telegram'], 'default'],
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
@@ -74,7 +77,8 @@ class UserAccountForm extends Model
             [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
             [['password'], 'compare', 'compareAttribute' => 'password_retype'],
-            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 6],
+            [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 1],
+            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6]
         ];
     }
 
@@ -85,18 +89,18 @@ class UserAccountForm extends Model
         if (!empty($this->password)) {
             $this->user->password = Yii::$app->security->generatePasswordHash($this->password);
         }
-        
+
         $this->profile->city_id = $this->city;
         $this->profile->birthday = $this->birthday;
         $this->profile->about = $this->about;
         $this->profile->phone = $this->phone;
         $this->profile->skype = $this->skype;
-        $this->profile->messenger = $this->messenger;
+        $this->profile->telegram = $this->telegram;
 
         $this->settings->task_actions = (int)$this->task_actions;
         $this->settings->new_message = (int)$this->new_message;
-        $this->settings->new_feedback = (int)$this->new_feedback;
-        $this->settings->show_contacts = (int)$this->show_contacts;
+        $this->settings->new_reply = (int)$this->new_reply;
+        $this->settings->hide_contacts = (int)$this->hide_contacts;
         $this->settings->hide_profile = (int)$this->hide_profile;
 
         UserSkill::deleteAll(['user_id' => Yii::$app->user->getId()]);
@@ -110,10 +114,11 @@ class UserAccountForm extends Model
         }
 
         $files = is_array($this->saved_files) ? $this->saved_files : [];
-        foreach ($files as $file) {
+        foreach ($files as $image) {
             $photo = new Photo();
             $photo->user_id = Yii::$app->user->getId();
-            $photo->file = $file;
+            $photo->file = $image['file'];
+            $photo->name = $image['name'];
             $photo->save();
         }
 
@@ -129,7 +134,7 @@ class UserAccountForm extends Model
 
     public function upload()
     {
-        $path = 'files/'.Yii::$app->user->getId().'/'.date('Ymd');
+        $path = 'files/user/'.Yii::$app->user->getId();
 
         if (!file_exists($path)) {
             if (!mkdir($path, 0755, true)) {
@@ -137,11 +142,15 @@ class UserAccountForm extends Model
             }
         }
 
+        if (!is_null($this->avatar) && $this->avatar->extension === 'jpg') {
+            $this->avatar->saveAs($path.'/avatar.jpg');
+        }
+
         $this->saved_files = [];
         foreach ($this->image_files as $file) {
             $fileName = $path.'/'.$file->baseName.'.'.$file->extension;
             if ($file->saveAs($fileName)) {
-                $this->saved_files[] = $fileName;
+                $this->saved_files[] = ['file' => $fileName, 'name' => $file->baseName];
             }
         }
 
@@ -173,7 +182,7 @@ class UserAccountForm extends Model
         $this->about = $this->profile->about;
         $this->phone = $this->profile->phone;
         $this->skype = $this->profile->skype;
-        $this->messenger = $this->profile->messenger;
+        $this->telegram = $this->profile->telegram;
 
         // Загрузка данных из settings
         $this->settings = Settings::find()->where(['user_id' => $userId])->one();
@@ -184,8 +193,8 @@ class UserAccountForm extends Model
         
         $this->task_actions = (bool)$this->settings->task_actions;
         $this->new_message = (bool)$this->settings->new_message;
-        $this->new_feedback = (bool)$this->settings->new_feedback;
-        $this->show_contacts = (bool)$this->settings->show_contacts;
+        $this->new_reply = (bool)$this->settings->new_reply;
+        $this->hide_contacts = (bool)$this->settings->hide_contacts;
         $this->hide_profile = (bool)$this->settings->hide_profile;
 
         // Список всех навыков
@@ -209,8 +218,8 @@ class UserAccountForm extends Model
     {
         $this->task_actions = false;
         $this->new_message = false;
-        $this->new_feedback = false;
-        $this->show_contacts = false;
+        $this->new_reply = false;
+        $this->hide_contacts = false;
         $this->hide_profile = false;
     }
 
@@ -218,8 +227,8 @@ class UserAccountForm extends Model
     {
         $this->task_actions = (bool)$this->task_actions;
         $this->new_message = (bool)$this->new_message;
-        $this->new_feedback = (bool)$this->new_feedback;
-        $this->show_contacts = (bool)$this->show_contacts;
+        $this->new_reply = (bool)$this->new_reply;
+        $this->hide_contacts = (bool)$this->hide_contacts;
         $this->hide_profile = (bool)$this->hide_profile;
     }
 }

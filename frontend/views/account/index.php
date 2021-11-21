@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\models\User;
 use frontend\models\Skill;
 
 $this->title = 'Настройки аккаунта - TaskForce';
@@ -26,15 +27,21 @@ $this->title = 'Настройки аккаунта - TaskForce';
         ]
     ]); ?>
 
+        <?=$form->errorSummary($model);?>
+
         <div class="account__redaction-section">
 
             <h3 class="div-line">Настройки аккаунта</h3>
 
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="img/man-glasses.jpg" width="156" height="156">
-                    <input type="file" name="avatar" id="upload-avatar">
-                    <label for="upload-avatar" class="link-regular">Сменить аватар</label>
+                    <img src="<?=User::getAvatar();?>" width="140" height="140">
+                    <?php $options = [
+                        'id' => 'upload-avatar',
+                        'multiple' => false,
+                        'accept' => 'image/jpeg'
+                    ]; ?>
+                    <?=$form->field($model, 'avatar', ['template' => "{label}\n{input}"])->fileInput($options)->label(null, ['for' => 'upload-avatar', 'class' => 'link-regular']);?>
                 </div>
                 <div class="account__redaction">
                     <div class="account__input account__input--name">
@@ -112,28 +119,32 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                        <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'password',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'password',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
                 </div>
                 <div class="account__input">
-                <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'password_retype',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
+                    <?php $options = [
+                        'class' => 'input textarea',
+                        'id' => 'password_retype',
+                        'tag' => false
+                    ]; ?>
+                    <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
                 </div>
             </div>
 
             <h3 class="div-line">Фото работ</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
-                <?=$form->field($model, 'image_files[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-                <span class="dropzone">Выбрать фотографии</span>
+                <?php $options = [
+                    'id' => 'image_files',
+                    'multiple' => true,
+                    'accept' => 'image/jpeg, image/png'
+                ]; ?>
+                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])->fileInput($options);?>
             </div>
 
             <h3 class="div-line">Контакты</h3>
@@ -158,10 +169,10 @@ $this->title = 'Настройки аккаунта - TaskForce';
                 <div class="account__input">
                     <?php $options = [
                         'class' => 'input textarea',
-                        'id' => 'messenger',
+                        'id' => 'telegram',
                         'tag' => false
                     ]; ?>
-                    <?=$form->field($model, 'messenger', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'messenger']);?>
+                    <?=$form->field($model, 'telegram', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'telegram']);?>
                 </div>
             </div>
 
@@ -201,15 +212,15 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
-                            'id' => 'new_feedback',
+                            'id' => 'new_reply',
                             'value' => true,
                             'tag' => false
                         ];
-                        if ($model->new_feedback) {
+                        if ($model->new_reply) {
                             $options['checked'] = '';
                         }
                     ?>
-                    <?=$form->field($model, 'new_feedback', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_feedback']);?>
+                    <?=$form->field($model, 'new_reply', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'new_reply']);?>
 
                 </div>
 
@@ -218,16 +229,16 @@ $this->title = 'Настройки аккаунта - TaskForce';
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
-                            'id' => 'show_contacts',
+                            'id' => 'hide_contacts',
                             'value' => true,
                             'tag' => false
                         ];
-                        if ($model->show_contacts) {
+                        if ($model->hide_contacts) {
                             $options['checked'] = '';
                         }
                     ?>
-                    <?=$form->field($model, 'show_contacts', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'show_contacts']);?>
-    
+                    <?=$form->field($model, 'hide_contacts', ['template' => "{input}\n{label}"])->input('checkbox', $options)->label(null, ['for' => 'hide_contacts']);?>
+
                     <?php
                         $options = [
                             'class' => 'visually-hidden checkbox__input',

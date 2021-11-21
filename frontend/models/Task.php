@@ -12,6 +12,7 @@ use Yii;
  * @property string $name Мне нужно
  * @property string $description Подробности задания
  * @property int $category_id Категория задания
+ * @property int|null $city_id Город
  * @property string|null $address Адрес
  * @property float|null $lat Широта
  * @property float|null $long Долгота
@@ -19,20 +20,29 @@ use Yii;
  * @property int $status Статус задания
  * @property int|null $contractor_id Исполнитель
  * @property string|null $expire Срок завершения работы
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Attachment[] $attachments
  * @property Chat[] $chats
- * @property Job[] $jobs
  * @property Reply[] $replies
  * @property Feedback[] $feedbacks
  * @property User $customer
  * @property Category $category
  * @property User $contractor
- * @property File[] $files
+ * @property Event[] $events
  */
 class Task extends \yii\db\ActiveRecord
 {
+    public function newMessagesCount()
+    {
+        return Event::find()->where([
+            'user_id' => Yii::$app->user->getId(),
+            'task_id' => $this->id,
+            'is_viewed' => false,
+            'type' => 'message'
+        ])->count();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,15 +58,16 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['customer_id', 'name', 'description', 'category_id', 'status'], 'required'],
-            [['customer_id', 'category_id', 'budget', 'status', 'contractor_id'], 'integer'],
+            [['customer_id', 'category_id', 'city_id', 'budget', 'status', 'contractor_id'], 'integer'],
             [['description'], 'string'],
             [['lat', 'long'], 'number'],
-            [['expire', 'dt_add'], 'safe'],
+            [['expire', 'created_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['address'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']]
         ];
     }
 
@@ -66,19 +77,20 @@ class Task extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'customer_id' => 'Customer ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'category_id' => 'Category ID',
-            'address' => 'Address',
-            'lat' => 'Lat',
-            'long' => 'Long',
-            'budget' => 'Budget',
-            'status' => 'Status',
-            'contractor_id' => 'Contractor ID',
-            'expire' => 'Expire',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'customer_id' => 'Заказчик',
+            'name' => 'Мне нужно',
+            'description' => 'Подробности задания',
+            'category_id' => 'Категория задания',
+            'city_id' => 'Город',
+            'address' => 'Адрес',
+            'lat' => 'Широта',
+            'long' => 'Долгота',
+            'budget' => 'Бюджет',
+            'status' => 'Статус задания',
+            'contractor_id' => 'Исполнитель',
+            'expire' => 'Срок завершения работы',
+            'created_at' => 'Время создания записи'
         ];
     }
 
@@ -100,16 +112,6 @@ class Task extends \yii\db\ActiveRecord
     public function getChats()
     {
         return $this->hasMany(Chat::className(), ['task_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Jobs]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getJobs()
-    {
-        return $this->hasMany(Job::className(), ['task_id' => 'id']);
     }
 
     /**
@@ -153,6 +155,16 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[City]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    /**
      * Gets query for [[Contractor]].
      *
      * @return \yii\db\ActiveQuery
@@ -163,12 +175,12 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Files]].
+     * Gets query for [[Events]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getFiles()
+    public function getEvents()
     {
-        return $this->hasMany(File::className(), ['id' => 'file_id'])->viaTable('attachment', ['task_id' => 'id']);
+        return $this->hasMany(Event::className(), ['task_id' => 'id']);
     }
 }

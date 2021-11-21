@@ -12,8 +12,8 @@ use Yii;
  * @property int $contractor_id Исполнитель
  * @property int|null $price Цена
  * @property string|null $comment Комментарий
- * @property int $active Признак активности
- * @property string $dt_add Время создания записи
+ * @property int $is_active Признак активности
+ * @property string $created_at Время создания записи
  *
  * @property Task $task
  * @property User $contractor
@@ -35,10 +35,10 @@ class Reply extends \yii\db\ActiveRecord
     {
         return [
             [['task_id', 'contractor_id'], 'required'],
-            [['task_id', 'contractor_id', 'price', 'active'], 'integer'],
+            [['task_id', 'contractor_id', 'price', 'is_active'], 'integer'],
             [['comment'], 'string'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']]
         ];
     }
 
@@ -48,13 +48,13 @@ class Reply extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'task_id' => 'Task ID',
-            'contractor_id' => 'Contractor ID',
-            'price' => 'Price',
-            'comment' => 'Comment',
-            'active' => 'Active',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'task_id' => 'Задание',
+            'contractor_id' => 'Исполнитель',
+            'price' => 'Цена',
+            'comment' => 'Комментарий',
+            'is_active' => 'Признак активности',
+            'created_at' => 'Время создания записи'
         ];
     }
 

@@ -6,16 +6,42 @@ use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\Pagination;
+use frontend\models\City;
 use frontend\models\User;
+use frontend\models\Event;
 use frontend\models\UserFilterForm;
 use frontend\models\Feedback;
 use HtmlAcademy\Models\TaskStatus;
 
 class UsersController extends SecuredController
 {
-    public function actionIndex()
+    public $towns;
+    public $eventsCount;
+    public $sortingRules;
+
+    public function init()
     {
-        $query = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
+        $this->sortingRules = [
+            'rating' => 'Рейтингу',
+            'orders' => 'Числу заказов',
+            'feedbacks' => 'Популярности'
+        ];
+    }
+
+    public function actionIndex($sort = null)
+    {
+        $query = User::find()->select([
+            'user.*',
+            '(sum(feedback.rating) / count(feedback.id)) as rating',
+            'count(task.id) as orders',
+            'count(feedback.id) as feedbacks'
+        ]);
+
+        $query->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
 
         $model = new UserFilterForm();
 
@@ -31,9 +57,9 @@ class UsersController extends SecuredController
                     // Условие выборки по списку навыков
                     if ($model->skills) {
                         $skills = ['or'];
-                        foreach ($model->skills as $skill) {
+                        foreach ($model->skills as $skill_id) {
                             $skills[] = [
-                                'skill.id' => $skill + 1
+                                'skill.id' => $skill_id
                             ];
                         }
                         $query->andWhere($skills);
@@ -58,14 +84,31 @@ class UsersController extends SecuredController
             }
         }
 
-        $users = $query->orderBy(['user.dt_add' => SORT_DESC])->all();
+        $query->groupBy(['user.id']);
 
-        return $this->render('index', ['users' => $users, 'model' => $model]);
+        if (!is_null($sort) && array_key_exists($sort, $this->sortingRules)) {
+            $query->orderBy([$sort => SORT_ASC]);
+        } else {
+            $query->orderBy(['user.created_at' => SORT_DESC]);
+        }
+
+        $countQuery = clone $query;
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 5,
+            'defaultPageSize' => 5,
+            'pageSizeLimit' => [1, 5],
+            'forcePageParam' => false
+        ]);
+
+        $users = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('index', ['users' => $users, 'model' => $model, 'sort' => $sort, 'pages' => $pages]);
     }
 
     public function actionView($id)
     {
-        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->where(['user.id' => $id])->one();
+        $user = User::find()->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('photos')->where(['user.id' => $id])->one();
         if (!$user) {
             throw new NotFoundHttpException("Исполнитель с ID $id не найден");
         }

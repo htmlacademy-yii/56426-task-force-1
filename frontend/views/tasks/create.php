@@ -28,6 +28,8 @@ $this->title = 'Создать задание - TaskForce';
             ]
         ]); ?>
 
+            <?=$form->errorSummary($model);?>
+
             <?php $options = [
                 'class' => 'input textarea',
                 'rows' => '1',
@@ -52,22 +54,22 @@ $this->title = 'Создать задание - TaskForce';
                 'id' => 'category',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($items, $options)->label(null, ['for' => 'category']);?>
+            <?=$form->field($model, 'category', ['template' => "{label}\n{input}"])->dropDownList($categories, $options)->label(null, ['for' => 'category']);?>
             <span>Выберите категорию</span>
 
-            <label>Файлы</label>
+            <?php $options = [
+                'id' => 'task_files',
+                'multiple' => true
+            ]; ?>
+            <?=$form->field($model, 'task_files[]', ['template' => "{label}\n{input}"])->fileInput($options)->label(null, ['for' => 'task_files']);?>
             <span>Загрузите файлы, которые помогут исполнителю лучше выполнить или оценить работу</span>
-            <div class="create__file">
-                <span>Добавить новый файл</span>
-                <!--<input type="file" name="files[]" class="dropzone">-->
-            </div>
 
             <?php $options = [
                 'class' => 'input-navigation input-middle input',
-                'id' => 'address',
+                'id' => 'location',
                 'tag' => false
             ]; ?>
-            <?=$form->field($model, 'address', ['template' => "{label}\n{input}"])->input('search', $options)->label(null, ['for' => 'address']);?>
+            <?=$form->field($model, 'location', ['template' => "{label}\n{input}"])->input('search', $options)->label(null, ['for' => 'location']);?>
             <span>Укажите адрес исполнения, если задание требует присутствия</span>
 
             <div class="create__price-time">

@@ -10,7 +10,7 @@ use Yii;
  * @property int $id Идентификатор
  * @property string $name Название категории задания
  * @property string|null $icon Значок категории
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Task[] $tasks
  */
@@ -31,9 +31,9 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['name', 'icon'], 'string', 'max' => 64],
-            [['name'], 'unique'],
+            [['name'], 'unique']
         ];
     }
 
@@ -43,10 +43,10 @@ class Category extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'icon' => 'Icon',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'name' => 'Название категории задания',
+            'icon' => 'Значок категории',
+            'created_at' => 'Время создания записи'
         ];
     }
 

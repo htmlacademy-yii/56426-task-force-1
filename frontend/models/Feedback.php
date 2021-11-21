@@ -9,9 +9,10 @@ use Yii;
  *
  * @property int $id Идентификатор
  * @property int $contractor_id Исполнитель
+ * @property int $task_id Задание
  * @property string $rating Оценка
  * @property string $description Текст отзыва
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property User $contractor
  * @property Task $task
@@ -58,11 +59,12 @@ class Feedback extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['contractor_id', 'rating', 'description'], 'required'],
-            [['contractor_id'], 'integer'],
+            [['contractor_id', 'task_id', 'rating', 'description'], 'required'],
+            [['contractor_id', 'task_id'], 'integer'],
             [['rating', 'description'], 'string'],
-            [['dt_add'], 'safe'],
+            [['created_at'], 'safe'],
             [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']]
         ];
     }
 
@@ -72,11 +74,12 @@ class Feedback extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'contractor_id' => 'Contractor ID',
-            'rating' => 'Rating',
-            'description' => 'Description',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'contractor_id' => 'Исполнитель',
+            'task_id' => 'Задание',
+            'rating' => 'Оценка',
+            'description' => 'Текст отзыва',
+            'created_at' => 'Время создания записи'
         ];
     }
 

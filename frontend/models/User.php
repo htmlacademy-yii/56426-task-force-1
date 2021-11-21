@@ -6,31 +6,43 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use HtmlAcademy\Models\UserRole;
+use HtmlAcademy\Models\TaskStatus;
 
 /**
  * This is the model class for table "user".
  *
  * @property int $id Идентификатор
+ * @property string $name Имя пользователя
  * @property string $email E-mail
  * @property string $password Пароль
- * @property string $name Имя пользователя
- * @property string $dt_add Время создания записи
+ * @property string $created_at Время создания записи
  *
  * @property Chat[] $chats
- * @property Favorite[] $favorite
  * @property Feedback[] $feedbacks
- * @property Job[] $jobs
+ * @property Notice[] $notices
+ * @property Photo[] $photos
  * @property Profile $profile
  * @property Reply[] $replies
  * @property Settings $settings
+ * @property Skill[] $skills
  * @property Task[] $customerTasks
  * @property Task[] $contractorTasks
- * @property Skill[] $skills
- * @property Notice[] $notices
  */
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public static function getAvatar($user_id = null)
+    {
+        if (is_null($user_id)) {
+            $user_id = Yii::$app->user->getId();
+        }
+
+        $user_avatar = "files/user/$user_id/avatar.jpg";
+        $default_avatar = "/img/default-avatar.jpg";
+
+        return file_exists($user_avatar) ? "/".$user_avatar.'?'.time() : $default_avatar;
+    }
+
     public static function getRole()
     {
         if (UserSkill::find()->where(['user_id' => Yii::$app->user->getId()])->count()) {
@@ -46,7 +58,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function taskCount()
     {
-        return count($this->contractorTasks);
+        return count($this->contractorTasksCompleted);
     }
 
     public function feedbackCount()
@@ -117,10 +129,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password', 'name'], 'required'],
-            [['dt_add'], 'safe'],
-            [['email', 'password', 'name'], 'string', 'max' => 64],
-            [['email'], 'unique'],
+            [['name', 'email', 'password'], 'required'],
+            [['created_at'], 'safe'],
+            [['name', 'email', 'password'], 'string', 'max' => 64],
+            [['email'], 'unique']
         ];
     }
 
@@ -130,11 +142,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'email' => 'Email',
-            'password' => 'Password',
-            'name' => 'Name',
-            'dt_add' => 'Dt Add',
+            'id' => 'Идентификатор',
+            'name' => 'Имя пользователя',
+            'email' => 'E-mail',
+            'password' => 'Пароль',
+            'created_at' => 'Время создания записи'
         ];
     }
 
@@ -149,16 +161,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[Favorite]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFavorite()
-    {
-        return $this->hasMany(Favorite::className(), ['user_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[Feedbacks]].
      *
      * @return \yii\db\ActiveQuery
@@ -169,13 +171,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[Jobs]].
+     * Gets query for [[Notices]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getJobs()
+    public function getNotices()
     {
-        return $this->hasMany(Job::className(), ['contractor_id' => 'id']);
+        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Photos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhotos()
+    {
+        return $this->hasMany(Photo::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -209,6 +221,16 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Gets query for [[Skills]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkills()
+    {
+        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
+    }
+
+    /**
      * Gets query for [[CustomerTasks]].
      *
      * @return \yii\db\ActiveQuery
@@ -229,22 +251,12 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[Skills]].
+     * Gets query for [[ContractorTasksCompleted]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getSkills()
+    public function getContractorTasksCompleted()
     {
-        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Notices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNotices()
-    {
-        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
+        return $this->hasMany(Task::className(), ['contractor_id' => 'id'])->andWhere(['task.status' => TaskStatus::COMPLETED]);
     }
 }

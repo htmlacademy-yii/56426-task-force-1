@@ -10,6 +10,7 @@ use Yii;
  * @property int $id Идентификатор
  * @property int $user_id Пользователь
  * @property string $file Файл
+ * @property string $name Имя файла
  *
  * @property User $user
  */
@@ -29,11 +30,12 @@ class Photo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'file'], 'required'],
+            [['user_id', 'file', 'name'], 'required'],
             [['user_id'], 'integer'],
             [['file'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 64],
             [['file'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']]
         ];
     }
 
@@ -43,9 +45,10 @@ class Photo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'file' => 'File',
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'file' => 'Файл',
+            'name' => 'Имя файла'
         ];
     }
 

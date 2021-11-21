@@ -7,10 +7,18 @@ use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\models\User;
 use frontend\assets\AppAsset;
 use HtmlAcademy\Models\TaskStatus;
 
 AppAsset::register($this);
+
+$mainMenu = [
+    'tasks/index' => ['url' => '/tasks', 'name' => 'Задания'],
+    'users/index' => ['url' => '/users', 'name' => 'Исполнители'],
+    'tasks/create' => ['url' => '/task/create', 'name' => 'Создать задание'],
+    'account/index' => ['url' => '/account', 'name' => 'Мой профиль']
+];
 
 ?>
 
@@ -64,31 +72,35 @@ AppAsset::register($this);
             </div>
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
-                    <li class="site-list__item"><a href="<?=Url::to(['/tasks']);?>">Задания</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/users']);?>">Исполнители</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/task/create']);?>">Создать задание</a></li>
-                    <li class="site-list__item"><a href="<?=Url::to(['/account']);?>">Мой профиль</a></li>
+                    <?php foreach ($mainMenu as $route => $item): ?>
+                        <li class="site-list__item<?=($route === $this->context->route) ? '  site-list__item--active' : '';?>"><a href="<?=Url::to([$item['url']]);?>"><?=$item['name'];?></a></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
             <?php if ((strpos(Url::current(), 'signup') === false) && !is_null(Yii::$app->user->getIdentity())): ?>
+
             <div class="header__town">
-                <select class="multiple-select input town-select" size="1" name="town[]">
-                    <option value="Moscow">Москва</option>
-                    <option selected value="SPB">Санкт-Петербург</option>
-                    <option value="Krasnodar">Краснодар</option>
-                    <option value="Irkutsk">Иркутск</option>
-                    <option value="Vladivostok">Владивосток</option>
+                <select class="multiple-select input town-select" size="1" name="town" id="town-select">
+                    <option value="all">Все города</option>
+                    <?php if (isset($this->context->towns) && is_array($this->context->towns)): ?>
+                    <?php foreach ($this->context->towns as $town): ?>
+                        <option <?=(Yii::$app->session->get('userCity') === $town->id) ? "selected" : "";?> value="<?=$town->id;?>"><?=$town->name;?></option>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
-            <div class="header__lightbulb"></div>
-            <div class="lightbulb__pop-up">
-                <div class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
-                <h3>Новые события</h3>
-                <div class="lightbulb__content"></div>
+
+            <div id="header__lightbulb" class="header__lightbulb<?=($this->context->eventsCount > 0) ? "  lightbulb__new-events" : "";?>">
+                <div id="new-events-count" class="new-events-count"><?=($this->context->eventsCount > 0) ? $this->context->eventsCount : "";?></div>
+                <div class="lightbulb__pop-up">
+                    <div id="lightbulb__viewed" class="lightbulb__viewed  lightbulb__viewed--hidden">Просмотрено</div>
+                    <h3>Новые события</h3>
+                    <div id="lightbulb__content" class="lightbulb__content"></div>
+                </div>
             </div>
             <div class="header__account">
                 <a class="header__account-photo">
-                    <img src="/img/user-photo.png" width="43" height="44" alt="Аватар пользователя">
+                    <img src="<?=User::getAvatar();?>" width="44" height="44" alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name"><?=Yii::$app->user->getIdentity()->name;?></span>
             </div>
@@ -341,6 +353,17 @@ AppAsset::register($this);
         );
     </script>
 <?php endif; ?>
+
+<script type="text/javascript">
+    document.getElementById("town-select").addEventListener("change", function(event) {
+        fetch("/tasks?city=" + event.target.selectedOptions[0].value, {method: 'GET', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then((response) => {
+                if (response.ok && document.location.pathname === '/tasks') {
+                    document.location.reload();
+                }
+            });
+    });
+</script>
 
 <?php $this->endBody() ?>
 </body>

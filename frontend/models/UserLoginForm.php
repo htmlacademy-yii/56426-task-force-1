@@ -24,7 +24,7 @@ class UserLoginForm extends Model
         return [
             [['email', 'password'], 'safe'],
             [['email', 'password'], 'required'],
-            ['password', 'validatePassword'],
+            ['password', 'validatePassword']
         ];
     }
 

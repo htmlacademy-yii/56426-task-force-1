@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $about Информация о себе
  * @property string|null $phone Номер телефона
  * @property string|null $skype Скайп
- * @property string|null $messenger Другой мессенджер
+ * @property string|null $telegram Телеграм
  * @property string $last_activity Время последней активности
  *
  * @property User $user
@@ -39,13 +39,13 @@ class Profile extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required'],
             [['user_id', 'city_id'], 'integer'],
-            [['birthday'], 'safe'],
+            [['birthday', 'last_activity'], 'safe'],
             [['about'], 'string'],
             [['address'], 'string', 'max' => 255],
-            [['phone', 'skype', 'messenger'], 'string', 'max' => 64],
+            [['phone', 'skype', 'telegram'], 'string', 'max' => 64],
             [['user_id'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']]
         ];
     }
 
@@ -55,15 +55,16 @@ class Profile extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'city_id' => 'City ID',
-            'address' => 'Address',
-            'birthday' => 'Birthday',
-            'about' => 'About',
-            'phone' => 'Phone',
-            'skype' => 'Skype',
-            'messenger' => 'Messenger'
+            'id' => 'Идентификатор',
+            'user_id' => 'Пользователь',
+            'city_id' => 'Город',
+            'address' => 'Адрес',
+            'birthday' => 'День рождения',
+            'about' => 'Информация о себе',
+            'phone' => 'Номер телефона',
+            'skype' => 'Скайп',
+            'telegram' => 'Телеграм',
+            'last_activity' => 'Время последней активности'
         ];
     }
 

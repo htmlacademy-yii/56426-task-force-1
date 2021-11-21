@@ -11,6 +11,15 @@ class TaskFilterForm extends Model
     public $period;
     public $search;
     public $categories;
+    public $categoriesData;
+
+    public function __construct()
+    {
+        $category = Category::find()->orderBy(['id' => SORT_ASC])->all();
+        foreach ($category as $item) {
+            $this->categoriesData[$item->id] = ['id' => $item->id, 'name' => $item->name];
+        }
+    }
 
     public function attributeLabels()
     {

@@ -3,16 +3,28 @@
 namespace frontend\controllers;
 
 use Yii;
+use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\models\Event;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
 class ListController extends SecuredController
 {
+    public $towns;
+    public $eventsCount;
+
+    public function init()
+    {
+        parent::init();
+        $this->towns = City::find()->orderBy(['name' => SORT_ASC])->all();
+        $this->eventsCount = Event::newEventsCount();
+    }
+
     public function actionIndex()
     {
-        $query = Task::find()->joinWith('category'); //->where(['task.status' => TaskStatus::NEW_TASK]);
+        $query = Task::find()->joinWith('category');
 
         if (User::getRole() === UserRole::CUSTOMER) {
             $query->joinWith('contractor')->andWhere(['task.customer_id' => Yii::$app->user->getId()]);
@@ -20,8 +32,24 @@ class ListController extends SecuredController
             $query->joinWith('customer')->andWhere(['task.contractor_id' => Yii::$app->user->getId()]);
         }
 
-        $tasks = $query->orderBy(['dt_add' => SORT_DESC])->all();
+        $currentStatus = null;
 
-        return $this->render('index', ['tasks' => $tasks, 'role' => User::getRole()]);
+        if (Yii::$app->request->getIsGet()) {
+            $filter = Yii::$app->request->get();
+            if (isset($filter['status']) && in_array($filter['status'], TaskStatus::getAllClasses())) {
+                $currentStatus = array_search($filter['status'], TaskStatus::getAllClasses());
+                if ($currentStatus === TaskStatus::CANCELED) {
+                    $query->andWhere(['in', 'task.status', [TaskStatus::CANCELED, TaskStatus::FAILED]]);
+                } elseif ($currentStatus === TaskStatus::FAILED) {
+                    $query->andWhere(['task.status' => TaskStatus::IN_PROGRESS])->andWhere('task.created_at > task.expire');
+                } else {
+                    $query->andWhere(['task.status' => $currentStatus]);
+                }
+            }
+        }
+
+        $tasks = $query->orderBy(['created_at' => SORT_DESC])->all();
+
+        return $this->render('index', ['tasks' => $tasks, 'role' => User::getRole(), 'currentStatus' => $currentStatus]);
     }
 }

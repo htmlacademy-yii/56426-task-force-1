@@ -27,20 +27,14 @@ class SignupController extends UnsecuredController
         $rows = City::find()->orderBy(['name' => SORT_ASC])->all();
         $cities = ['none' => ''] + array_column($rows, 'name', 'id');
 
-        if (!Yii::$app->request->getIsPost()) {
-            return $this->render('index', ['model' => $modelSignup, 'cities' => $cities]);
-        }
-
-        $formData = Yii::$app->request->post();
-
-        if ($modelSignup->load($formData) && $modelSignup->validate()) {
-            if (!$modelSignup->signup()) {
-                return $this->render('index', ['model' => $modelSignup, 'cities' => $cities]);
-            }
-            $modelLogin->email = $modelSignup->email;
-            if ($user = $modelLogin->getUser()) {
-                Yii::$app->user->login($user);
-                return $this->redirect('/tasks');
+        if (Yii::$app->request->getIsPost()) {
+            $formData = Yii::$app->request->post();
+            if ($modelSignup->load($formData) && $modelSignup->validate() && $modelSignup->signup()) {
+                $modelLogin->email = $modelSignup->email;
+                if ($user = $modelLogin->getUser()) {
+                    Yii::$app->user->login($user);
+                    return $this->redirect('/tasks');
+                }
             }
         }
 
