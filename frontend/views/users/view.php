@@ -4,7 +4,6 @@
 
 $this->title = 'Исполнитель - TaskForce';
 
-use Yii;
 use yii\helpers\Url;
 use frontend\models\User;
 use HtmlAcademy\Tools\Grammar;

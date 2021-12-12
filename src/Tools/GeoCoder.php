@@ -98,7 +98,7 @@ class GeoCoder {
         if (is_null($content)) {
 
             $client = new Client([
-                'base_uri' => 'https://geocode-maps.yandex.ru/',
+                'base_uri' => Yii::$app->params['geoCoderUrl']
             ]);
 
             $query = [

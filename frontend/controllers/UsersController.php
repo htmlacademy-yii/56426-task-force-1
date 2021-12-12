@@ -4,7 +4,6 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\Pagination;
 use frontend\models\City;

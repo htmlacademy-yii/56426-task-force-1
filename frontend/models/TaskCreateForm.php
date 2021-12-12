@@ -109,7 +109,7 @@ class TaskCreateForm extends Model
 
     public function upload($task_id)
     {
-        $path = 'files/task/'.$task_id;
+        $path = Yii::$app->params['filesTaskPath'].'/'.$task_id;
 
         if (!file_exists($path)) {
             if (!mkdir($path, 0755, true)) {

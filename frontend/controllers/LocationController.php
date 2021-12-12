@@ -13,7 +13,7 @@ class LocationController extends Controller
         if (Yii::$app->request->getIsGet()) {
 
             $client = new Client([
-                'base_uri' => 'https://geocode-maps.yandex.ru/',
+                'base_uri' => Yii::$app->params['geoCoderUrl']
             ]);
     
             $query = [

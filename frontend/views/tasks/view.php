@@ -2,7 +2,6 @@
 
 /* @var $this yii\web\View */
 
-use Yii;
 use yii\helpers\Url;
 use frontend\models\User;
 use HtmlAcademy\Tools\Grammar;

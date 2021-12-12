@@ -3,7 +3,6 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\web\Controller;
 use frontend\models\Task;
 use frontend\models\UserLoginForm;
 use HtmlAcademy\Models\TaskStatus;

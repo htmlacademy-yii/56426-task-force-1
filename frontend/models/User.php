@@ -37,10 +37,9 @@ class User extends ActiveRecord implements IdentityInterface
             $user_id = Yii::$app->user->getId();
         }
 
-        $user_avatar = "files/user/$user_id/avatar.jpg";
-        $default_avatar = "/img/default-avatar.jpg";
+        $user_avatar = Yii::$app->params['filesUserPath'].'/'.$user_id.'/'.Yii::$app->params['avatarFileName'];
 
-        return file_exists($user_avatar) ? "/".$user_avatar.'?'.time() : $default_avatar;
+        return file_exists($user_avatar) ? '/'.$user_avatar.'?'.time() : Yii::$app->params['defaultAvatar'];
     }
 
     public static function getRole()
