@@ -38,7 +38,7 @@ if (!is_null($this->context->cityFilter)) {
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="<?=Url::to(['view', 'id' => $task->id]);?>" class="link-regular"><h2><?= $task->name; ?></h2></a>
-                    <a class="new-task__type link-regular" href="#"><p><?= $task->category->name; ?></p></a>
+                    <a class="new-task__type link-regular" href="<?=Url::to(['/tasks/category/'.$task->category->id]);?>"><p><?= $task->category->name; ?></p></a>
                 </div>
                 <div class="new-task__icon new-task__icon--<?= $task->category->icon; ?>"></div>
                 <p class="new-task__description"><?= $task->description; ?></p>
@@ -71,6 +71,7 @@ if (!is_null($this->context->cityFilter)) {
                 'class' => 'search-task__form',
                 'name' => $model->formName()
             ],
+            'action' => ['tasks/index'],
             'fieldConfig' => [
                 'options' => [
                     'tag' => false

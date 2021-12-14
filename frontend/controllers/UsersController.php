@@ -44,6 +44,14 @@ class UsersController extends SecuredController
 
         $model = new UserFilterForm();
 
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['skill'])) {
+                $model->skills = [$data['skill']];
+                $query->andWhere(['skill.id' => $data['skill']]);
+            }
+        }
+
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {

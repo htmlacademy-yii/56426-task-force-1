@@ -69,6 +69,14 @@ class TasksController extends SecuredController
 
         $model = new TaskFilterForm();
 
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['category'])) {
+                $model->categories = [$data['category']];
+                $query->andWhere(['task.category_id' => $data['category']]);
+            }
+        }
+
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();
             if ($model->load($formData) && $model->validate()) {

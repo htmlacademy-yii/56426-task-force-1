@@ -30,7 +30,7 @@ $customerTasksCount = count($customer->customerTasks);
                     <div class="content-view__clear"></div>
                     <span>
                         Размещено в категории
-                        <a href="#" class="link-regular"><?=$task->category->name;?></a>
+                        <a href="<?=Url::to(['/tasks/category/'.$task->category->id]);?>" class="link-regular"><?=$task->category->name;?></a>
                         <?=Yii::$app->formatter->asRelativeTime($task->created_at);?>
                     </span>
                 </div>
