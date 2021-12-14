@@ -4,7 +4,6 @@
 
 $this->title = 'Исполнитель - TaskForce';
 
-use Yii;
 use yii\helpers\Url;
 use frontend\models\User;
 use HtmlAcademy\Tools\Grammar;
@@ -42,7 +41,7 @@ $feedbackCount = $user->feedbackCount();
                 <h3 class="content-view__h3">Специализации</h3>
                 <div class="link-specialization">
                 <?php foreach($user->skills as $skill): ?>
-                    <a href="#" class="link-regular"><?=$skill->name;?></a>
+                    <a href="<?=Url::to(['/users/skill/'.$skill->id]);?>" class="link-regular"><?=$skill->name;?></a>
                 <?php endforeach; ?>
                 </div>
                 <?php if ((boolean)$user->settings->hide_contacts === false || User::getRole() === UserRole::CUSTOMER): ?>

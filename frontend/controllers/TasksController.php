@@ -4,7 +4,6 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\data\Pagination;
@@ -69,6 +68,14 @@ class TasksController extends SecuredController
         }
 
         $model = new TaskFilterForm();
+
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['category'])) {
+                $model->categories = [$data['category']];
+                $query->andWhere(['task.category_id' => $data['category']]);
+            }
+        }
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();

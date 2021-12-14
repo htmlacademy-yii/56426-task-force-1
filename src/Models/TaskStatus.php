@@ -10,7 +10,7 @@ class TaskStatus {
     public const CANCELED = 3;
     public const FAILED = 4;
 
-    protected static $statusValues = [
+    private static $statusValues = [
         self::NEW_TASK,
         self::IN_PROGRESS,
         self::COMPLETED,
@@ -18,7 +18,7 @@ class TaskStatus {
         self::FAILED
     ];
 
-    protected static $statusClass = [
+    private static $statusClass = [
         self::NEW_TASK => "new",
         self::IN_PROGRESS => "active",
         self::COMPLETED => "completed",
@@ -26,7 +26,7 @@ class TaskStatus {
         self::FAILED => "failed"
     ];
 
-    protected static $statusName = [
+    private static $statusName = [
         self::NEW_TASK => "Новое",
         self::IN_PROGRESS => "Выполняется",
         self::COMPLETED => "Завершено",
@@ -34,7 +34,7 @@ class TaskStatus {
         self::FAILED => "Провалено"
     ];
 
-    protected static $statusNamePlural = [
+    private static $statusNamePlural = [
         self::NEW_TASK => "Новые",
         self::IN_PROGRESS => "Активные",
         self::COMPLETED => "Завершённые",

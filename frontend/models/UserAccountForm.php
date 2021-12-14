@@ -134,7 +134,7 @@ class UserAccountForm extends Model
 
     public function upload()
     {
-        $path = 'files/user/'.Yii::$app->user->getId();
+        $path = Yii::$app->params['filesUserPath'].'/'.Yii::$app->user->getId();
 
         if (!file_exists($path)) {
             if (!mkdir($path, 0755, true)) {
@@ -143,7 +143,7 @@ class UserAccountForm extends Model
         }
 
         if (!is_null($this->avatar) && $this->avatar->extension === 'jpg') {
-            $this->avatar->saveAs($path.'/avatar.jpg');
+            $this->avatar->saveAs($path.'/'.Yii::$app->params['avatarFileName']);
         }
 
         $this->saved_files = [];

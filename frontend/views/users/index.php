@@ -60,7 +60,7 @@ if ($pages->totalCount == 0) {
                 </div>
                 <div class="link-specialization user__search-link--bottom">
                 <?php foreach($user->skills as $skill): ?>
-                    <a href="#" class="link-regular"><?=$skill->name;?></a>
+                    <a href="<?=Url::to(['/users/skill/'.$skill->id]);?>" class="link-regular"><?=$skill->name;?></a>
                 <?php endforeach; ?>
                 </div>
             </div>
@@ -89,6 +89,7 @@ if ($pages->totalCount == 0) {
                 'class' => 'search-task__form',
                 'name' => $model->formName()
             ],
+            'action' => ['users/index'],
             'fieldConfig' => [
                 'options' => [
                     'tag' => false

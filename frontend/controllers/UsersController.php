@@ -4,7 +4,6 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\Pagination;
 use frontend\models\City;
@@ -44,6 +43,14 @@ class UsersController extends SecuredController
         $query->joinWith('profile')->innerJoinWith('skills')->joinWith('contractorTasks')->joinWith('feedbacks');
 
         $model = new UserFilterForm();
+
+        if (Yii::$app->request->getIsGet()) {
+            $data = Yii::$app->request->get();
+            if (isset($data['skill'])) {
+                $model->skills = [$data['skill']];
+                $query->andWhere(['skill.id' => $data['skill']]);
+            }
+        }
 
         if (Yii::$app->request->getIsPost()) {
             $formData = Yii::$app->request->post();

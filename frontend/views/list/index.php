@@ -42,7 +42,7 @@ $this->title = 'Мои задания - TaskForce';
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="<?=Url::to(['/task/'.$task->id]);?>" class="link-regular"><h2><?=$task->name;?></h2></a>
-                    <a class="new-task__type link-regular" href="#"><p><?=$task->category->name;?></p></a>
+                    <a class="new-task__type link-regular" href="<?=Url::to(['/tasks/category/'.$task->category->id]);?>"><p><?=$task->category->name;?></p></a>
                 </div>
                 <div class="task-status  task-status__<?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
                 <p class="new-task__description"><?=$task->description;?></p>

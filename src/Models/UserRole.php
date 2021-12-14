@@ -7,7 +7,7 @@ class UserRole {
     public const CUSTOMER = 0;
     public const CONTRACTOR = 1;
 
-    protected static $roles = [
+    private static $roles = [
         self::CUSTOMER,
         self::CONTRACTOR
     ];
