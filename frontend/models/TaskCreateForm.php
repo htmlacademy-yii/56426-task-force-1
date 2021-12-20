@@ -40,7 +40,7 @@ class TaskCreateForm extends Model
             [['name', 'description', 'category', 'location', 'budget', 'expire', 'task_files'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
             [['name', 'description', 'location'], 'string'],
-            [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
+            [['category'], 'exist', 'targetClass' => Category::class, 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
             [['expire'], 'date', 'format' => 'php:Y-m-d'],
             [['task_files'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 6]

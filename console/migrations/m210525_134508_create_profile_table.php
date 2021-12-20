@@ -26,7 +26,7 @@ class m210525_134508_create_profile_table extends Migration
             'phone' => $this->string(64)->defaultValue(null)->comment('Номер телефона'),
             'skype' => $this->string(64)->defaultValue(null)->comment('Скайп'),
             'telegram' => $this->string(64)->defaultValue(null)->comment('Телеграм'),
-            'last_activity' => $this->datetime()->notNull()->defaultExpression('current_timestamp')->comment('Время последней активности')
+            'last_activity' => $this->dateTime()->notNull()->defaultExpression('current_timestamp')->comment('Время последней активности')
         ], "engine innodb character set utf8 comment 'Профили пользователей'");
 
         // creates index for column `user_id`

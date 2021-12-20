@@ -94,7 +94,7 @@ class TaskCompleteForm extends Model
             $transaction->commit();
             return true;
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
             return false;
         }
     }

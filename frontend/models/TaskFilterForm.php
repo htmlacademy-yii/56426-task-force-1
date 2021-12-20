@@ -15,7 +15,10 @@ class TaskFilterForm extends Model
 
     public function __construct()
     {
+        parent::__construct();
+
         $category = Category::find()->orderBy(['id' => SORT_ASC])->all();
+
         foreach ($category as $item) {
             $this->categoriesData[$item->id] = ['id' => $item->id, 'name' => $item->name];
         }

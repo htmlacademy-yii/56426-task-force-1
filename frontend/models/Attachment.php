@@ -35,7 +35,7 @@ class Attachment extends \yii\db\ActiveRecord
             [['file'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 64],
             [['file'], 'unique'],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']]
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']]
         ];
     }
 
@@ -59,6 +59,6 @@ class Attachment extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Task::class, ['id' => 'task_id']);
     }
 }

@@ -87,6 +87,8 @@ class GeoCoder {
             return;
         }
 
+        $content = null;
+        
         $key_location = 'location:'.md5($this->location);
 
         try {

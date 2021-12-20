@@ -238,7 +238,7 @@ class TasksController extends SecuredController
         if ($taskSaveResult && $eventSaveResult) {
             $transaction->commit();
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
         }
 
         return $this->redirect("/tasks");
@@ -279,7 +279,7 @@ class TasksController extends SecuredController
             Reply::updateAll(['is_active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
             $transaction->commit();
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
         }
 
         return $this->redirect("/task/$task_id");

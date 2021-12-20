@@ -72,7 +72,7 @@ class MessagesController extends ActiveController
             if ($chatSaveResult && $eventSaveResult) {
                 $transaction->commit();
             } else {
-                $transaction->rollback();
+                $transaction->rollBack();
             }
         }
 

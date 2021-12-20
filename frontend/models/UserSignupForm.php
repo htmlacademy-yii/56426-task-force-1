@@ -28,10 +28,10 @@ class UserSignupForm extends Model
             [['email', 'name', 'city', 'password'], 'safe'],
             [['email', 'name', 'city', 'password'], 'required'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::className()],
+            [['email'], 'unique', 'targetClass' => User::class],
             [['name'], 'string', 'min' => 1],
             [['city'], 'integer'],
-            [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
+            [['city'], 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8]
         ];
     }
@@ -43,16 +43,16 @@ class UserSignupForm extends Model
         $user->email = $this->email;
         $user->password = Yii::$app->security->generatePasswordHash($this->password);
 
+        $profile = new Profile();
+        $settings = new Settings();
+
         $transaction = Yii::$app->db->beginTransaction();
 
         $user_is_saved = (boolean)$user->save();
 
         if ($user_is_saved) {
-            $profile = new Profile();
             $profile->user_id = $user->id;
             $profile->city_id = $this->city;
-
-            $settings = new Settings();
             $settings->user_id = $user->id;
         }
 
@@ -60,7 +60,7 @@ class UserSignupForm extends Model
             $transaction->commit();
             return true;
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
             return false;
         }
     }

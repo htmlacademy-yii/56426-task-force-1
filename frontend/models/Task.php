@@ -64,10 +64,10 @@ class Task extends \yii\db\ActiveRecord
             [['expire', 'created_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['address'], 'string', 'max' => 255],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']]
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['contractor_id' => 'id']]
         ];
     }
 
@@ -101,7 +101,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getAttachments()
     {
-        return $this->hasMany(Attachment::className(), ['task_id' => 'id']);
+        return $this->hasMany(Attachment::class, ['task_id' => 'id']);
     }
 
     /**
@@ -111,7 +111,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getChats()
     {
-        return $this->hasMany(Chat::className(), ['task_id' => 'id']);
+        return $this->hasMany(Chat::class, ['task_id' => 'id']);
     }
 
     /**
@@ -121,7 +121,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getReplies()
     {
-        return $this->hasMany(Reply::className(), ['task_id' => 'id']);
+        return $this->hasMany(Reply::class, ['task_id' => 'id']);
     }
 
     /**
@@ -131,7 +131,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getFeedbacks()
     {
-        return $this->hasMany(Feedback::className(), ['task_id' => 'id']);
+        return $this->hasMany(Feedback::class, ['task_id' => 'id']);
     }
 
     /**
@@ -141,7 +141,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(User::className(), ['id' => 'customer_id']);
+        return $this->hasOne(User::class, ['id' => 'customer_id']);
     }
 
     /**
@@ -151,7 +151,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**
@@ -161,7 +161,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
@@ -171,7 +171,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getContractor()
     {
-        return $this->hasOne(User::className(), ['id' => 'contractor_id']);
+        return $this->hasOne(User::class, ['id' => 'contractor_id']);
     }
 
     /**
@@ -181,6 +181,6 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getEvents()
     {
-        return $this->hasMany(Event::className(), ['task_id' => 'id']);
+        return $this->hasMany(Event::class, ['task_id' => 'id']);
     }
 }
