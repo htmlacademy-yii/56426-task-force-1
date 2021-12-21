@@ -19,7 +19,6 @@ use HtmlAcademy\Models\TaskStatus;
  *
  * @property Chat[] $chats
  * @property Feedback[] $feedbacks
- * @property Notice[] $notices
  * @property Photo[] $photos
  * @property Profile $profile
  * @property Reply[] $replies
@@ -167,16 +166,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function getFeedbacks()
     {
         return $this->hasMany(Feedback::class, ['contractor_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Notices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNotices()
-    {
-        return $this->hasMany(Notice::class, ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
     }
 
     /**

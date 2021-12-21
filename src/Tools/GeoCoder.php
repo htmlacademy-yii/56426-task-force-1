@@ -93,7 +93,7 @@ class GeoCoder {
 
         try {
             $content = Yii::$app->redis->get($key_location);
-        } catch (Exception $e) {
+        } catch (Exception $_) {
             Yii::warning("Redis не работает");
         }
 
@@ -116,7 +116,7 @@ class GeoCoder {
 
             try {
                 Yii::$app->redis->executeCommand('set', [$key_location, $content, 'ex', '86400']);
-            } catch (Exception $e) {
+            } catch (Exception $_) {
                 Yii::warning("Redis не работает");
             }
     

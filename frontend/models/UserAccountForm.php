@@ -36,7 +36,7 @@ class UserAccountForm extends Model
 
     private $saved_files;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
