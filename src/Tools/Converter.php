@@ -33,7 +33,7 @@ class Converter {
         $this->fields = "`" . implode("`, `", $header) . "`";
         while (!$file->eof()) {
             if ($line = $file->fgetcsv()) {
-                foreach ($extraFields as $fieldName => $maxValue) {
+                foreach ($extraFields as $maxValue) {
                     if ($maxValue) {
                         $line[] = rand(1, $maxValue);
                     } else {

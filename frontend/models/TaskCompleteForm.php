@@ -12,17 +12,6 @@ class TaskCompleteForm extends Model
     public $comment;
     public $rating;
 
-    private $eventData = [
-        TaskStatus::COMPLETED => [
-            'type' => '',
-            'text' => ''
-        ],
-        TaskStatus::FAILED => [
-            'type' => 'abandon',
-            'text' => ''
-        ]
-    ];
-
     public function attributeLabels()
     {
         return [

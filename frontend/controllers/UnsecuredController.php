@@ -20,7 +20,7 @@ abstract class UnsecuredController extends Controller
                     [
                         'allow' => false,
                         'roles' => ['@'],
-                        'denyCallback' => function($rule, $action) {
+                        'denyCallback' => function() {
                             return $this->redirect('/tasks');
                         }
                     ]

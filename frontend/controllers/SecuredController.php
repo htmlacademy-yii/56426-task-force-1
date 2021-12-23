@@ -20,7 +20,7 @@ abstract class SecuredController extends Controller
                     [
                         'allow' => false,
                         'roles' => ['?'],
-                        'denyCallback' => function($rule, $action) {
+                        'denyCallback' => function() {
                             return $this->goHome();
                         }
                     ]
