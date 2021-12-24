@@ -21,8 +21,8 @@ if ($pages->totalCount == 0) {
 }
 
 $cityFilterText = '';
-if (!is_null($this->context->cityFilter)) {
-    $cityFilterText = ' (в городе '.$this->context->cityFilter->name.')';
+if (!is_null($cityFilter)) {
+    $cityFilterText = ' (в городе '.$cityFilter->name.')';
 }
 
 ?>

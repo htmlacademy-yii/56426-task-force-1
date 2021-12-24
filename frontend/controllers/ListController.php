@@ -24,7 +24,7 @@ class ListController extends SecuredController
         $myList = new UserTasksList();
 
         if (Yii::$app->request->getIsGet()) {
-            $myList->applyFilter(Yii::$app->request->get());
+            $myList->addFilterByStatus(Yii::$app->request->get());
         }
 
         $myList->loadTasks();

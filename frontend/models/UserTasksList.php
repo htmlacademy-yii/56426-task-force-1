@@ -30,7 +30,7 @@ class UserTasksList extends Model
         }
     }
 
-    public function applyFilter($filter)
+    public function addFilterByStatus($filter)
     {
         if (isset($filter['status']) && in_array($filter['status'], TaskStatus::getAllClasses())) {
             $this->status = array_search($filter['status'], TaskStatus::getAllClasses());
