@@ -5,6 +5,7 @@
 $this->title = 'Исполнитель - TaskForce';
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 use frontend\models\User;
 use HtmlAcademy\Tools\Grammar;
 use HtmlAcademy\Models\UserRole;
@@ -19,7 +20,7 @@ $feedbackCount = $user->feedbackCount();
         <div class="user__card">
             <img src="<?=User::getAvatar($user->id);?>" width="120" height="120" alt="Аватар пользователя">
                 <div class="content-view__headline">
-                    <h1><?=$user->name;?></h1>
+                    <h1><?=Html::encode($user->name);?></h1>
                     <p>Россия, <?=$user->profile->city->name;?><?=Grammar::getYearsString($user->profile->birthday, ", ");?></p>
                     <div class="profile-mini__name five-stars__rate">
                         <?=$user->stars();?>
@@ -34,7 +35,7 @@ $feedbackCount = $user->feedbackCount();
             </div>
         </div>
         <div class="content-view__description">
-            <p><?=$user->profile->about;?></p>
+            <p><?=Html::encode($user->profile->about);?></p>
         </div>
         <div class="user__card-general-information">
             <div class="user__card-info">
@@ -51,13 +52,13 @@ $feedbackCount = $user->feedbackCount();
                             <a class="user__card-link--email link-regular" href="#"><?=$user->email;?></a>
                         <?php endif; ?>
                         <?php if (!empty($user->profile->phone)): ?>
-                            <a class="user__card-link--phone link-regular" href="#"><?=$user->profile->phone;?></a>
+                            <a class="user__card-link--phone link-regular" href="#"><?=Html::encode($user->profile->phone);?></a>
                         <?php endif; ?>
                         <?php if (!empty($user->profile->skype)): ?>
-                            <a class="user__card-link--skype link-regular" href="#"><?=$user->profile->skype;?></a>
+                            <a class="user__card-link--skype link-regular" href="#"><?=Html::encode($user->profile->skype);?></a>
                         <?php endif; ?>
                         <?php if (!empty($user->profile->telegram)): ?>
-                            <a class="user__card-link--telegram link-regular" href="#"><?=$user->profile->telegram;?></a>
+                            <a class="user__card-link--telegram link-regular" href="#"><?=Html::encode($user->profile->telegram);?></a>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -78,12 +79,12 @@ $feedbackCount = $user->feedbackCount();
         <div class="content-view__feedback-wrapper reviews-wrapper">
         <?php foreach($feedbacks as $feedback): ?>
             <div class="feedback-card__reviews">
-                <p class="link-task link">Задание <a href="<?=Url::to(['/task/'.$feedback->task->id]);?>" class="link-regular">«<?=$feedback->task->name;?>»</a></p>
+                <p class="link-task link">Задание <a href="<?=Url::to(['/task/'.$feedback->task->id]);?>" class="link-regular">«<?=Html::encode($feedback->task->name);?>»</a></p>
                 <div class="card__review">
                     <img src="<?=User::getAvatar($feedback->task->customer->id);?>" width="55" height="55">
                     <div class="feedback-card__reviews-content">
-                        <p class="link-name link"><?=$feedback->task->customer->name;?></p>
-                        <p class="review-text"><?=$feedback->description;?></p>
+                        <p class="link-name link"><?=Html::encode($feedback->task->customer->name);?></p>
+                        <p class="review-text"><?=Html::encode($feedback->description);?></p>
                     </div>
                     <div class="card__review-rate">
                         <p class="<?=$feedback->ratingClass();?> big-rate"><?=$feedback->rating;?><span></span></p>

@@ -2,13 +2,13 @@
 
 /* @var $this yii\web\View */
 
-use frontend\models\User;
-use frontend\models\Skill;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
+use frontend\models\User;
+use frontend\models\Skill;
 
 $this->title = 'Список исполнителей - TaskForce';
 
@@ -34,7 +34,7 @@ if ($pages->totalCount == 0) {
         <div class="user__search-link">
             <p>Сортировать по:</p>
             <ul class="user__search-list">
-            <?php foreach($this->context->sortingRules as $sortId => $sortName): ?>
+            <?php foreach($sortingRules as $sortId => $sortName): ?>
                 <li class="user__search-item<?=($sortId === $sort) ? '  user__search-item--current' : '';?>">
                     <a href="<?=Url::to(['/users/sort/'.$sortId]);?>" class="link-regular"><?=$sortName;?></a>
                 </li>
@@ -51,10 +51,10 @@ if ($pages->totalCount == 0) {
                         <span><?=$user->feedbackCount();?> отзывов</span>
                     </div>
                     <div class="feedback-card__top--name user__search-card">
-                        <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=$user->name;?></a></p>
+                        <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=Html::encode($user->name);?></a></p>
                         <?=$user->stars();?>
                         <b><?=sprintf("%0.2f", $user->rating());?></b>
-                        <p class="user__search-content"><?=$user->profile->about;?></p>
+                        <p class="user__search-content"><?=Html::encode($user->profile->about);?></p>
                     </div>
                     <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
                 </div>

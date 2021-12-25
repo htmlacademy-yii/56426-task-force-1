@@ -3,7 +3,6 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\db\Query;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use frontend\models\City;

@@ -2,12 +2,12 @@
 
 /* @var $this yii\web\View */
 
-use frontend\models\Category;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
+use frontend\models\Category;
 
 $this->title = 'Список заданий - TaskForce';
 
@@ -37,11 +37,11 @@ if (!is_null($cityFilter)) {
         <?php foreach ($tasks as $task): ?>
             <div class="new-task__card">
                 <div class="new-task__title">
-                    <a href="<?=Url::to(['view', 'id' => $task->id]);?>" class="link-regular"><h2><?= $task->name; ?></h2></a>
+                    <a href="<?=Url::to(['view', 'id' => $task->id]);?>" class="link-regular"><h2><?=Html::encode($task->name);?></h2></a>
                     <a class="new-task__type link-regular" href="<?=Url::to(['/tasks/category/'.$task->category->id]);?>"><p><?= $task->category->name; ?></p></a>
                 </div>
                 <div class="new-task__icon new-task__icon--<?= $task->category->icon; ?>"></div>
-                <p class="new-task__description"><?= $task->description; ?></p>
+                <p class="new-task__description"><?=Html::encode($task->description);?></p>
                 <b class="new-task__price new-task__price--<?= $task->category->icon; ?>"><?= $task->budget; ?><b> ₽</b></b>
                 <p class="new-task__place"><?= ($task->address) ? $task->address : "Удаленная работа"; ?></p>
                 <span class="new-task__time"><?= Yii::$app->formatter->asRelativeTime($task->created_at); ?></span>

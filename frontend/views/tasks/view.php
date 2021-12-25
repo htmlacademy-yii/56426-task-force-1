@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 use frontend\models\User;
 use HtmlAcademy\Tools\Grammar;
 use HtmlAcademy\Models\TaskStatus;
@@ -24,7 +25,7 @@ $customerTasksCount = count($customer->customerTasks);
             <div class="content-view__header">
                 <div class="content-view__headline">
                     <div class="content-view__title">
-                        <h1><?=$task->name;?></h1>
+                        <h1><?=Html::encode($task->name);?></h1>
                         <div class="task-status  task-status__<?=TaskStatus::getClass($task->status);?>"><?=TaskStatus::getName($task->status);?></div>
                     </div>
                     <div class="content-view__clear"></div>
@@ -39,7 +40,7 @@ $customerTasksCount = count($customer->customerTasks);
             </div>
             <div class="content-view__description">
                 <h3 class="content-view__h3">Общее описание</h3>
-                <p><?=$task->description;?></p>
+                <p><?=Html::encode($task->description);?></p>
             </div>
             <div class="content-view__attach">
                 <?php if ($task->attachments): ?>
@@ -104,7 +105,7 @@ $customerTasksCount = count($customer->customerTasks);
                     <div class="feedback-card__top">
                         <img src="<?=User::getAvatar($reply->contractor->id);?>" width="55" height="55">
                         <div class="feedback-card__top--name">
-                            <p><a href="<?=Url::to(['users/view', 'id' => $reply->contractor->id]);?>" class="link-regular"><?=$reply->contractor->name;?></a></p>
+                            <p><a href="<?=Url::to(['users/view', 'id' => $reply->contractor->id]);?>" class="link-regular"><?=Html::encode($reply->contractor->name);?></a></p>
                             <?=$reply->contractor->stars();?>
                             <b><?=sprintf("%0.2f", $reply->contractor->rating());?></b>
                         </div>
@@ -134,7 +135,7 @@ $customerTasksCount = count($customer->customerTasks);
             <div class="profile-mini__top">
                 <img src="<?=User::getAvatar($customer->id);?>" width="62" height="62" alt="Аватар заказчика">
                 <div class="profile-mini__name five-stars__rate">
-                    <p><?=$customer->name;?></p>
+                    <p><?=Html::encode($customer->name);?></p>
                 </div>
             </div>
             <p class="info-customer">
