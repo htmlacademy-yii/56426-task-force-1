@@ -39,9 +39,9 @@ class UsersController extends SecuredController
         return $this->render('index', [
             'users' => $usersList->users,
             'model' => $usersList->filterForm,
-            'sort' => $usersList->sort,
             'pages' => $usersList->pages,
-            'sortingRules' => $usersList->sortingRules
+            'sortingRules' => $usersList->sortingRules,
+            'sort' => $sort
         ]);
     }
 

@@ -10,7 +10,6 @@ class UsersList extends Model
 {
     public $users;
     public $pages;
-    public $sort;
     public $filterForm;
     public $sortingRules;
 
@@ -20,7 +19,6 @@ class UsersList extends Model
     {
         parent::__construct();
 
-        $this->sort = null;
         $this->filterForm = new UserFilterForm();
 
         $this->sortingRules = [
@@ -90,7 +88,7 @@ class UsersList extends Model
         $this->query->groupBy(['user.id']);
 
         if (!is_null($sort) && array_key_exists($sort, $this->sortingRules)) {
-            $this->query->orderBy([$sort => SORT_ASC]);
+            $this->query->orderBy([$sort => SORT_DESC]);
         } else {
             $this->query->orderBy(['user.created_at' => SORT_DESC]);
         }

@@ -54,8 +54,8 @@ class TaskCreateForm extends Model
         $task->customer_id = Yii::$app->user->getId();
         $task->status = TaskStatus::NEW_TASK;
 
-        $task->name = $this->name;
-        $task->description = $this->description;
+        $task->name = htmlspecialchars($this->name);
+        $task->description = htmlspecialchars($this->description);
         $task->category_id = $this->category;
         $task->budget = $this->budget;
         $task->expire = $this->expire;

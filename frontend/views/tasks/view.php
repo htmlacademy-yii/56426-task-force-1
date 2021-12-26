@@ -112,7 +112,7 @@ $customerTasksCount = count($customer->customerTasks);
                         <span class="new-task__time"><?=Yii::$app->formatter->asRelativeTime($reply->created_at);?></span>
                     </div>
                     <div class="feedback-card__content">
-                        <p><?=$reply->comment;?></p>
+                        <p><?=Html::encode($reply->comment);?></p>
                         <span><?= ($reply->price) ? $reply->price : $reply->task->budget; ?> ₽</span>
                     </div>
                     <?php if ($reply->is_active && $task->status === TaskStatus::NEW_TASK && $task->customer_id === Yii::$app->user->getId()): ?>
