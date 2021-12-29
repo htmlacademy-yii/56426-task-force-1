@@ -3,7 +3,7 @@
 namespace frontend\models;
 
 use yii\base\Model;
-use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 use HtmlAcademy\Models\TaskStatus;
 
 class UsersList extends Model
@@ -94,14 +94,18 @@ class UsersList extends Model
         }
 
         $countQuery = clone $this->query;
-        $this->pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
-            'defaultPageSize' => 5,
-            'pageSizeLimit' => [1, 5],
-            'forcePageParam' => false
+
+        $this->users = new ActiveDataProvider([
+            'query' => $this->query,
+            'pagination' => [
+                'totalCount' => $countQuery->count(),
+                'pageSize' => 5,
+                'defaultPageSize' => 5,
+                'pageSizeLimit' => [1, 5],
+                'forcePageParam' => false
+            ]
         ]);
 
-        $this->users = $this->query->offset($this->pages->offset)->limit($this->pages->limit)->all();
+        $this->pages = $this->users->pagination;
     }
 }

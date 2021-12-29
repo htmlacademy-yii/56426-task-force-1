@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use HtmlAcademy\Models\TaskStatus;
 use HtmlAcademy\Models\UserRole;
 
@@ -37,7 +38,7 @@ class UserTasksList extends Model
             if ($this->status === TaskStatus::CANCELED) {
                 $this->query->andWhere(['in', 'task.status', [TaskStatus::CANCELED, TaskStatus::FAILED]]);
             } elseif ($this->status === TaskStatus::FAILED) {
-                $this->query->andWhere(['task.status' => TaskStatus::IN_PROGRESS])->andWhere('task.created_at > task.expire');
+                $this->query->andWhere(['task.status' => TaskStatus::IN_PROGRESS])->andWhere('now() > task.expire');
             } else {
                 $this->query->andWhere(['task.status' => $this->status]);
             }
@@ -46,6 +47,10 @@ class UserTasksList extends Model
 
     public function loadTasks()
     {
-        $this->tasks = $this->query->orderBy(['created_at' => SORT_DESC])->all();
+        $this->tasks = new ActiveDataProvider([
+            'query' => $this->query,
+            'pagination' => false,
+            'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]]
+        ]);
     }
 }

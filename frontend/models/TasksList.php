@@ -3,7 +3,7 @@
 namespace frontend\models;
 
 use yii\base\Model;
-use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 use HtmlAcademy\Models\TaskStatus;
 
 class TasksList extends Model
@@ -87,17 +87,20 @@ class TasksList extends Model
 
     public function loadTasks()
     {
-        $this->query->orderBy(['created_at' => SORT_DESC]);
-
         $countQuery = clone $this->query;
-        $this->pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
-            'defaultPageSize' => 5,
-            'pageSizeLimit' => [1, 5],
-            'forcePageParam' => false
+
+        $this->tasks = new ActiveDataProvider([
+            'query' => $this->query,
+            'pagination' => [
+                'totalCount' => $countQuery->count(),
+                'pageSize' => 5,
+                'defaultPageSize' => 5,
+                'pageSizeLimit' => [1, 5],
+                'forcePageParam' => false
+            ],
+            'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]]
         ]);
 
-        $this->tasks = $this->query->offset($this->pages->offset)->limit($this->pages->limit)->all();
+        $this->pages = $this->tasks->pagination;
     }
 }

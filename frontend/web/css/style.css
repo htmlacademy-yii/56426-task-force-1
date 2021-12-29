@@ -1014,6 +1014,9 @@ fieldset {
 .pagination__item:hover {
   background-color: #1a34b8; }
 
+.pagination__hidden {
+  display: none; }
+
 .link-regular {
   color: #1e90ff;
   cursor: pointer;
