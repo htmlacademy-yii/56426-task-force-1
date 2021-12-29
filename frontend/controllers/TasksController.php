@@ -3,16 +3,15 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\db\Query;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
-use yii\data\Pagination;
 use frontend\models\City;
 use frontend\models\Task;
 use frontend\models\User;
 use frontend\models\Event;
 use frontend\models\Reply;
 use frontend\models\Category;
+use frontend\models\TasksList;
 use frontend\models\TaskFilterForm;
 use frontend\models\TaskCreateForm;
 use frontend\models\ReplyCreateForm;
@@ -27,7 +26,6 @@ class TasksController extends SecuredController
     public $taskLat;
     public $taskLong;
     public $replyForm;
-    public $cityFilter;
     public $eventsCount;
     public $completeForm;
     public $autoComplete;
@@ -58,80 +56,26 @@ class TasksController extends SecuredController
             return true;
         }
 
-        $query = Task::find()->joinWith('category')->where(['task.status' => TaskStatus::NEW_TASK]);
+        $tasksList = new TasksList();
 
-        if (!is_null(Yii::$app->session->get('userCity'))) {
-            $query->andWhere(['or', ['task.city_id' => null], ['task.city_id' => Yii::$app->session->get('userCity')]]);
-            $this->cityFilter = City::findOne(Yii::$app->session->get('userCity'));
-        } else {
-            $this->cityFilter = null;
-        }
-
-        $model = new TaskFilterForm();
+        $tasksList->addFilterByCity(Yii::$app->session->get('userCity'));
 
         if (Yii::$app->request->getIsGet()) {
-            $data = Yii::$app->request->get();
-            if (isset($data['category'])) {
-                $model->categories = [$data['category']];
-                $query->andWhere(['task.category_id' => $data['category']]);
-            }
+            $tasksList->addFilterByCategory(Yii::$app->request->get());
         }
 
         if (Yii::$app->request->getIsPost()) {
-            $formData = Yii::$app->request->post();
-            if ($model->load($formData) && $model->validate()) {
-                // Условие выборки по отсутствию откликов
-                if ($model->replies) {
-                    //LEFT OUTER JOIN
-                    $query->leftJoin('reply', 'reply.task_id = task.id');
-                    $query->andWhere(['or',
-                        ['reply.task_id' => null],
-                        ['task.id' => null]
-                    ]);
-                }
-                // Условие выборки по списку категорий
-                if ($model->categories) {
-                    $categories = ['or'];
-                    foreach ($model->categories as $category_id) {
-                        $categories[] = [
-                            'task.category_id' => $category_id
-                        ];
-                    }
-                    $query->andWhere($categories);
-                }
-                // Условие выборки по отсутствию локации
-                if ($model->location) {
-                    $query->andWhere(['task.address' => null]);
-                }
-                // Условие выборки по периоду времени
-                if ($model->period === 'day') {
-                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 day"))]);
-                } elseif ($model->period === 'week') {
-                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 week"))]);
-                } elseif ($model->period === 'month') {
-                    $query->andWhere(['>', 'task.created_at', date("Y-m-d H:i:s", strtotime("- 1 month"))]);
-                }
-                // Условие выборки по совпадению в названии
-                if (!empty($model->search)) {
-                    $query->andWhere(['like', 'task.name', $model->search]);
-                }
-            }
+            $tasksList->addFilterByForm(Yii::$app->request->post());
         }
 
-        $query->orderBy(['created_at' => SORT_DESC]);
+        $tasksList->loadTasks();
 
-        $countQuery = clone $query;
-        $pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => 5,
-            'defaultPageSize' => 5,
-            'pageSizeLimit' => [1, 5],
-            'forcePageParam' => false
+        return $this->render('index', [
+            'tasks' => $tasksList->tasks,
+            'model' => $tasksList->filterForm,
+            'pages' => $tasksList->pages,
+            'cityFilter' => $tasksList->cityFilter
         ]);
-
-        $tasks = $query->offset($pages->offset)->limit($pages->limit)->all();
-
-        return $this->render('index', ['tasks' => $tasks, 'model' => $model, 'pages' => $pages]);
     }
 
     // Просмотр задания
@@ -238,7 +182,7 @@ class TasksController extends SecuredController
         if ($taskSaveResult && $eventSaveResult) {
             $transaction->commit();
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
         }
 
         return $this->redirect("/tasks");
@@ -279,7 +223,7 @@ class TasksController extends SecuredController
             Reply::updateAll(['is_active' => (integer)false], ['and', ['=', 'task_id', $task_id], ['<>', 'contractor_id', $user_id]]);
             $transaction->commit();
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
         }
 
         return $this->redirect("/task/$task_id");

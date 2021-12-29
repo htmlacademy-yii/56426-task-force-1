@@ -31,7 +31,7 @@ class m210525_145008_create_task_table extends Migration
             'budget' => $this->integer()->defaultValue(null)->comment('Бюджет'),
             'status' => $this->integer()->notNull()->comment('Статус задания'),
             'contractor_id' => $this->integer()->defaultValue(null)->comment('Исполнитель'),
-            'expire' => $this->datetime()->defaultValue(null)->comment('Срок завершения работы'),
+            'expire' => $this->dateTime()->defaultValue(null)->comment('Срок завершения работы'),
             'created_at' => $this->timestamp()->notNull()->defaultExpression('current_timestamp')->comment('Время создания записи')
         ], "engine innodb character set utf8 comment 'Задания'");
 

@@ -53,6 +53,6 @@ class Skill extends \yii\db\ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('user_skill', ['skill_id' => 'id']);
+        return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('user_skill', ['skill_id' => 'id']);
     }
 }

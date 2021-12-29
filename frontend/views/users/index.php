@@ -2,13 +2,11 @@
 
 /* @var $this yii\web\View */
 
-use frontend\models\User;
-use frontend\models\Skill;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\widgets\ActiveField;
+use yii\widgets\ListView;
 use yii\widgets\LinkPager;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Список исполнителей - TaskForce';
 
@@ -30,41 +28,25 @@ if ($pages->totalCount == 0) {
             <div class="new-task__pages-text"><?=$pagesText;?></div>
         </div>
         <div class="new-task__clear"></div>
-
         <div class="user__search-link">
             <p>Сортировать по:</p>
             <ul class="user__search-list">
-            <?php foreach($this->context->sortingRules as $sortId => $sortName): ?>
+            <?php foreach($sortingRules as $sortId => $sortName): ?>
                 <li class="user__search-item<?=($sortId === $sort) ? '  user__search-item--current' : '';?>">
                     <a href="<?=Url::to(['/users/sort/'.$sortId]);?>" class="link-regular"><?=$sortName;?></a>
                 </li>
             <?php endforeach; ?>
             </ul>
         </div>
-
-        <?php foreach($users as $user): ?>
-            <div class="content-view__feedback-card user__search-wrapper">
-                <div class="feedback-card__top">
-                    <div class="user__search-icon">
-                        <a href="<?=Url::to(['view', 'id' => $user->id]);?>"><img src="<?=User::getAvatar($user->id);?>" width="65" height="65"></a>
-                        <span><?=$user->taskCount();?> заданий</span>
-                        <span><?=$user->feedbackCount();?> отзывов</span>
-                    </div>
-                    <div class="feedback-card__top--name user__search-card">
-                        <p class="link-name"><a href="<?=Url::to(['view', 'id' => $user->id]);?>" class="link-regular"><?=$user->name;?></a></p>
-                        <?=$user->stars();?>
-                        <b><?=sprintf("%0.2f", $user->rating());?></b>
-                        <p class="user__search-content"><?=$user->profile->about;?></p>
-                    </div>
-                    <span class="new-task__time">Был на сайте <?= Yii::$app->formatter->asRelativeTime($user->profile->last_activity); ?></span>
-                </div>
-                <div class="link-specialization user__search-link--bottom">
-                <?php foreach($user->skills as $skill): ?>
-                    <a href="<?=Url::to(['/users/skill/'.$skill->id]);?>" class="link-regular"><?=$skill->name;?></a>
-                <?php endforeach; ?>
-                </div>
-            </div>
-        <?php endforeach; ?>
+        <?=ListView::widget([
+            'dataProvider' => $users,
+            'options' => ['tag' => false],
+            'layout' => "{items}\n{pager}",
+            'itemView' => '_list_item',
+            'itemOptions' => ['tag' => false],
+            'pager' => ['options' => ['class' => 'pagination__hidden']],
+            'emptyText' => false
+        ]);?>
     </div>
     <div class="new-task__pagination">
         <?=LinkPager::widget([

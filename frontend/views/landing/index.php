@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 $this->title = 'Главная - TaskForce';
 
@@ -79,8 +80,8 @@ $this->title = 'Главная - TaskForce';
         <div class="landing-task">
             <div class="landing-task-top  task-<?= $task->category->icon; ?>"></div>
             <div class="landing-task-description">
-                <h3><a href="<?=Url::to(['/task/'.$task->id]);?>" class="link-regular"><?= $task->name; ?></a></h3>
-                <p><?= $task->description; ?></p>
+                <h3><a href="<?=Url::to(['/task/'.$task->id]);?>" class="link-regular"><?= Html::encode($task->name); ?></a></h3>
+                <p><?= Html::encode($task->description); ?></p>
                 <div class="landing-task-description-fading-right"></div>
                 <div class="landing-task-description-fading-bottom"></div>
             </div>

@@ -23,11 +23,11 @@ class Task {
         ]
     ];
 
-    public function __construct($customerId, $deadlineAt = NULL) {
+    public function __construct($customerId, $deadlineAt = null) {
         $this->customerId = $customerId;
-        $this->contractorId = NULL;
+        $this->contractorId = null;
         $this->createdAt = time();
-        $this->deadlineAt = ($deadlineAt !== NULL) ? $deadlineAt : $this->createdAt + 864000;
+        $this->deadlineAt = ($deadlineAt !== null) ? $deadlineAt : $this->createdAt + 864000;
         $this->currentStatus = TaskStatus::NEW_TASK;
     }
 
@@ -35,7 +35,7 @@ class Task {
         if (!in_array($action, AvailableActions::getAll())) {
             throw new DataTypeException("Действие '".$action."' не существует.");
         }
-        return $this->lifecycleMap[$this->currentStatus][$action] ?? NULL;
+        return $this->lifecycleMap[$this->currentStatus][$action] ?? null;
     }
 
 }

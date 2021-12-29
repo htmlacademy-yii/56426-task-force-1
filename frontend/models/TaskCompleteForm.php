@@ -12,17 +12,6 @@ class TaskCompleteForm extends Model
     public $comment;
     public $rating;
 
-    private $eventData = [
-        TaskStatus::COMPLETED => [
-            'type' => '',
-            'text' => ''
-        ],
-        TaskStatus::FAILED => [
-            'type' => 'abandon',
-            'text' => ''
-        ]
-    ];
-
     public function attributeLabels()
     {
         return [
@@ -76,7 +65,7 @@ class TaskCompleteForm extends Model
         $feedback->task_id = $taskId;
         $feedback->contractor_id = $task->contractor_id;
         $feedback->rating = $this->rating;
-        $feedback->description = $this->comment;
+        $feedback->description = htmlspecialchars($this->comment);
         $feedbackSaveResult = $feedback->save();
 
         $event = new Event();
@@ -94,7 +83,7 @@ class TaskCompleteForm extends Model
             $transaction->commit();
             return true;
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
             return false;
         }
     }

@@ -36,8 +36,10 @@ class UserAccountForm extends Model
 
     private $saved_files;
 
-    function __construct()
+    public function __construct()
     {
+        parent::__construct();
+
         $this->loadAccountData(Yii::$app->user->getId());
     }
 
@@ -72,9 +74,9 @@ class UserAccountForm extends Model
             [['name', 'email', 'city'], 'required'],
             [['name'], 'string', 'min' => 1],
             [['email'], 'email'],
-            [['email'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => ['email' => 'email']],
+            [['email'], 'exist', 'targetClass' => User::class, 'targetAttribute' => ['email' => 'email']],
             [['city'], 'integer'],
-            [['city'], 'exist', 'targetClass' => City::className(), 'targetAttribute' => ['city' => 'id']],
+            [['city'], 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
             [['password'], 'string', 'min' => 8],
             [['password'], 'compare', 'compareAttribute' => 'password_retype'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 1],
@@ -92,10 +94,10 @@ class UserAccountForm extends Model
 
         $this->profile->city_id = $this->city;
         $this->profile->birthday = $this->birthday;
-        $this->profile->about = $this->about;
-        $this->profile->phone = $this->phone;
-        $this->profile->skype = $this->skype;
-        $this->profile->telegram = $this->telegram;
+        $this->profile->about = htmlspecialchars($this->about);
+        $this->profile->phone = htmlspecialchars($this->phone);
+        $this->profile->skype = htmlspecialchars($this->skype);
+        $this->profile->telegram = htmlspecialchars($this->telegram);
 
         $this->settings->task_actions = (int)$this->task_actions;
         $this->settings->new_message = (int)$this->new_message;
@@ -127,7 +129,7 @@ class UserAccountForm extends Model
             $transaction->commit();
             return true;
         } else {
-            $transaction->rollback();
+            $transaction->rollBack();
             return false;
         }
     }

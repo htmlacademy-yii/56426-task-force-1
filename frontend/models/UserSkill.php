@@ -32,8 +32,8 @@ class UserSkill extends \yii\db\ActiveRecord
         return [
             [['user_id', 'skill_id'], 'required'],
             [['user_id', 'skill_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['skill_id'], 'exist', 'skipOnError' => true, 'targetClass' => Skill::className(), 'targetAttribute' => ['skill_id' => 'id']]
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['skill_id'], 'exist', 'skipOnError' => true, 'targetClass' => Skill::class, 'targetAttribute' => ['skill_id' => 'id']]
         ];
     }
 
@@ -54,7 +54,7 @@ class UserSkill extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -62,6 +62,6 @@ class UserSkill extends \yii\db\ActiveRecord
      */
     public function getSkill()
     {
-        return $this->hasOne(Skill::className(), ['id' => 'skill_id']);
+        return $this->hasOne(Skill::class, ['id' => 'skill_id']);
     }
 }

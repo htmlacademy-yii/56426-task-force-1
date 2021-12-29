@@ -34,8 +34,8 @@ class Grammar {
 
         $numberString = strval($number);
 
-        $lastDigit = substr($numberString, -1, 1);
-        $secondLastDigit = (strlen($numberString) > 1) ? substr($numberString, -2, 1) : null;
+        $lastDigit = $numberString[-1];
+        $secondLastDigit = (strlen($numberString) > 1) ? $numberString[-2] : null;
 
         if ($secondLastDigit === "1") {
             return $suffix[$variant]['0'];
@@ -65,8 +65,8 @@ class Grammar {
 
         $years = date_diff(date_create(), date_create($date))->format("%y");
 
-        $lastDigit = substr($years, -1, 1);
-        $secondLastDigit = (strlen($years) > 1) ? substr($years, -2, 1) : null;
+        $lastDigit = $years[-1];
+        $secondLastDigit = (strlen($years) > 1) ? $years[-2] : null;
 
         if ($secondLastDigit === "1") {
             return $prefix.$years." лет";

@@ -101,7 +101,7 @@ $mainMenu = [
                 <a class="header__account-photo">
                     <img src="<?=User::getAvatar();?>" width="44" height="44" alt="Аватар пользователя">
                 </a>
-                <span class="header__account-name"><?=Yii::$app->user->getIdentity()->name;?></span>
+                <span class="header__account-name"><?=Html::encode(Yii::$app->user->getIdentity()->name);?></span>
             </div>
             <div class="account__pop-up">
                 <ul class="account__pop-up-list">

@@ -11,7 +11,7 @@ abstract class UnsecuredController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -20,7 +20,7 @@ abstract class UnsecuredController extends Controller
                     [
                         'allow' => false,
                         'roles' => ['@'],
-                        'denyCallback' => function($rule, $action) {
+                        'denyCallback' => function() {
                             return $this->redirect('/tasks');
                         }
                     ]

@@ -77,10 +77,10 @@ assert($myTask->currentStatus === TaskStatus::CANCELED);
 
 // Проверка обработки исключений
 
-try {
-    $exceptionClass = null;
-    $exceptionMessage = null;
+$exceptionClass = null;
+$exceptionMessage = null;
 
+try {
     $myTask = new Task(1);
     $myTask->currentStatus = $myTask->getStatusNext('some action');
 } catch (Exception $exception) {

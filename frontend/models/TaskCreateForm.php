@@ -40,7 +40,7 @@ class TaskCreateForm extends Model
             [['name', 'description', 'category', 'location', 'budget', 'expire', 'task_files'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
             [['name', 'description', 'location'], 'string'],
-            [['category'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
+            [['category'], 'exist', 'targetClass' => Category::class, 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
             [['expire'], 'date', 'format' => 'php:Y-m-d'],
             [['task_files'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 6]
@@ -54,8 +54,8 @@ class TaskCreateForm extends Model
         $task->customer_id = Yii::$app->user->getId();
         $task->status = TaskStatus::NEW_TASK;
 
-        $task->name = $this->name;
-        $task->description = $this->description;
+        $task->name = htmlspecialchars($this->name);
+        $task->description = htmlspecialchars($this->description);
         $task->category_id = $this->category;
         $task->budget = $this->budget;
         $task->expire = $this->expire;

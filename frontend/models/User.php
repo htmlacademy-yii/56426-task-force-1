@@ -19,7 +19,6 @@ use HtmlAcademy\Models\TaskStatus;
  *
  * @property Chat[] $chats
  * @property Feedback[] $feedbacks
- * @property Notice[] $notices
  * @property Photo[] $photos
  * @property Profile $profile
  * @property Reply[] $replies
@@ -156,7 +155,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getChats()
     {
-        return $this->hasMany(Chat::className(), ['contractor_id' => 'id']);
+        return $this->hasMany(Chat::class, ['contractor_id' => 'id']);
     }
 
     /**
@@ -166,17 +165,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getFeedbacks()
     {
-        return $this->hasMany(Feedback::className(), ['contractor_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Notices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNotices()
-    {
-        return $this->hasMany(Notice::className(), ['id' => 'notice_id'])->viaTable('user_notice', ['user_id' => 'id']);
+        return $this->hasMany(Feedback::class, ['contractor_id' => 'id']);
     }
 
     /**
@@ -186,7 +175,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getPhotos()
     {
-        return $this->hasMany(Photo::className(), ['user_id' => 'id']);
+        return $this->hasMany(Photo::class, ['user_id' => 'id']);
     }
 
     /**
@@ -196,7 +185,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getProfile()
     {
-        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+        return $this->hasOne(Profile::class, ['user_id' => 'id']);
     }
 
     /**
@@ -206,7 +195,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getReplies()
     {
-        return $this->hasMany(Reply::className(), ['contractor_id' => 'id']);
+        return $this->hasMany(Reply::class, ['contractor_id' => 'id']);
     }
 
     /**
@@ -216,7 +205,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getSettings()
     {
-        return $this->hasOne(Settings::className(), ['user_id' => 'id']);
+        return $this->hasOne(Settings::class, ['user_id' => 'id']);
     }
 
     /**
@@ -226,7 +215,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getSkills()
     {
-        return $this->hasMany(Skill::className(), ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
+        return $this->hasMany(Skill::class, ['id' => 'skill_id'])->viaTable('user_skill', ['user_id' => 'id']);
     }
 
     /**
@@ -236,7 +225,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getCustomerTasks()
     {
-        return $this->hasMany(Task::className(), ['customer_id' => 'id']);
+        return $this->hasMany(Task::class, ['customer_id' => 'id']);
     }
 
     /**
@@ -246,7 +235,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getContractorTasks()
     {
-        return $this->hasMany(Task::className(), ['contractor_id' => 'id']);
+        return $this->hasMany(Task::class, ['contractor_id' => 'id']);
     }
 
     /**
@@ -256,6 +245,6 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getContractorTasksCompleted()
     {
-        return $this->hasMany(Task::className(), ['contractor_id' => 'id'])->andWhere(['task.status' => TaskStatus::COMPLETED]);
+        return $this->hasMany(Task::class, ['contractor_id' => 'id'])->andWhere(['task.status' => TaskStatus::COMPLETED]);
     }
 }
