@@ -39,7 +39,7 @@ class UserSignupForm extends Model
     public function signup()
     {
         $user = new User();
-        $user->name = htmlspecialchars($this->name);
+        $user->name = $this->name;
         $user->email = $this->email;
         $user->password = Yii::$app->security->generatePasswordHash($this->password);
 

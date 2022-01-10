@@ -38,7 +38,7 @@ class ReplyCreateForm extends Model
         $reply->task_id = $task->id;
         $reply->contractor_id = Yii::$app->user->getId();
         $reply->price = $this->price;
-        $reply->comment = htmlspecialchars($this->comment);
+        $reply->comment = $this->comment;
         $replySaveResult = $reply->save();
 
         $event = new Event();

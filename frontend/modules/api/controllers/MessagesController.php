@@ -55,7 +55,7 @@ class MessagesController extends ActiveController
             $chat->task_id = $task->id;
             $chat->sender_id = Yii::$app->user->getId();
             $chat->recipient_id = ($task->customer_id === Yii::$app->user->getId()) ? $task->contractor_id : $task->customer_id;
-            $chat->message = htmlspecialchars($data->message);
+            $chat->message = $data->message;
             $chatSaveResult = $chat->save();
 
             $event = new Event();

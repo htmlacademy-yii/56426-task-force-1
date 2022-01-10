@@ -65,7 +65,7 @@ class TaskCompleteForm extends Model
         $feedback->task_id = $taskId;
         $feedback->contractor_id = $task->contractor_id;
         $feedback->rating = $this->rating;
-        $feedback->description = htmlspecialchars($this->comment);
+        $feedback->description = $this->comment;
         $feedbackSaveResult = $feedback->save();
 
         $event = new Event();

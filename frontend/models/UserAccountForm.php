@@ -94,10 +94,10 @@ class UserAccountForm extends Model
 
         $this->profile->city_id = $this->city;
         $this->profile->birthday = $this->birthday;
-        $this->profile->about = htmlspecialchars($this->about);
-        $this->profile->phone = htmlspecialchars($this->phone);
-        $this->profile->skype = htmlspecialchars($this->skype);
-        $this->profile->telegram = htmlspecialchars($this->telegram);
+        $this->profile->about = $this->about;
+        $this->profile->phone = $this->phone;
+        $this->profile->skype = $this->skype;
+        $this->profile->telegram = $this->telegram;
 
         $this->settings->task_actions = (int)$this->task_actions;
         $this->settings->new_message = (int)$this->new_message;

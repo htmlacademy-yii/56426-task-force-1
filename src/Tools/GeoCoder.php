@@ -2,6 +2,8 @@
 namespace HtmlAcademy\Tools;
 
 use Yii;
+use yii\db\Exception;
+use yii\base\UnknownPropertyException;
 use GuzzleHttp\Client;
 
 class GeoCoder {
@@ -93,8 +95,8 @@ class GeoCoder {
 
         try {
             $content = Yii::$app->redis->get($key_location);
-        } catch (Exception $_) {
-            Yii::warning("Redis не работает");
+        } catch (Exception | UnknownPropertyException $e) {
+            Yii::warning($e->getMessage());
         }
 
         if (is_null($content)) {
@@ -116,8 +118,8 @@ class GeoCoder {
 
             try {
                 Yii::$app->redis->executeCommand('set', [$key_location, $content, 'ex', '86400']);
-            } catch (Exception $_) {
-                Yii::warning("Redis не работает");
+            } catch (Exception | UnknownPropertyException $e) {
+                Yii::warning($e->getMessage());
             }
     
         }
