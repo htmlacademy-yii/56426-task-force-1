@@ -782,6 +782,18 @@ fieldset {
   padding-top: 14px;
   padding-bottom: 14px; }
 
+.input-hint {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: #8a8a8d; }
+  
+.input-error {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: #ff0000; }
+
 .multiple-select-big {
   background-position: 490px 20px;
   margin-bottom: 10px; }
