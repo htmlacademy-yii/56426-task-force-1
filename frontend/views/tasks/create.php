@@ -17,6 +17,7 @@ $this->title = 'Создать задание - TaskForce';
 
         <?php $form = ActiveForm::begin([
             'id' => 'task-form',
+            'enableClientValidation' => false,
             'options' => [
                 'class' => 'create__task-form form-create',
                 'enctype' => 'multipart/form-data',
@@ -28,8 +29,6 @@ $this->title = 'Создать задание - TaskForce';
                 ]
             ]
         ]); ?>
-
-            <?=$form->errorSummary($model);?>
 
             <?=$form->field($model, 'name', ['template' => "{label}\n{input}\n{hint}\n{error}"])
                 ->label(null, ['for' => 'name'])
@@ -51,7 +50,7 @@ $this->title = 'Создать задание - TaskForce';
 
             <?=$form->field($model, 'task_files[]', ['template' => "{label}\n{input}\n{hint}"])
                 ->label(null, ['for' => 'task_files'])
-                ->fileInput(['id' => 'task_files', 'multiple' => true])
+                ->fileInput(['class' => 'input-files', 'id' => 'task_files', 'multiple' => true])
                 ->hint(null, ['tag' => 'span', 'class' => 'input-hint']);?>
 
             <?=$form->field($model, 'location', ['template' => "{label}\n{input}\n{hint}"])

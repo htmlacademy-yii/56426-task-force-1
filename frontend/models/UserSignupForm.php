@@ -22,17 +22,26 @@ class UserSignupForm extends Model
         ];
     }
 
+    public function attributeHints()
+    {
+        return [
+            'email' => 'Введите валидный адрес электронной почты',
+            'name' => 'Введите ваше имя и фамилию',
+            'city' => 'Укажите город, чтобы находить подходящие задачи',
+            'password' => 'Введите пароль от 8 символов'
+        ];
+    }
+
     public function rules()
     {
         return [
             [['email', 'name', 'city', 'password'], 'safe'],
             [['email', 'name', 'city', 'password'], 'required'],
-            [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::class],
-            [['name'], 'string', 'min' => 1],
-            [['city'], 'integer'],
-            [['city'], 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
-            [['password'], 'string', 'min' => 8]
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => User::class],
+            ['name', 'string', 'max' => 64],
+            ['city', 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
+            ['password', 'string', 'min' => 8]
         ];
     }
 

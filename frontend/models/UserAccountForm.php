@@ -72,15 +72,15 @@ class UserAccountForm extends Model
             [['avatar', 'name', 'email', 'city', 'birthday', 'about', 'password', 'password_retype', 'image_files', 'phone', 'skype', 'telegram', 'skills', 'task_actions', 'new_message', 'new_reply', 'hide_contacts', 'hide_profile'], 'safe'],
             [['birthday', 'about', 'phone', 'skype', 'telegram'], 'default'],
             [['name', 'email', 'city'], 'required'],
-            [['name'], 'string', 'min' => 1],
-            [['email'], 'email'],
-            [['email'], 'exist', 'targetClass' => User::class, 'targetAttribute' => ['email' => 'email']],
-            [['city'], 'integer'],
-            [['city'], 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
-            [['password'], 'string', 'min' => 8],
-            [['password'], 'compare', 'compareAttribute' => 'password_retype'],
-            [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 1],
-            [['image_files'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6]
+            [['name', 'phone', 'skype', 'telegram'], 'string', 'max' => 64],
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => User::class, 'filter' => ['<>', 'id', Yii::$app->user->getId()]],
+            ['city', 'exist', 'targetClass' => City::class, 'targetAttribute' => ['city' => 'id']],
+            ['birthday', 'date', 'format' => 'php:Y-m-d'],
+            ['password', 'string', 'skipOnEmpty' => true, 'min' => 8],
+            ['password_retype', 'compare', 'compareAttribute' => 'password'],
+            ['avatar', 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 1],
+            ['image_files', 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 6]
         ];
     }
 

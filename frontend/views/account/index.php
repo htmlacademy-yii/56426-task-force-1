@@ -16,6 +16,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
     <?php $form = ActiveForm::begin([
         'id' => 'account',
+        'enableClientValidation' => false,
         'options' => [
             'enctype' => 'multipart/form-data',
             'name' => $model->formName()
@@ -27,8 +28,6 @@ $this->title = 'Настройки аккаунта - TaskForce';
         ]
     ]); ?>
 
-        <?=$form->errorSummary($model);?>
-
         <div class="account__redaction-section">
 
             <h3 class="div-line">Настройки аккаунта</h3>
@@ -36,56 +35,38 @@ $this->title = 'Настройки аккаунта - TaskForce';
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
                     <img src="<?=User::getAvatar();?>" width="140" height="140">
-                    <?php $options = [
-                        'id' => 'upload-avatar',
-                        'multiple' => false,
-                        'accept' => 'image/jpeg'
-                    ]; ?>
-                    <?=$form->field($model, 'avatar', ['template' => "{label}\n{input}"])->fileInput($options)->label(null, ['for' => 'upload-avatar', 'class' => 'link-regular']);?>
+                    <?=$form->field($model, 'avatar', ['template' => "{label}\n{input}"])
+                        ->label(null, ['for' => 'upload-avatar', 'class' => 'link-regular'])
+                        ->fileInput(['id' => 'upload-avatar', 'multiple' => false, 'accept' => 'image/jpeg']);?>
                 </div>
                 <div class="account__redaction">
                     <div class="account__input account__input--name">
-                        <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'name',
-                            'disabled' => '',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'name']);?>
+                        <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])
+                            ->label(null, ['for' => 'name'])
+                            ->input('text', ['class' => 'input textarea', 'id' => 'name', 'disabled' => '']);?>
                     </div>
                     <div class="account__input account__input--email">
-                    <?php $options = [
-                            'class' => 'input textarea',
-                            'id' => 'email',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'email', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'email']);?>
+                        <?=$form->field($model, 'email', ['template' => "{label}\n{input}\n{error}"])
+                            ->label(null, ['for' => 'email'])
+                            ->input('text', ['class' => 'input textarea', 'id' => 'email'])
+                            ->error(['tag' => 'span', 'class' => 'input-error']);?>
                     </div>
-                    <div class="account__input account__input--name">
-                        <?php $options = [
-                            'class' => 'multiple-select input multiple-select-big',
-                            'size' => '1',
-                            'id' => 'city',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($cities, $options)->label(null, ['for' => 'city']);?>
+                    <div class="account__input account__input--city">
+                        <?=$form->field($model, 'city', ['template' => "{label}\n{input}\n{error}"])
+                            ->label(null, ['for' => 'city'])
+                            ->dropDownList($cities, ['class' => 'multiple-select input multiple-select-big', 'size' => '1', 'id' => 'city'])
+                            ->error(['tag' => 'span', 'class' => 'input-error']);?>
                     </div>
                     <div class="account__input account__input--date">
-                        <?php $options = [
-                            'class' => 'input-middle input input-date',
-                            'id' => 'birthday',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'birthday', ['template' => "{label}\n{input}"])->input('date', $options)->label(null, ['for' => 'birthday']);?>
+                        <?=$form->field($model, 'birthday', ['template' => "{label}\n{input}\n{error}"])
+                            ->label(null, ['for' => 'birthday'])
+                            ->input('date', ['class' => 'input-middle input input-date', 'id' => 'birthday'])
+                            ->error(['tag' => 'span', 'class' => 'input-error']);?>
                     </div>
                     <div class="account__input account__input--info">
-                        <?php $options = [
-                            'class' => 'input textarea',
-                            'rows' => '7',
-                            'id' => 'about',
-                            'tag' => false
-                        ]; ?>
-                        <?=$form->field($model, 'about', ['template' => "{label}\n{input}"])->textarea($options)->label(null, ['for' => 'about']);?>
+                        <?=$form->field($model, 'about', ['template' => "{label}\n{input}"])
+                            ->label(null, ['for' => 'about'])
+                            ->textarea(['class' => 'input textarea', 'rows' => '7', 'id' => 'about']);?>
                     </div>
                 </div>
             </div>
@@ -119,60 +100,46 @@ $this->title = 'Настройки аккаунта - TaskForce';
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                    <?php $options = [
-                        'class' => 'input textarea',
-                        'id' => 'password',
-                        'tag' => false
-                    ]; ?>
-                    <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password']);?>
+                    <?=$form->field($model, 'password', ['template' => "{label}\n{input}\n{error}"])
+                        ->label(null, ['for' => 'password'])
+                        ->input('password', ['class' => 'input textarea', 'id' => 'password'])
+                        ->error(['tag' => 'span', 'class' => 'input-error']);?>
                 </div>
                 <div class="account__input">
-                    <?php $options = [
-                        'class' => 'input textarea',
-                        'id' => 'password_retype',
-                        'tag' => false
-                    ]; ?>
-                    <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}"])->input('password', $options)->label(null, ['for' => 'password_retype']);?>
+                    <?=$form->field($model, 'password_retype', ['template' => "{label}\n{input}\n{error}"])
+                        ->label(null, ['for' => 'password_retype'])
+                        ->input('password', ['class' => 'input textarea', 'id' => 'password_retype'])
+                        ->error(['tag' => 'span', 'class' => 'input-error']);?>
                 </div>
             </div>
 
             <h3 class="div-line">Фото работ</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
-                <?php $options = [
-                    'id' => 'image_files',
-                    'multiple' => true,
-                    'accept' => 'image/jpeg, image/png'
-                ]; ?>
-                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])->fileInput($options);?>
+                <?=$form->field($model, 'image_files[]', ['template' => "{input}"])
+                    ->fileInput(['id' => 'image_files', 'multiple' => true, 'accept' => 'image/jpeg, image/png']);?>
             </div>
 
             <h3 class="div-line">Контакты</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
-                    <?php $options = [
-                        'class' => 'input textarea',
-                        'id' => 'phone',
-                        'tag' => false
-                    ]; ?>
-                    <?=$form->field($model, 'phone', ['template' => "{label}\n{input}"])->input('tel', $options)->label(null, ['for' => 'phone']);?>
+                    <?=$form->field($model, 'phone', ['template' => "{label}\n{input}\n{error}"])
+                        ->label(null, ['for' => 'phone'])
+                        ->input('tel', ['class' => 'input textarea', 'id' => 'phone'])
+                        ->error(['tag' => 'span', 'class' => 'input-error']);?>
                 </div>
                 <div class="account__input">
-                    <?php $options = [
-                        'class' => 'input textarea',
-                        'id' => 'skype',
-                        'tag' => false
-                    ]; ?>
-                    <?=$form->field($model, 'skype', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'skype']);?>
+                    <?=$form->field($model, 'skype', ['template' => "{label}\n{input}\n{error}"])
+                        ->label(null, ['for' => 'skype'])
+                        ->input('text', ['class' => 'input textarea', 'id' => 'skype'])
+                        ->error(['tag' => 'span', 'class' => 'input-error']);?>
                 </div>
                 <div class="account__input">
-                    <?php $options = [
-                        'class' => 'input textarea',
-                        'id' => 'telegram',
-                        'tag' => false
-                    ]; ?>
-                    <?=$form->field($model, 'telegram', ['template' => "{label}\n{input}"])->input('text', $options)->label(null, ['for' => 'telegram']);?>
+                    <?=$form->field($model, 'telegram', ['template' => "{label}\n{input}\n{error}"])
+                        ->label(null, ['for' => 'telegram'])
+                        ->input('text', ['class' => 'input textarea', 'id' => 'telegram'])
+                        ->error(['tag' => 'span', 'class' => 'input-error']);?>
                 </div>
             </div>
 
@@ -187,8 +154,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
                             'id' => 'new_message',
-                            'value' => true,
-                            'tag' => false
+                            'value' => true
                         ];
                         if ($model->new_message) {
                             $options['checked'] = '';
@@ -200,8 +166,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
                             'id' => 'task_actions',
-                            'value' => true,
-                            'tag' => false
+                            'value' => true
                         ];
                         if ($model->task_actions) {
                             $options['checked'] = '';
@@ -213,8 +178,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
                             'id' => 'new_reply',
-                            'value' => true,
-                            'tag' => false
+                            'value' => true
                         ];
                         if ($model->new_reply) {
                             $options['checked'] = '';
@@ -230,8 +194,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
                             'id' => 'hide_contacts',
-                            'value' => true,
-                            'tag' => false
+                            'value' => true
                         ];
                         if ($model->hide_contacts) {
                             $options['checked'] = '';
@@ -243,8 +206,7 @@ $this->title = 'Настройки аккаунта - TaskForce';
                         $options = [
                             'class' => 'visually-hidden checkbox__input',
                             'id' => 'hide_profile',
-                            'value' => true,
-                            'tag' => false
+                            'value' => true
                         ];
                         if ($model->hide_profile) {
                             $options['checked'] = '';

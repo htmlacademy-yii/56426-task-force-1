@@ -14,6 +14,7 @@ $this->title = 'Регистрация аккаунта - TaskForce';
 
         <?php $form = ActiveForm::begin([
             'id' => 'user-signup-form',
+            'enableClientValidation' => false,
             'options' => [
                 'class' => 'registration__user-form form-create',
                 'name' => $model->formName()
@@ -25,45 +26,29 @@ $this->title = 'Регистрация аккаунта - TaskForce';
             ]
         ]); ?>
 
-            <label for="email"><?=$model->attributeLabels()['email'];?></label>
-            <?php $options = [
-                'class' => 'input textarea',
-                'rows' => '1',
-                'id' => 'email',
-                'tag' => false
-            ]; ?>
-            <?=$form->field($model, 'email', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(false);?>
-            <span>Введите валидный адрес электронной почты</span>
+            <?=$form->field($model, 'email', ['template' => "{label}\n{input}\n{hint}\n{error}"])
+                ->label(null, ['for' => 'email'])
+                ->input('textarea', ['class' => 'input textarea', 'rows' => '1', 'id' => 'email'])
+                ->hint(null, ['tag' => 'span', 'class' => 'input-hint'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
-            <label for="name"><?=$model->attributeLabels()['name'];?></label>
-            <?php $options = [
-                'class' => 'input textarea',
-                'rows' => '1',
-                'id' => 'name',
-                'tag' => false
-            ]; ?>
-            <?=$form->field($model, 'name', ['template' => "{label}\n{input}"])->input('textarea', $options)->label(false);?>
-            <span>Введите ваше имя и фамилию</span>
+            <?=$form->field($model, 'name', ['template' => "{label}\n{input}\n{hint}\n{error}"])
+                ->label(null, ['for' => 'name'])
+                ->input('textarea', ['class' => 'input textarea', 'rows' => '1', 'id' => 'name'])
+                ->hint(null, ['tag' => 'span', 'class' => 'input-hint'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
-            <label for="city"><?=$model->attributeLabels()['city'];?></label>
-            <?php $options = [
-                'class' => 'multiple-select input town-select registration-town',
-                'size' => '1',
-                'id' => 'city',
-                'tag' => false
-            ]; ?>
-            <?=$form->field($model, 'city', ['template' => "{label}\n{input}"])->dropDownList($cities, $options)->label(false); ?>
-            <span>Укажите город, чтобы находить подходящие задачи</span>
+            <?=$form->field($model, 'city', ['template' => "{label}\n{input}\n{hint}\n{error}"])
+                ->label(null, ['for' => 'city'])
+                ->dropDownList($cities, ['class' => 'multiple-select input town-select registration-town', 'size' => '1', 'id' => 'city'])
+                ->hint(null, ['tag' => 'span', 'class' => 'input-hint'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
-            <label class="input-danger" for="password"><?=$model->attributeLabels()['password'];?></label>
-            <?php $options = [
-                'class' => 'input textarea',
-                'rows' => '1',
-                'id' => 'password',
-                'tag' => false
-            ]; ?>
-            <?=$form->field($model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(false);?>
-            <span>Длина пароля от 8 символов</span>
+            <?=$form->field($model, 'password', ['template' => "{label}\n{input}\n{hint}\n{error}"])
+                ->label(null, ['for' => 'password'])
+                ->input('password', ['class' => 'input textarea', 'rows' => '1', 'id' => 'password'])
+                ->hint(null, ['tag' => 'span', 'class' => 'input-hint'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
             <button class="button button__registration" type="submit">Cоздать аккаунт</button>
 
