@@ -741,7 +741,10 @@ fieldset {
   padding-bottom: 14px;
   padding-right: 16px;
   padding-left: 16px;
-  margin-bottom: 35px; }
+  margin-bottom: 5px; }
+
+.input-middle + .input-error {
+  margin-bottom: 25px; }
 
 .multiple-select {
   padding-top: 14px;
@@ -2282,9 +2285,13 @@ fieldset {
   color: #ffffff;
   margin-top: 35px;
   margin-left: 238px; }
-  .header__account--index a {
-    color: #ffffff; }
-    .header__account--index a:hover {
+  .header__account--index a,
+  .header__account--index span {
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer; }
+    .header__account--index a:hover,
+    .header__account--index span:hover {
       text-shadow: 0 0 1px #ffffff, 0 0 1px #ffffff;
       text-decoration: none; }
 

@@ -24,6 +24,8 @@ class UserLoginForm extends Model
         return [
             [['email', 'password'], 'safe'],
             [['email', 'password'], 'required'],
+            ['email', 'email'],
+            ['password', 'string', 'min' => 8],
             ['password', 'validatePassword']
         ];
     }
@@ -33,7 +35,7 @@ class UserLoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Неправильный email или пароль');
+                $this->addError($attribute, 'Неправильный e-mail или пароль');
             }
         }
     }

@@ -7,11 +7,10 @@ for (var i = 0; i < openModalLinks.length; i++) {
 
   modalLink.addEventListener("click", function (event) {
     var modalId = event.currentTarget.getAttribute("data-for");
-
     var modal = document.getElementById(modalId);
+
     modal.setAttribute("style", "display: block");
     overlay.setAttribute("style", "display: block");
-
   });
 }
 
@@ -25,11 +24,8 @@ function closeModal(event) {
 for (var j = 0; j < closeModalLinks.length; j++) {
   var closeModalLink = closeModalLinks[j];
 
-  closeModalLink.addEventListener("click", closeModal)
+  closeModalLink.addEventListener("click", closeModal);
 }
-
-document.getElementById('close-modal-refuse').addEventListener("click", closeModal);
-document.getElementById('close-modal-cancel').addEventListener("click", closeModal);
 
 var starRating = document.getElementsByClassName("completion-form-star");
 
