@@ -716,17 +716,18 @@ fieldset {
   padding-left: 26px; }
 
 .input {
-  color: #8F9BB2;
-  border: 1px solid #e4e9f2;
+  color: #444444;
+  border: 1px solid #bbbbbb;
   border-radius: 4px;
   background-color: #f7f9fc;
   cursor: pointer; }
   .input:hover {
     background-color: #e4e9f2; }
   .input:disabled {
+    color: #cccccc;
     background-color: #FCFDFE;
     cursor: default;
-    border-color: #F1F3F8; }
+    border-color: #dddddd; }
     .input:disabled::-webkit-input-placeholder {
       color: #D4D9E2; }
 
@@ -740,14 +741,17 @@ fieldset {
   padding-bottom: 14px;
   padding-right: 16px;
   padding-left: 16px;
-  margin-bottom: 35px; }
+  margin-bottom: 5px; }
+
+.input-middle + .input-error {
+  margin-bottom: 25px; }
 
 .multiple-select {
   padding-top: 14px;
   padding-bottom: 14px;
   padding-right: 35px;
   padding-left: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   /*Отмена стандартного отображения селекта*/
   /*for WebKit*/
   -webkit-appearance: none;
@@ -762,29 +766,45 @@ fieldset {
   background-position: 230px 20px;
   background-repeat: no-repeat; }
 
+.input-files {
+  margin-bottom: 8px; }
+
 .input-navigation {
   background-image: url("../img/navigation.png");
   background-position: 480px 10px;
   background-repeat: no-repeat;
-  margin-bottom: 10px; }
+  margin-bottom: 8px; }
 
 .input-money {
   background-image: url("../img/ruble-sign.png");
   background-position: 195px 12px;
   background-repeat: no-repeat;
-  margin-bottom: 10px; }
+  margin-bottom: 8px; }
 
 .input-date {
   background-image: url("../img/calendar.png");
   background-position: 195px 12px;
   background-repeat: no-repeat;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   padding-top: 14px;
   padding-bottom: 14px; }
 
+.input-hint {
+  margin-bottom: 5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  color: #888888; }
+  
+.input-error {
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  color: #cc0000; }
+
 .multiple-select-big {
   background-position: 490px 20px;
-  margin-bottom: 10px; }
+  margin-bottom: 8px; }
 
 .registration-town {
   background-position: 325px 20px; }
@@ -946,7 +966,7 @@ fieldset {
 .textarea {
   padding: 14px 15px;
   resize: none;
-  margin-bottom: 10px; }
+  margin-bottom: 8px; }
 
 .textarea-chat {
   padding: 15px 16px; }
@@ -1461,12 +1481,6 @@ fieldset {
   margin-top: 29px;
   margin-bottom: 12px;
   text-transform: uppercase; }
-
-.form-create span {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  color: #8a8a8d; }
 
 .create__file {
   display: -webkit-box;
@@ -2122,7 +2136,7 @@ fieldset {
 
 .account__redaction-avatar {
   padding-top: 6px;
-  padding-right: 13px;
+  padding-right: 18px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2189,10 +2203,13 @@ fieldset {
   width: 310px;
   margin-right: 20px; }
 
-.account__input--name {
-  width: 445px; }
+.account__input--name,
+.account__input--city {
+  margin-bottom: 16px;
+  width: 440px; }
 
 .account__input--email {
+  margin-bottom: 16px;
   width: 382px;
   margin-right: 0; }
 
@@ -2200,6 +2217,7 @@ fieldset {
   width: 605px; }
 
 .account__input--date {
+  margin-bottom: 16px;
   width: 222px;
   margin-right: 0; }
   .account__input--date .input-date {
@@ -2207,8 +2225,7 @@ fieldset {
 
 .account__input--info {
   width: 100%;
-  margin-right: 0;
-  margin-top: 30px; }
+  margin-right: 0; }
 
 .account_checkbox {
   }
@@ -2268,9 +2285,13 @@ fieldset {
   color: #ffffff;
   margin-top: 35px;
   margin-left: 238px; }
-  .header__account--index a {
-    color: #ffffff; }
-    .header__account--index a:hover {
+  .header__account--index a,
+  .header__account--index span {
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer; }
+    .header__account--index a:hover,
+    .header__account--index span:hover {
       text-shadow: 0 0 1px #ffffff, 0 0 1px #ffffff;
       text-decoration: none; }
 

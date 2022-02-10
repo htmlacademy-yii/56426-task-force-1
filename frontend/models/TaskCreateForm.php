@@ -34,12 +34,26 @@ class TaskCreateForm extends Model
         ];
     }
 
+    public function attributeHints()
+    {
+        return [
+            'name' => 'Кратко опишите суть работы',
+            'description' => 'Укажите все пожелания и детали, чтобы исполнителям было проще соориентироваться',
+            'category' => 'Выберите категорию',
+            'task_files' => 'Загрузите файлы, которые помогут исполнителю лучше выполнить или оценить работу',
+            'location' => 'Укажите адрес исполнения, если задание требует присутствия',
+            'budget' => 'Укажите стоимость выполнения работы',
+            'expire' => 'Укажите крайний срок исполнения'
+        ];
+    }
+
     public function rules()
     {
         return [
             [['name', 'description', 'category', 'location', 'budget', 'expire', 'task_files'], 'safe'],
             [['name', 'description', 'category', 'budget', 'expire'], 'required'],
             [['name', 'description', 'location'], 'string'],
+            [['name'], 'string', 'max' => 64],
             [['category'], 'exist', 'targetClass' => Category::class, 'targetAttribute' => ['category' => 'id']],
             [['budget'], 'integer', 'min' => 1],
             [['expire'], 'date', 'format' => 'php:Y-m-d'],

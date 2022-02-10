@@ -62,7 +62,7 @@ AppAsset::register($this);
                 <p>Работа там, где ты!</p>
             </div>
             <div class="header__account--index">
-                <a href="#" class="header__account-enter open-modal" data-for="enter-form"><span>Вход</span></a>
+                <span class="header__account-enter open-modal" data-for="enter-form">Вход</span>
                 или
                 <a href="<?=Url::to(['/signup']);?>" class="header__account-registration">Регистрация</a>
             </div>
@@ -108,35 +108,26 @@ AppAsset::register($this);
 
         <?php $form = ActiveForm::begin([
             'action' => Url::to(['/login']),
+            'enableAjaxValidation' => true,
             'options' => [
                 'name' => $this->context->model->formName()
             ],
             'fieldConfig' => [
                 'options' => [
-                    'tag' => false
+                    'tag' => 'p'
                 ]
             ]
         ]); ?>
 
-            <p>
-                <label class="form-modal-description" for="enter-email"><?=$this->context->model->attributeLabels()['email'];?></label>
-                <?php $options = [
-                    'class' => 'enter-form-email input input-middle',
-                    'id' => 'enter-email',
-                    'tag' => false
-                ]; ?>
-                <?=$form->field($this->context->model, 'email', ['template' => "{label}\n{input}"])->input('email', $options)->label(false); ?>
-            </p>
+            <?=$form->field($this->context->model, 'email', ['template' => "{label}\n{input}\n{error}"])
+                ->label(null, ['class' => 'form-modal-description', 'for' => 'enter-email'])
+                ->input('email', ['class' => 'enter-form-email input input-middle', 'id' => 'enter-email'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
-            <p>
-                <label class="form-modal-description" for="enter-password"><?=$this->context->model->attributeLabels()['password'];?></label>
-                <?php $options = [
-                    'class' => 'enter-form-email input input-middle',
-                    'id' => 'enter-password',
-                    'tag' => false
-                ]; ?>
-                <?=$form->field($this->context->model, 'password', ['template' => "{label}\n{input}"])->input('password', $options)->label(false); ?>
-            </p>
+            <?=$form->field($this->context->model, 'password', ['template' => "{label}\n{input}\n{error}"])
+                ->label(null, ['class' => 'form-modal-description', 'for' => 'enter-password'])
+                ->input('password', ['class' => 'enter-form-email input input-middle', 'id' => 'enter-password'])
+                ->error(['tag' => 'span', 'class' => 'input-error']);?>
 
             <button class="button" type="submit">Войти</button>
 

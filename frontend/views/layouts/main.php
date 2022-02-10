@@ -280,7 +280,7 @@ $mainMenu = [
     <section class="modal form-modal refusal-form" id="refuse-form">
         <h2>Отказ от задания</h2>
         <p>Вы собираетесь отказаться от выполнения задания. Это действие приведёт к снижению вашего рейтинга. Вы уверены?</p>
-        <button class="button__form-modal button" id="close-modal-refuse" type="button">Закрыть</button>
+        <button class="button__form-modal button" id="form-modal-close" type="button">Закрыть</button>
 
         <?php ActiveForm::begin(['action' => Url::to(["/task/".$this->context->taskId."/reject"])]); ?>
             <button class="button__form-modal refusal-button button" type="submit">Отказаться</button>
@@ -294,7 +294,7 @@ $mainMenu = [
     <section class="modal form-modal refusal-form" id="cancel-form">
         <h2>Отмена задания</h2>
         <p>Вы собираетесь отменить задание. Это действие приведёт к невозможности его исполнения. Вы уверены?</p>
-        <button class="button__form-modal button" id="close-modal-cancel" type="button">Закрыть</button>
+        <button class="button__form-modal button" id="form-modal-close" type="button">Закрыть</button>
 
         <?php ActiveForm::begin(['action' => Url::to(["/task/".$this->context->taskId."/cancel"])]); ?>
             <button class="button__form-modal refusal-button button" type="submit">Отменить</button>
